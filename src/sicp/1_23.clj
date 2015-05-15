@@ -5,10 +5,12 @@
 (defn rand-long[n]
   (long (* (rand) n)))
 
+(defn mod-square [n base]
+  (rem (square n) base))
 
 (defn expmod [base exp m]
     (cond (= exp 0) 1
-        (even? exp) (rem (square (expmod base (/ exp 2) m)) m)
+        (even? exp) (mod-square (expmod base (/ exp 2) m) m)
         :else (rem (*'  base (expmod base (- exp 1) m)) m)))
 
 (defn fermat-test-with [a n]
