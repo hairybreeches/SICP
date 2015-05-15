@@ -18,4 +18,11 @@
   (is (not (carmichael? 2825))))
 
 
+(deftest primes-arent-carmichael
+	(is (not (carmichael? 701)))
+  (is (not (carmichael? 2467))))
+
+
+
+
 
