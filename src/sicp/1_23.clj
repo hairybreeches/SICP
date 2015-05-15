@@ -11,10 +11,14 @@
         (even? exp) (rem (square (expmod base (/ exp 2) m)) m)
         :else (rem (*'  base (expmod base (- exp 1) m)) m)))
 
+(defn try-it [a n]
+   (= (expmod a n n) a))
+
 (defn fermat-test [n]
-  (defn try-it [a]
-    (= (expmod a n n) a))
-  (try-it (+ 1 (rand-long (- n 1)))))
+  (try-it (+ 1 (rand-long (- n 1))) n))
+
+(defn carmichael? [n]
+  (every? #(try-it % n) (range 1 n)))
 
 (defn fast-prime? [n times]
   (loop [n n
