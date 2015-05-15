@@ -5,6 +5,9 @@
 (defn rand-long[n]
   (long (* (rand) n)))
 
+(defn rand-test-value [n]
+  (+ 1 (rand-long (- n 1))))
+
 (defn mod-square [n base]
   (rem (square n) base))
 
@@ -17,7 +20,7 @@
    (= (expmod a n n) a))
 
 (defn fermat-test [n]
-  (fermat-test-with (+ 1 (rand-long (- n 1))) n))
+  (fermat-test-with (rand-test-value n) n))
 
 (defn fermat-prime? [n times]
   (loop [n n
