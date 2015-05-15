@@ -19,12 +19,7 @@
 (defn fermat-test-with [a n]
    (= (expmod a n n) a))
 
-(defn fermat-test [n]
-  (fermat-test-with (rand-test-value n) n))
-
 (defn fermat-prime? [n times]
-  (loop [n n
-         times times]
-    (cond (= times 0) true
-          (fermat-test n) (recur n (- times 1))
-          :else false)))
+  (every?
+    #(fermat-test-with % n)
+    (take times (repeatedly #(rand-test-value n)))))
