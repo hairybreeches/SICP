@@ -1,11 +1,8 @@
-(ns sicp.1-31)
+(ns sicp.1-31
+  (:use sicp.1-32))
 
 (defn product [term start iterator finish]
-  (loop [start start
-         result 1]
-    (if (> start finish)
-      result
-      (recur (iterator start) (* (term start) result)))))
+  (accumulate * 1 term start iterator finish))
 
 
 (defn factorial [n]

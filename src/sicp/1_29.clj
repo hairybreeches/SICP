@@ -1,14 +1,12 @@
-(ns sicp.1-29)
+(ns sicp.1-29
+  (:use sicp.1-32))
 
 (defn cube [x]
   (* x x x))
 
 (defn sum [term start incrementor finish]
-  (defn sum-iter [start result]
-    (if (> start finish)
-      result
-      (sum-iter (incrementor start) (+ result (term start)))))
-  (sum-iter start 0))
+  (accumulate + 0 term start incrementor finish))
+
 
 (defn integral [f from to dx]
   (defn add-dx [x] (+ x dx))
