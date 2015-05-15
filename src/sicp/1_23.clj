@@ -17,9 +17,6 @@
 (defn fermat-test [n]
   (fermat-test-with (+ 1 (rand-long (- n 1))) n))
 
-(defn carmichael? [n]
-  (every? #(fermat-test-with % n) (range 1 n)))
-
 (defn fast-prime? [n times]
   (loop [n n
          times times]
