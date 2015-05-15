@@ -23,7 +23,7 @@
   (test-prime prime?))
 
 (deftest fast-prime
-  (test-prime #(fast-prime? % 30)))
+  (test-prime #(fermat-prime? % 30)))
 
 
 
