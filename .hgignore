@@ -11,3 +11,4 @@ pom.xml.asc
 .gitignore
 .git/**
 .lein-*
+.nrepl-port
