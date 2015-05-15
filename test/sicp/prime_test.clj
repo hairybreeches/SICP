@@ -2,14 +2,24 @@
   (:use clojure.test)
   (:use sicp.1-21))
 
-(deftest prime-success
-	(is (prime? 991))
-  (is (prime? 997))
-  (is (prime? 1009))
-  (is (prime? 1013)))
+(defn prime-success [prime-predicate?]
+	(is (prime-predicate? 991))
+  (is (prime-predicate? 997))
+  (is (prime-predicate? 1009))
+  (is (prime-predicate? 1013)))
 
-(deftest prime-failure
-	(is (not (prime? 992)))
-  (is (not (prime? 993)))
-  (is (not (prime? 1011)))
-  (is (not (prime? 1017))))
+(defn prime-failure [prime-predicate?]
+	(is (not (prime-predicate? 992)))
+  (is (not (prime-predicate? 993)))
+  (is (not (prime-predicate? 1011)))
+  (is (not (prime-predicate? 1017))))
+
+(defn test-prime [prime-predicate?]
+  (prime-success prime-predicate?)
+  (prime-failure prime-predicate?))
+
+(deftest slow-prime
+  (test-prime prime?))
+
+
+
