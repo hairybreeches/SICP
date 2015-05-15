@@ -20,7 +20,10 @@
   ([a n] (fermat-test-with a n mod-square))
   ([a n squarer] (= (expmod a n n squarer) a)))
 
-(defn fermat-prime? [n times]
+(defn multi-fermat-test [n times]
   (every?
     #(fermat-test-with % n)
     (take times (repeatedly #(rand-test-value n)))))
+
+(defn fermat-prime? [n times]
+  (multi-fermat-test n times))
