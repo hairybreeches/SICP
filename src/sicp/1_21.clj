@@ -4,7 +4,7 @@
 (defn divides? [a b]
   (= (rem b a) 0))
 
-(defn next[n]
+(defn next-divisor [n]
   (if (= n 2) 3 (+ n 2)))
 
 
@@ -14,7 +14,7 @@
          test-divisor test-divisor]
     (cond (> (square test-divisor) n) n
           (divides? test-divisor n) test-divisor
-          :else (recur n (next test-divisor)))))
+          :else (recur n (next-divisor test-divisor)))))
 
 (defn smallest-divisor [n]
   (find-divisor n 2))
