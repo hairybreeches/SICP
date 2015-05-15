@@ -1,11 +1,10 @@
 (ns sicp.1-22
-  (:use sicp.1-21))
+  (:use sicp.1-23))
 
 (defn timed-prime-test [n]
   (print "\n")
   (print n)
-  (print
-       (if (time (prime? n)) "prime " "not prime ")))
+  (time (fast-prime? n 1000)))
 
 
 (defn show-prime-complexity []
