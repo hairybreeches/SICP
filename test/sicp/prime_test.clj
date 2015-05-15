@@ -22,8 +22,11 @@
 (deftest slow-prime
   (test-prime prime?))
 
-(deftest fast-prime
+(deftest fermat-prime
   (test-prime #(fermat-prime? % 30)))
+
+(deftest miller-rabin-prime
+  (test-prime #(miller-rabin-prime? % 30)))
 
 
 

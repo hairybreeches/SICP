@@ -11,6 +11,16 @@
 (defn mod-square [n base]
   (rem (square n) base))
 
+(defn miller-rabin-square [n base]
+  (let [result (mod-square n base)]
+    (if
+      (and
+        (not= 1 n)
+        (not= (- base 1) n)
+        (= result 1))
+      0
+      result)))
+
 (defn expmod [base exp m squarer]
     (cond (= exp 0) 1
         (even? exp) (squarer (expmod base (/ exp 2) m squarer) m)
@@ -27,3 +37,6 @@
 
 (defn fermat-prime? [n times]
   (multi-fermat-test n times mod-square))
+
+(defn miller-rabin-prime? [n times]
+  (multi-fermat-test n times miller-rabin-square))
