@@ -24,17 +24,12 @@
 
 (smallest-divisor 199999) ; 199999
 
-
-(defn report-if-prime [n]
-    (print
-       (if (prime? n)
-         " is prime "
-         " is not prime ")))
-
 (defn timed-prime-test [n]
   (print "\n")
   (print n)
-  (time (report-if-prime n)))
+  (print
+       (if (time (prime? n)) "prime " "not prime ")))
+
 
 (defn show-prime-complexity []
   (timed-prime-test 1000000007)
