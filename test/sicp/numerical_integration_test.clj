@@ -1,10 +1,7 @@
 (ns sicp.numerical-integration-test
   (:use clojure.test)
   (:use sicp.1-29)
-  (:use clojure.math.numeric-tower))
-
-(defn is-roughly= [a b accuracy]
-  (is (< (abs (- b a)) (/ 1 (expt 10 accuracy)))))
+  (:use sicp.test-accuracy))
 
 (deftest numerical-integration
   (is-roughly= (integral cube 0 1 0.01) 0.25 4)
