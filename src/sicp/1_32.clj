@@ -1,4 +1,6 @@
-(ns sicp.1-32)
+(ns sicp.1-32
+  (:use clojure.math.numeric-tower)
+  (:use sicp.1-21))
 
 (defn filtered-accumulate [predicate combiner null-value term start iterator finish]
   (loop [start start
@@ -14,5 +16,11 @@
 
 (defn accumulate [combiner null-value term start iterator finish]
   (filtered-accumulate (fn [x] true) combiner null-value term start iterator finish))
+
+(defn sum-of-primes [a b]
+  (filtered-accumulate prime? + 0 identity a inc b))
+
+(defn product-of-coprime [n]
+  (filtered-accumulate #(= (gcd n %) 1) * 1 identity 1 inc n))
 
 
