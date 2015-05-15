@@ -29,4 +29,11 @@
   (test-prime #(miller-rabin-prime? % 30)))
 
 
-
+(deftest miller-rabin-not-fooled-by-carmichael-numbers
+  (let [prime-predicate? #(miller-rabin-prime? % 30)]
+    (is (not (prime-predicate? 561)))
+    (is (not (prime-predicate? 1105)))
+    (is (not (prime-predicate? 1729)))
+    (is (not (prime-predicate? 2465)))
+    (is (not (prime-predicate? 2821)))
+    (is (not (prime-predicate? 6601)))))
