@@ -1,6 +1,8 @@
-(ns sicp.core)
+(ns sicp.core
+  (:use sicp.1-21))
 
-(defn foo
-  "I don't do a whole lot."
-  [x]
-  (println x "Hello, World!"))
+
+(defn -main
+  "steve"
+  []
+  (show-prime-complexity))
