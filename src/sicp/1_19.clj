@@ -4,7 +4,7 @@
 ;q' = q^2 + 2pq
 
 (defn square [n]
-  (* n n))
+  (*' n n))
 
 (defn pprime [p q]
   (+ (square p) (square q)))
