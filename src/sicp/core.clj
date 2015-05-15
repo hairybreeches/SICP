@@ -1,5 +1,5 @@
 (ns sicp.core
-  (:use sicp.1-21))
+  (:use sicp.1-22))
 
 
 (defn -main
