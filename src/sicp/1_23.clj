@@ -11,13 +11,14 @@
 (defn mod-square [n base]
   (rem (square n) base))
 
-(defn expmod [base exp m]
+(defn expmod [base exp m squarer]
     (cond (= exp 0) 1
-        (even? exp) (mod-square (expmod base (/ exp 2) m) m)
-        :else (rem (*'  base (expmod base (- exp 1) m)) m)))
+        (even? exp) (squarer (expmod base (/ exp 2) m squarer) m)
+        :else (rem (*'  base (expmod base (- exp 1) m squarer)) m)))
 
-(defn fermat-test-with [a n]
-   (= (expmod a n n) a))
+(defn fermat-test-with
+  ([a n] (fermat-test-with a n mod-square))
+  ([a n squarer] (= (expmod a n n squarer) a)))
 
 (defn fermat-prime? [n times]
   (every?
