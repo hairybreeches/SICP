@@ -3,13 +3,12 @@
 (defn cube [x]
   (* x x x))
 
-(defn sum-iter [term start incrementor finish result]
-  (if (> start finish)
-      result
-      (sum-iter term (incrementor start) incrementor finish (+ result (term start)))))
-
 (defn sum [term start incrementor finish]
-  (sum-iter term start incrementor finish 0))
+  (defn sum-iter [start result]
+    (if (> start finish)
+      result
+      (sum-iter (incrementor start) (+ result (term start)))))
+  (sum-iter start 0))
 
 (defn integral [f from to dx]
   (defn add-dx [x] (+ x dx))
