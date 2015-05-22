@@ -31,3 +31,23 @@
 (deftest calculate-e
   (is-roughly= (approximate-e 15) e 10))
 
+
+(defn tan-cf [x number-of-terms]
+  (let [negative-x-squared (* -1 x x)]
+    (cont-frac
+     #(if (= % 1) x negative-x-squared)
+     #(- (* 2 %) 1)
+     number-of-terms)))
+
+(def pi java.lang.Math/PI)
+
+(deftest test-tan-0
+  (is-roughly= (tan-cf 0 10) 0 10))
+
+(deftest test-tan-pi
+  (is-roughly= (tan-cf pi 15) 0 10))
+
+(deftest test-tan-quarter-pi
+  (is-roughly= (tan-cf (/ pi 4) 10) 1 10))
+
+
