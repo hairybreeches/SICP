@@ -15,3 +15,7 @@
 
 (defn smooth [f dx]
   #(/  (+ (f %) (f (+ % dx)) (f (- % dx)))  3))
+
+
+(defn n-smooth [f n dx]
+  ((repeated #(smooth % dx) n) f))
