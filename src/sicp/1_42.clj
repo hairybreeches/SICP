@@ -1,4 +1,5 @@
-(ns sicp.1-42)
+(ns sicp.1-42
+  (:use sicp.average))
 
 
 (defn compose [f g]
@@ -14,7 +15,7 @@
      :else (recur (compose f result) f (dec n)))))
 
 (defn smooth [f dx]
-  #(/  (+ (f %) (f (+ % dx)) (f (- % dx)))  3))
+  #(average (f %) (f (+ % dx)) (f (- % dx))))
 
 
 (defn n-smooth [f n dx]
