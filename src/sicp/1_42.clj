@@ -12,3 +12,6 @@
      (= n 0) result
      (= (rem n 2) 0) (recur result (compose f f) (/ n 2))
      :else (recur (compose f result) f (dec n)))))
+
+(defn smooth [f dx]
+  #(/  (+ (f %) (f (+ % dx)) (f (- % dx)))  3))
