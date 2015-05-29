@@ -9,6 +9,7 @@
 
 
 (defn find-root [n root-degree]
+  ;this is actually over-zealous, damp-coeffiecient only has to be floor of log to base 2
   (let [damp-coefficient (floor (/ root-degree 2))
         damper (repeated average-damp damp-coefficient)
         original-function #(/ n (expt % (- root-degree 1)))
