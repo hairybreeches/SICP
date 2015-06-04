@@ -2,8 +2,14 @@
   (:use clojure.math.numeric-tower))
 
 
+(defn signed-gcd [a b]
+  (let [g (gcd a b)]
+    (if (< b 0)
+      (* -1 g)
+      g)))
+
 (defn make-rat [n d]
-  (let [g (gcd n d)]
+  (let [g (signed-gcd n d)]
     [(/ n g) (/ d g)]))
 
 (defn numer [x]
