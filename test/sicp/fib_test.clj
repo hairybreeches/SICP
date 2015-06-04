@@ -1,6 +1,6 @@
 (ns sicp.fib-test
   (:use clojure.test)
-  (:use sicp.1-19))
+  (:use sicp.chapter-1.ex-19))
 
 (deftest fib-0
 	 (is (= (fib 0) 0)))

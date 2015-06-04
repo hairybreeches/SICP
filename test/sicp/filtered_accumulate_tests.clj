@@ -1,6 +1,6 @@
 (ns sicp.filtered-accumulate-tests
   (:use clojure.test)
-  (:use sicp.1-32))
+  (:use sicp.chapter-1.ex-32))
 
 
 (deftest test-sum-of-primes

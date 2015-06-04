@@ -1,6 +1,6 @@
-(ns sicp.1-45
-  (:use sicp.1-35)
-  (:use sicp.1-42)
+(ns sicp.chapter-1.ex-45
+  (:use sicp.chapter-1.ex-35)
+  (:use sicp.chapter-1.ex-42)
   (:use sicp.average)
   (:use clojure.math.numeric-tower))
 

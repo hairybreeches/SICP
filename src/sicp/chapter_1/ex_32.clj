@@ -1,6 +1,6 @@
-(ns sicp.1-32
+(ns sicp.chapter-1.ex-32
   (:use clojure.math.numeric-tower)
-  (:use sicp.1-21))
+  (:use sicp.chapter-1.ex-21))
 
 (defn filtered-accumulate [predicate combiner null-value term start iterator finish]
   (loop [start start

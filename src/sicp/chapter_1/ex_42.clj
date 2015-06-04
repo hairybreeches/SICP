@@ -1,4 +1,4 @@
-(ns sicp.1-42
+(ns sicp.chapter-1.ex-42
   (:use sicp.average))
 
 

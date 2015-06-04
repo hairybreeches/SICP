@@ -1,6 +1,6 @@
-(ns sicp.1-27
-  (:use sicp.1-21)
-  (:use sicp.1-23))
+(ns sicp.chapter-1.ex-27
+  (:use sicp.chapter-1.ex-21)
+  (:use sicp.chapter-1.ex-23))
 
 (defn carmichael? [n]
   (and

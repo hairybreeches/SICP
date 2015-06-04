@@ -1,5 +1,5 @@
 (ns sicp.test-double
-  (:use sicp.1-41)
+  (:use sicp.chapter-1.ex-41)
   (:use clojure.test))
 
 (deftest double-test

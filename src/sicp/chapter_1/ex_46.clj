@@ -1,4 +1,4 @@
-(ns sicp.1-46)
+(ns sicp.chapter-1.ex-46)
 
 (defn iterative-improve [good-enough? improve-guess]
   (fn [first-guess]

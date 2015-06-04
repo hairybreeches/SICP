@@ -1,5 +1,5 @@
 (ns sicp.test-smooth
-  (:use sicp.1-42)
+  (:use sicp.chapter-1.ex-42)
   (:use clojure.test))
 
 (defn step [x]

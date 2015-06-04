@@ -1,7 +1,7 @@
 (ns sicp.prime-test
   (:use clojure.test)
-  (:use sicp.1-21)
-  (:use sicp.1-23))
+  (:use sicp.chapter-1.ex-21)
+  (:use sicp.chapter-1.ex-23))
 
 (defn prime-success [prime-predicate?]
 	(is (prime-predicate? 991))

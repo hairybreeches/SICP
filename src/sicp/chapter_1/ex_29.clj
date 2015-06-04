@@ -1,5 +1,5 @@
-(ns sicp.1-29
-  (:use sicp.1-32))
+(ns sicp.chapter-1.ex-29
+  (:use sicp.chapter-1.ex-32))
 
 (defn cube [x]
   (* x x x))

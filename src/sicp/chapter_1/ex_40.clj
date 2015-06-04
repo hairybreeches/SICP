@@ -1,5 +1,5 @@
-(ns sicp.1-40
-  (:use sicp.1-35))
+(ns sicp.chapter-1.ex-40
+  (:use sicp.chapter-1.ex-35))
 
 (def dx 0.00001)
 

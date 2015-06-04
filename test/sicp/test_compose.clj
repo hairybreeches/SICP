@@ -1,5 +1,5 @@
 (ns sicp.test-compose
-  (:use sicp.1-42)
+  (:use sicp.chapter-1.ex-42)
   (:use clojure.test))
 
 (deftest test-compose

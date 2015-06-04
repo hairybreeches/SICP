@@ -1,5 +1,5 @@
-(ns sicp.1-35
-  (:use sicp.1-46)
+(ns sicp.chapter-1.ex-35
+  (:use sicp.chapter-1.ex-46)
   (:use clojure.math.numeric-tower))
 
 (defn fixed-point [f first-guess tolerance]

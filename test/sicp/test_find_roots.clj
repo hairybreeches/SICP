@@ -1,5 +1,5 @@
 (ns sicp.test-find-roots
-  (:use sicp.1-45)
+  (:use sicp.chapter-1.ex-45)
   (:require sicp.test-accuracy)
   (:use clojure.test))
 

@@ -1,4 +1,4 @@
-(ns sicp.1-19)
+(ns sicp.chapter-1.ex-19)
 
 ;p' = p^2 + q^2
 ;q' = q^2 + 2pq

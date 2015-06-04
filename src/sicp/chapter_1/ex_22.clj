@@ -1,5 +1,5 @@
-(ns sicp.1-22
-  (:use sicp.1-23))
+(ns sicp.chapter-1.ex-22
+  (:use sicp.chapter-1.ex-23))
 
 (defn timed-prime-test [n]
   (print "\n")

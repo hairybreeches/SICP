@@ -1,4 +1,4 @@
-(ns sicp.1-37)
+(ns sicp.chapter-1.ex-37)
 
 (defn cont-frac [numerator-function denominator-function to-index]
   (loop [to-index to-index

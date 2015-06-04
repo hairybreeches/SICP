@@ -1,5 +1,5 @@
 (ns sicp.fixed-point-tests
-  (:use sicp.1-35)
+  (:use sicp.chapter-1.ex-35)
   (:use sicp.test-accuracy)
   (:use clojure.test))
 

@@ -1,5 +1,5 @@
 (ns sicp.test-cube-roots
-  (:use sicp.1-40)
+  (:use sicp.chapter-1.ex-40)
   (:use clojure.test)
   (:use sicp.test-accuracy))
 

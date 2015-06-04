@@ -1,5 +1,5 @@
-(ns sicp.1-31
-  (:use sicp.1-32))
+(ns sicp.chapter-1.ex-31
+  (:use sicp.chapter-1.ex-32))
 
 (defn product [term start iterator finish]
   (accumulate * 1 term start iterator finish))

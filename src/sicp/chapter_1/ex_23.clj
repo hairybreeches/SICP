@@ -1,6 +1,6 @@
-(ns sicp.1-23
-  (:use sicp.1-21)
-  (:use sicp.1-19))
+(ns sicp.chapter-1.ex-23
+  (:use sicp.chapter-1.ex-21)
+  (:use sicp.chapter-1.ex-19))
 
 (defn rand-long[n]
   (long (* (rand) n)))

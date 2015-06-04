@@ -2,7 +2,7 @@
   (:use sicp.test-accuracy)
   (:use clojure.math.numeric-tower)
   (:use clojure.test)
-  (:use sicp.1-37))
+  (:use sicp.chapter-1.ex-37))
 
 (def reciprocal-phi 0.61803398875)
 

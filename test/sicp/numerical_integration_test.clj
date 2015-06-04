@@ -1,6 +1,6 @@
 (ns sicp.numerical-integration-test
   (:use clojure.test)
-  (:use sicp.1-29)
+  (:use sicp.chapter-1.ex-29)
   (:use sicp.test-accuracy))
 
 (deftest numerical-integration

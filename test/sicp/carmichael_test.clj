@@ -1,6 +1,6 @@
 (ns sicp.carmichael-test
   (:use clojure.test)
-  (:use sicp.1-27))
+  (:use sicp.chapter-1.ex-27))
 
 (deftest carmichael-success
 	(is (carmichael? 561))

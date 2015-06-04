@@ -1,6 +1,6 @@
 (ns sicp.factorial
   (:use clojure.test)
-  (:use sicp.1-31)
+  (:use sicp.chapter-1.ex-31)
   (:use sicp.test-accuracy))
 
 
