@@ -28,6 +28,10 @@
                     (y-point point2))
                  2))))
 
+(defn segment-length [segment]
+  (distance (start-segment segment)
+            (end-segment segment)))
+
 (defn point-average [point1 point2]
   (make-point (average (x-point point1) (x-point point2))
               (average (y-point point1) (y-point point2))))
@@ -37,28 +41,15 @@
                  (end-segment segment)))
 
 
-(defn make-rectangle [point1 point2 point3 point4]
-  [point1 point2 point3 point4])
-
-(defn point1 [rectangle]
-  (first rectangle))
-
-(defn point2 [rectangle]
-  (second rectangle))
-
-(defn point3 [rectangle]
-  (nth rectangle 2))
-
-(defn point4 [rectangle]
-  (nth rectangle 3))
+;define a rectangle using the segments representing the height and width
+(defn make-rectangle [segment1 segment2]
+  [segment1 segment2])
 
 (defn width [rectangle]
-  (distance (point1 rectangle)
-            (point2 rectangle)))
+  (segment-length (first rectangle)))
 
 (defn height [rectangle]
-  (distance (point2 rectangle)
-            (point3 rectangle)))
+  (segment-length (second rectangle)))
 
 (defn area [rectangle]
   (* (width rectangle)

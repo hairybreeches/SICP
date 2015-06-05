@@ -12,16 +12,12 @@
 
 
 (def test-rectangle
-  (make-rectangle (make-point 0 0)
-                  (make-point 0 5)
-                  (make-point 2 5)
-                  (make-point 2 0)))
+  (make-rectangle (make-segment (make-point 0 0) (make-point 0 5))
+                  (make-segment (make-point 0 0) (make-point 2 0))))
 
 (def rotated-test-rectangle
-  (make-rectangle (make-point 0 0)
-                  (make-point -8 6)
-                  (make-point -5 10)
-                  (make-point 3 4)))
+  (make-rectangle (make-segment (make-point 0 0) (make-point -8 6))
+                  (make-segment (make-point 0 0) (make-point 3 4))))
 
 (deftest calculate-distance-when-x-distance-is-0
   (is (= (distance (make-point 3 5)
