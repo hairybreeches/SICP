@@ -14,6 +14,14 @@
    3
    10))
 
+(deftest subtract-ranges-test
+  (is-interval-equal
+   (sub-interval
+    (make-interval 1 4)
+    (make-interval 2 6))
+   -5
+   2))
+
 (deftest divide-ranges-test
   (is-interval-equal
    (div-interval

@@ -27,3 +27,7 @@
 (defn div-interval [a b]
   (mul-interval a (make-interval (/ 1 (upper-bound b))
                                  (/ 1 (lower-bound a)))))
+
+(defn sub-interval [a b]
+  (add-interval a (make-interval (* -1 (upper-bound b))
+                                 (* -1 (lower-bound a)))))
