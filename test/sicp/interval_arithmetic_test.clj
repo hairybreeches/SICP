@@ -14,6 +14,14 @@
    3
    10))
 
+(deftest divide-ranges-test
+  (is-interval-equal
+   (div-interval
+    (make-interval 1 4)
+    (make-interval 2 6))
+   1/6
+   2))
+
 (deftest mul-ranges-test-both-positive
   (is-interval-equal
    (mul-interval
