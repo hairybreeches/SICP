@@ -9,6 +9,11 @@
 (defn lower-bound [interval]
   (first interval))
 
+(defn spans-zero[interval]
+  (< (* (lower-bound interval)
+        (upper-bound interval))
+     0))
+
 (defn add-interval [a b]
   (make-interval (+ (lower-bound a)
                     (lower-bound b))
@@ -25,6 +30,8 @@
                    (apply max attempts))))
 
 (defn div-interval [a b]
+  (if (spans-zero b)
+    (throw (Exception. "cannot divide by an interval that spans zero")))
   (mul-interval a (make-interval (/ 1 (upper-bound b))
                                  (/ 1 (lower-bound a)))))
 
