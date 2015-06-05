@@ -33,8 +33,8 @@
   (if (spans-zero b)
     (throw (Exception. "cannot divide by an interval that spans zero")))
   (mul-interval a (make-interval (/ 1 (upper-bound b))
-                                 (/ 1 (lower-bound a)))))
+                                 (/ 1 (lower-bound b)))))
 
 (defn sub-interval [a b]
   (add-interval a (make-interval (* -1 (upper-bound b))
-                                 (* -1 (lower-bound a)))))
+                                 (* -1 (lower-bound b)))))

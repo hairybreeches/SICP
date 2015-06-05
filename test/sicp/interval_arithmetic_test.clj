@@ -4,7 +4,7 @@
 
 (defn is-interval-equal [interval lower upper]
   (is (= (lower-bound interval) lower))
-  (is (= (upper-bound interval)) upper))
+  (is (= (upper-bound interval) upper)))
 
 (deftest add-ranges-test
   (is-interval-equal
