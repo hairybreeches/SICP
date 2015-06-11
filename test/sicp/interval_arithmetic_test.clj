@@ -42,33 +42,10 @@
   (is-interval-equal
    (mul-interval
     (make-interval -1 -4)
-    (make-interval -2 -6))
+    (make-interval -6 -2))
    2
    24))
 
-(deftest mul-ranges-test-one-negative-one-positive
-  (is-interval-equal
-   (mul-interval
-    (make-interval -1 -4)
-    (make-interval 2 6))
-   -24
-   -2))
-
-(deftest mul-ranges-test-one-positive-one-spans
-  (is-interval-equal
-   (mul-interval
-    (make-interval -1 4)
-    (make-interval 2 6))
-   -6
-   24))
-
-(deftest mul-ranges-test-one-negative-one-spans
-  (is-interval-equal
-   (mul-interval
-    (make-interval -1 4)
-    (make-interval -2 -6))
-   -24
-   6))
 
 (deftest mul-ranges-test-both-span
   (is-interval-equal
@@ -77,6 +54,54 @@
     (make-interval -2 6))
    -8
    24))
+
+(deftest mul-ranges-test-a-negative-b-positive
+  (is-interval-equal
+   (mul-interval
+    (make-interval -1 -4)
+    (make-interval 2 6))
+   -24
+   -2))
+
+(deftest mul-ranges-test-a-positive-b-negative
+  (is-interval-equal
+   (mul-interval
+    (make-interval 2 6)
+    (make-interval -1 -4))
+   -24
+   -2))
+
+(deftest mul-ranges-test-a-spans-b-positive
+  (is-interval-equal
+   (mul-interval
+    (make-interval -1 4)
+    (make-interval 2 6))
+   -6
+   24))
+
+(deftest mul-ranges-test-a-positive-b-spans
+  (is-interval-equal
+   (mul-interval
+    (make-interval 2 6)
+    (make-interval -1 4))
+   -6
+   24))
+
+(deftest mul-ranges-test-a-spans-b-negative
+  (is-interval-equal
+   (mul-interval
+    (make-interval -1 4)
+    (make-interval -6 -2))
+   -24
+   6))
+
+(deftest mul-ranges-test-a-negative-b-spans
+  (is-interval-equal
+   (mul-interval
+    (make-interval -2 -6)
+    (make-interval -1 4))
+   -24
+   6))
 
 
 
