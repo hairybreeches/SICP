@@ -1,6 +1,10 @@
 (ns sicp.chapter-2.interval-arithmetic)
 
 (defn make-interval [lower upper]
+  (if
+    (< upper lower)
+    (throw (Exception. (format "Can't have an interval with a lower bound (%d) greater than the upper bound (%d)" lower upper))))
+
   [lower upper])
 
 (defn upper-bound [interval]

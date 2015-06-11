@@ -41,7 +41,7 @@
 (deftest mul-ranges-test-both-negative
   (is-interval-equal
    (mul-interval
-    (make-interval -1 -4)
+    (make-interval -4 -1)
     (make-interval -6 -2))
    2
    24))
@@ -58,7 +58,7 @@
 (deftest mul-ranges-test-a-negative-b-positive
   (is-interval-equal
    (mul-interval
-    (make-interval -1 -4)
+    (make-interval -4 -1)
     (make-interval 2 6))
    -24
    -2))
@@ -67,7 +67,7 @@
   (is-interval-equal
    (mul-interval
     (make-interval 2 6)
-    (make-interval -1 -4))
+    (make-interval -4 -1))
    -24
    -2))
 
@@ -98,7 +98,7 @@
 (deftest mul-ranges-test-a-negative-b-spans
   (is-interval-equal
    (mul-interval
-    (make-interval -2 -6)
+    (make-interval -6 -2)
     (make-interval -1 4))
    -24
    6))
