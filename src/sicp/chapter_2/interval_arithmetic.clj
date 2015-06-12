@@ -14,7 +14,7 @@
   (first interval))
 
 (defn spans-zero[interval]
-  (< (* (lower-bound interval)
+  (<= (* (lower-bound interval)
         (upper-bound interval))
      0))
 
