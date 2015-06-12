@@ -32,7 +32,7 @@
   (* (/ (width interval) (centre interval)) 100))
 
 
-;things that act on intervals
+;interval arithmetic
 (defn spans-zero[interval]
   (<= (* (lower-bound interval)
         (upper-bound interval))
@@ -106,3 +106,16 @@
 (defn sub-interval [a b]
   (add-interval a (make-interval (* -1 (upper-bound b))
                                  (* -1 (lower-bound b)))))
+
+;functions using interval arithmetic
+(defn par1[r1 r2]
+  (div-interval (mul-interval r1 r2)
+                (add-interval r1 r2)))
+
+(defn par2[r1 r2]
+  (let [one (make-interval 1 1)]
+    (div-interval
+      one
+      (add-interval
+        (div-interval one r1)
+        (div-interval one r2)))))
