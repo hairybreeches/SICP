@@ -40,31 +40,42 @@
     (* (upper-bound positive-interval) (lower-bound span-interval))
     (* (upper-bound positive-interval) (upper-bound span-interval))))
 
+(defn mul-pp[positive-interval-a positive-interval-b]
+  (make-interval
+    (* (lower-bound positive-interval-a) (lower-bound positive-interval-b))
+    (* (upper-bound positive-interval-a) (upper-bound positive-interval-b))))
+
+(defn mul-ns[negative-interval span-interval]
+  (make-interval
+    (* (lower-bound negative-interval) (upper-bound span-interval))
+    (* (lower-bound negative-interval) (lower-bound span-interval))))
+
+(defn mul-nn[negative-interval-a negative-interval-b]
+  (make-interval
+    (* (upper-bound negative-interval-a) (upper-bound negative-interval-b))
+    (* (lower-bound negative-interval-a) (lower-bound negative-interval-b))))
+
+(defn mul-ss[span-interval-a span-interval-b]
+  (let [attempts [(* (upper-bound span-interval-a) (upper-bound span-interval-b))
+                  (* (upper-bound span-interval-a) (lower-bound span-interval-b))
+                  (* (lower-bound span-interval-a) (upper-bound span-interval-b))
+                  (* (lower-bound span-interval-a) (lower-bound span-interval-b))]]
+    (make-interval
+      (apply min attempts)
+      (apply max attempts))))
+
 
 
 (defn mul-interval [a b]
-  (cond (positive? a) (cond (positive? b) (make-interval
-                                           (* (lower-bound a) (lower-bound b))
-                                           (* (upper-bound a) (upper-bound b)))
+  (cond (positive? a) (cond (positive? b) (mul-pp a b)
                             (negative? b) (mul-pn a b)
                             :else (mul-ps a b))
         (negative? a) (cond (positive? b) (mul-pn b a)
-                            (negative? b) (make-interval
-                                           (* (upper-bound a) (upper-bound b))
-                                           (* (lower-bound a) (lower-bound b)))
-                            :else         (make-interval
-                                           (* (lower-bound a) (upper-bound b))
-                                           (* (lower-bound a) (lower-bound b))))
+                            (negative? b) (mul-nn a b)
+                            :else (mul-ns a b))
         :else (cond         (positive? b) (mul-ps b a)
-                            (negative? b) (make-interval
-                                           (* (upper-bound a) (lower-bound b))
-                                           (* (lower-bound a) (lower-bound b)))
-                            :else (let [attempts [(* (upper-bound a) (upper-bound b))
-                                                  (* (upper-bound a) (lower-bound b))
-                                                  (* (lower-bound a) (upper-bound b))
-                                                  (* (lower-bound a) (lower-bound b))]]
-                                    (make-interval (apply min attempts)
-                                                   (apply max attempts))))))
+                            (negative? b) (mul-ns b a)
+                            :else (mul-ss a b))))
 
 (defn div-interval [a b]
   (if (spans-zero b)
