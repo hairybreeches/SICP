@@ -30,19 +30,22 @@
 (defn negative? [interval]
   (<= (upper-bound interval) 0))
 
+(defn mul-pn[positive-interval negative-interval]
+  (make-interval
+    (* (upper-bound positive-interval) (lower-bound negative-interval))
+    (* (lower-bound positive-interval) (upper-bound negative-interval))))
+
+
+
 (defn mul-interval [a b]
   (cond (positive? a) (cond (positive? b) (make-interval
                                            (* (lower-bound a) (lower-bound b))
                                            (* (upper-bound a) (upper-bound b)))
-                            (negative? b) (make-interval
-                                           (* (upper-bound a) (lower-bound b))
-                                           (* (lower-bound a) (upper-bound b)))
+                            (negative? b) (mul-pn a b)
                             :else         (make-interval
                                            (* (upper-bound a) (lower-bound b))
                                            (* (upper-bound a) (upper-bound b))))
-        (negative? a) (cond (positive? b) (make-interval
-                                           (* (lower-bound a) (upper-bound b))
-                                           (* (upper-bound a) (lower-bound b)))
+        (negative? a) (cond (positive? b) (mul-pn b a)
                             (negative? b) (make-interval
                                            (* (upper-bound a) (upper-bound b))
                                            (* (lower-bound a) (lower-bound b)))
