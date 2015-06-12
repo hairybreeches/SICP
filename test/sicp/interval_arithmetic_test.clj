@@ -103,6 +103,12 @@
    -24
    6))
 
+(deftest centre-width-test
+  (let [interval (make-centre-width 2 1)]
+    (is-interval-equal interval 1 3)
+    (is (= (centre interval) 2))
+    (is (= (width interval) 1))))
+
 
 
 

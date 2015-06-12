@@ -1,4 +1,7 @@
-(ns sicp.chapter-2.interval-arithmetic)
+(ns sicp.chapter-2.interval-arithmetic
+  (:use sicp.average))
+
+;data layer: interval model
 
 (defn make-interval [lower upper]
   (if
@@ -7,12 +10,23 @@
 
   [lower upper])
 
+(defn make-centre-width[centre width]
+  (make-interval (- centre width) (+ centre width)))
+
 (defn upper-bound [interval]
   (second interval))
 
 (defn lower-bound [interval]
   (first interval))
 
+(defn centre[interval]
+  (average (lower-bound interval) (upper-bound interval)))
+
+(defn width[interval]
+  (/ (- (upper-bound interval) (lower-bound interval)) 2))
+
+
+;things that act on intervals
 (defn spans-zero[interval]
   (<= (* (lower-bound interval)
         (upper-bound interval))
