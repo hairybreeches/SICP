@@ -1,4 +1,4 @@
-(ns sicp.test.pairs
+(ns sicp.test.chapter-2.pairs
   (:use sicp.chapter-2.pairs)
   (:use clojure.test))
 

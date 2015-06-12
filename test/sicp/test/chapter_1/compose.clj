@@ -1,4 +1,4 @@
-(ns sicp.test.compose
+(ns sicp.test.chapter-1.compose
   (:use sicp.chapter-1.ex-42)
   (:use clojure.test))
 

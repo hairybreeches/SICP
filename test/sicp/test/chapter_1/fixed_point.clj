@@ -1,4 +1,4 @@
-(ns sicp.test.fixed-point
+(ns sicp.test.chapter-1.fixed-point
   (:use sicp.chapter-1.ex-35)
   (:use sicp.test.accuracy)
   (:use clojure.test))

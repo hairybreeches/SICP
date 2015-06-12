@@ -1,4 +1,4 @@
-(ns sicp.test.find-roots
+(ns sicp.test.chapter-1.find-roots
   (:use sicp.chapter-1.ex-45)
   (:require sicp.test.accuracy)
   (:use clojure.test))

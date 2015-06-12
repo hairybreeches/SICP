@@ -1,4 +1,4 @@
-(ns sicp.test.cube-roots
+(ns sicp.test.chapter-1.cube-roots
   (:use sicp.chapter-1.ex-40)
   (:use clojure.test)
   (:use sicp.test.accuracy))

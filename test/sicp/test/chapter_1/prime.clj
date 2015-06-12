@@ -1,4 +1,4 @@
-(ns sicp.test.prime
+(ns sicp.test.chapter-1.prime
   (:use clojure.test)
   (:use sicp.chapter-1.ex-21)
   (:use sicp.chapter-1.ex-23))

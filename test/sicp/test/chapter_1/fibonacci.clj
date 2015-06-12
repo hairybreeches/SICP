@@ -1,4 +1,4 @@
-(ns sicp.test.fibonacci
+(ns sicp.test.chapter-1.fibonacci
   (:use clojure.test)
   (:use sicp.chapter-1.ex-19))
 

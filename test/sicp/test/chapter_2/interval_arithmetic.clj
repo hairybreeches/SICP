@@ -1,4 +1,4 @@
-(ns sicp.test.interval-arithmetic
+(ns sicp.test.chapter-2.interval-arithmetic
   (:use sicp.chapter-2.interval-arithmetic)
   (:use clojure.test)
   (:use sicp.test.accuracy))

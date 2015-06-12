@@ -1,4 +1,4 @@
-(ns sicp.test.numerical-integration
+(ns sicp.test.chapter-1.numerical-integration
   (:use clojure.test)
   (:use sicp.chapter-1.ex-29)
   (:use sicp.test.accuracy))
