@@ -21,3 +21,9 @@
 (deftest count-change-book-example
   (is (= 292 (count-change 100 us-coins))))
 
+(deftest same-parity-odd
+  (is (= '(1 3 5 7) (same-parity 1 2 3 4 5 6 7))))
+
+(deftest same-parity-even
+  (is (= '(2 4 6) (same-parity 2 3 4 5 6 7))))
+
