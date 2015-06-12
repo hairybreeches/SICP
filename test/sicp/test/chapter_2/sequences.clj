@@ -18,3 +18,6 @@
 (deftest reverse-several-element-sequence
   (is (= '(6 5 4 3 2 1) (reverse-impl '(1 2 3 4 5 6)))))
 
+(deftest count-change-book-example
+  (is (= 292 (count-change 100 us-coins))))
+
