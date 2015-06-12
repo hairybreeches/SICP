@@ -1,4 +1,4 @@
-(ns sicp.filtered-accumulate-tests
+(ns sicp.test.filtered-accumulate
   (:use clojure.test)
   (:use sicp.chapter-1.ex-32))
 

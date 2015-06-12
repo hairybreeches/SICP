@@ -1,4 +1,4 @@
-(ns sicp.carmichael-test
+(ns sicp.test.carmichael
   (:use clojure.test)
   (:use sicp.chapter-1.ex-27))
 

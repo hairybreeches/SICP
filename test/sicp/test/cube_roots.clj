@@ -1,7 +1,7 @@
-(ns sicp.test-cube-roots
+(ns sicp.test.cube-roots
   (:use sicp.chapter-1.ex-40)
   (:use clojure.test)
-  (:use sicp.test-accuracy))
+  (:use sicp.test.accuracy))
 
 (deftest integer-root
   (is-roughly=

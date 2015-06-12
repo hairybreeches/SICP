@@ -1,4 +1,4 @@
-(ns sicp.test-double
+(ns sicp.test.double
   (:use sicp.chapter-1.ex-41)
   (:use clojure.test))
 

@@ -1,4 +1,4 @@
-(ns sicp.plane-geometry-test
+(ns sicp.test.plane-geometry
   (:use sicp.chapter-2.plane-geometry)
   (:use clojure.test))
 

@@ -1,5 +1,5 @@
-(ns sicp.continued-fraction-tests
-  (:use sicp.test-accuracy)
+(ns sicp.test.continued-fractions
+  (:use sicp.test.accuracy)
   (:use clojure.math.numeric-tower)
   (:use clojure.test)
   (:use sicp.chapter-1.ex-37))

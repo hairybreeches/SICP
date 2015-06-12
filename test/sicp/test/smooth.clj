@@ -1,4 +1,4 @@
-(ns sicp.test-smooth
+(ns sicp.test.smooth
   (:use sicp.chapter-1.ex-42)
   (:use clojure.test))
 

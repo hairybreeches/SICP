@@ -1,10 +1,10 @@
-(ns sicp.test-find-roots
+(ns sicp.test.find-roots
   (:use sicp.chapter-1.ex-45)
-  (:require sicp.test-accuracy)
+  (:require sicp.test.accuracy)
   (:use clojure.test))
 
 (defn is-roughly=[a b]
-  (sicp.test-accuracy/is-roughly= a b 0.01))
+  (sicp.test.accuracy/is-roughly= a b 0.01))
 
 
 (deftest can-find-square-roots

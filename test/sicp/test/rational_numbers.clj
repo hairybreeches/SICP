@@ -1,4 +1,4 @@
-(ns sicp.rational-numbers-test
+(ns sicp.test.rational-numbers
   (:use clojure.test)
   (:use sicp.chapter-2.rational-numbers))
 
