@@ -105,9 +105,19 @@
 
 (deftest centre-width-test
   (let [interval (make-centre-width 2 1)]
-    (is-interval-equal interval 1 3)
+    (is (= (lower-bound interval) 1))
+    (is (= (upper-bound interval) 3))
     (is (= (centre interval) 2))
-    (is (= (width interval) 1))))
+    (is (= (width interval) 1))
+    (is (= (percent-tolerance interval) 50))))
+
+(deftest centre-percent-test
+  (let [interval (make-centre-percent 4 25)]
+    (is (= (lower-bound interval) 3))
+    (is (= (upper-bound interval) 5))
+    (is (= (centre interval) 4))
+    (is (= (width interval) 1))
+    (is (= (percent-tolerance interval) 25))))
 
 
 

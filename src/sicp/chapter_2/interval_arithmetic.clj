@@ -25,6 +25,12 @@
 (defn width[interval]
   (/ (- (upper-bound interval) (lower-bound interval)) 2))
 
+(defn make-centre-percent[centre percent-tolerance]
+  (make-centre-width centre (* percent-tolerance (/ centre 100))))
+
+(defn percent-tolerance[interval]
+  (* (/ (width interval) (centre interval)) 100))
+
 
 ;things that act on intervals
 (defn spans-zero[interval]
