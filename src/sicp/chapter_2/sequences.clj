@@ -27,13 +27,17 @@
         :else (+ (count-change amount (except-first-denomination coin-values))
                  (count-change (- amount (first-denomination coin-values)) coin-values))))
 
-(defn same-parity-recursive[indicator values]
-  (cond (empty? values) '()
-        (= (rem (first values) 2) indicator)
-        (cons (first values) (same-parity-recursive indicator (rest values)))
-        :else (same-parity-recursive indicator (rest values))))
-
 (defn same-parity [indicator & values]
-  (same-parity-recursive (rem indicator 2) (cons indicator values)))
+  (let [remainder (rem indicator 2)]
+    (reverse
+     (loop [values (cons indicator values)
+            result '()]
+
+      (cond (empty? values) result
+        (= (rem (first values) 2) remainder)
+          (recur
+            (rest values)
+            (cons (first values)  result))
+        :else (recur (rest values) result))))))
 
 
