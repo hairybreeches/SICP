@@ -30,14 +30,16 @@
 (defn same-parity [indicator & values]
   (let [remainder (rem indicator 2)]
     (reverse
-     (loop [values (cons indicator values)
+       (loop [values (cons indicator values)
             result '()]
+         (cond
+            (empty? values) result
 
-      (cond (empty? values) result
-        (= (rem (first values) 2) remainder)
-          (recur
-            (rest values)
-            (cons (first values)  result))
+            (= (rem (first values) 2) remainder)
+              (recur
+                (rest values)
+                (cons (first values)  result))
+
         :else (recur (rest values) result))))))
 
 
