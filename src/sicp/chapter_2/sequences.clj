@@ -112,6 +112,13 @@
            (balanced? (branch-structure (left-branch mobile)))
            (balanced? (branch-structure (right-branch mobile))))))
 
+(defn square-tree-primitive[tree]
+  (cond (not (coll? tree)) (square tree)
+        (empty? tree) tree
+        :else (cons (square-tree-primitive (first tree)) (square-tree-primitive (rest tree)))))
+
+(defn square-tree-map[tree]
+  (map #(if (not (coll? %)) (square %) (square-tree-map %)) tree))
 
 
 

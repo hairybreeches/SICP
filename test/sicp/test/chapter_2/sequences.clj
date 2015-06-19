@@ -75,6 +75,15 @@
 (deftest balanced-mobile-lower-branch-fails
   (is (not (balanced? (make-mobile (make-branch 4 (make-mobile (make-branch 4 3) (make-branch 3 6))) (make-branch 6 6))))))
 
+(defn square-tree-test[square-tree]
+  (is (= (square-tree '(1 (2 (3 4) 5) (6 7))) '(1 (4 (9 16) 25) (36 49)))))
+
+(deftest square-tree-primitive-test
+  (square-tree-test square-tree-primitive))
+
+(deftest square-tree-map-test
+  (square-tree-test square-tree-map))
+
 
 
 
