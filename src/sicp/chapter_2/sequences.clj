@@ -70,6 +70,8 @@
           (empty? things) []
           :else (concat (fringe (first things)) (fringe (rest things)))))
 
+;only the selectors and costructors need to change if we change the representation of mobiles
+;(weight? would need to be changed if we stopped representing weight structures as a simple integer.
 (defn make-mobile [left right]
   (list left right))
 
