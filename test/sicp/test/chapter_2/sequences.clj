@@ -47,3 +47,9 @@
 
 (deftest test-count-leaves-empty
   (is (= 0 (count-leaves '()))))
+
+(deftest pick-seven-part-one
+  (is (= 7 (first (rest (first (rest (rest '(1 3 (5 7) 9)))))))))
+
+(deftest pick-seven-part-two
+  (is (= 7 (first (rest (first (rest (first (rest (first (rest (first (rest (first (rest '(1 (2 (3 (4 (5 (6 7)))))))))))))))))))))
