@@ -65,6 +65,11 @@
           (empty? things) things
           :else (concat (deep-reverse (rest things)) [(deep-reverse (first things))])))
 
+(defn fringe[things]
+    (cond (not (coll? things)) [things]
+          (empty? things) []
+          :else (concat (fringe (first things)) (fringe (rest things)))))
+
 
 
 
