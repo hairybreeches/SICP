@@ -70,6 +70,36 @@
           (empty? things) []
           :else (concat (fringe (first things)) (fringe (rest things)))))
 
+(defn make-mobile [left right]
+  (list left right))
+
+(defn make-branch [length structure]
+  (list length structure))
+
+(defn left-branch[mobile]
+  (first mobile))
+
+(defn right-branch[mobile]
+  (second mobile))
+
+(defn branch-length[branch]
+  (first branch))
+
+(defn branch-structure[branch]
+  (second branch))
+
+(defn weight? [structure]
+  (number? structure))
+
+(defn total-weight[mobile]
+  (if (weight? mobile)
+      mobile
+      (+ (total-weight (branch-structure (left-branch mobile)))
+         (total-weight (branch-structure (right-branch mobile))))))
+
+
+
+
 
 
 

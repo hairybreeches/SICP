@@ -62,3 +62,6 @@
 
 (deftest pick-seven-part-two
   (is (= 7 (first (rest (first (rest (first (rest (first (rest (first (rest (first (rest '(1 (2 (3 (4 (5 (6 7)))))))))))))))))))))
+
+(deftest can-calculate-total-weight-of-mobile
+  (is (= (total-weight (make-mobile (make-branch 4 (make-mobile (make-branch 2 5) (make-branch 3 4))) (make-branch 3 4))) 13)))
