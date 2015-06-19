@@ -36,3 +36,6 @@
 (deftest test-square-list-map
   (test-square-list square-list-map))
 
+(deftest test-for-each
+  (is (= (with-out-str (for-each prn '(1 2 :a "woo!"))) "1\r\n2\r\n:a\r\n\"woo!\"\r\n")))
+

@@ -53,4 +53,12 @@
 (defn square-list-map[items]
   (map square items))
 
+(defn for-each[function items]
+  (loop [items items]
+    (if (empty? items)
+      true
+      (do
+        (function (first items))
+        (recur (rest items))))))
+
 
