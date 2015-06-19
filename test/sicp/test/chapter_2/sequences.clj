@@ -65,3 +65,20 @@
 
 (deftest can-calculate-total-weight-of-mobile
   (is (= (total-weight (make-mobile (make-branch 4 (make-mobile (make-branch 2 5) (make-branch 3 4))) (make-branch 3 4))) 13)))
+
+(deftest balanced-mobile-true-case
+  (is (balanced? (make-mobile (make-branch 4 (make-mobile (make-branch 4 3) (make-branch 2 6))) (make-branch 6 6)))))
+
+(deftest balanced-mobile-top-branch-fails
+  (is (not (balanced? (make-mobile (make-branch 3 (make-mobile (make-branch 4 3) (make-branch 2 6))) (make-branch 6 6))))))
+
+(deftest balanced-mobile-lower-branch-fails
+  (is (not (balanced? (make-mobile (make-branch 4 (make-mobile (make-branch 4 3) (make-branch 3 6))) (make-branch 6 6))))))
+
+
+
+
+
+
+
+

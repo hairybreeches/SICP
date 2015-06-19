@@ -97,6 +97,20 @@
       (+ (total-weight (branch-structure (left-branch mobile)))
          (total-weight (branch-structure (right-branch mobile))))))
 
+(defn torque[branch]
+  (* (branch-length branch) (total-weight (branch-structure branch))))
+
+(defn simply-balanced? [mobile]
+  (= (torque (left-branch mobile)) (torque (right-branch mobile))))
+
+
+(defn balanced?[mobile]
+  (if (weight? mobile) true
+      (and (simply-balanced? mobile)
+           (balanced? (branch-structure (left-branch mobile)))
+           (balanced? (branch-structure (right-branch mobile))))))
+
+
 
 
 
