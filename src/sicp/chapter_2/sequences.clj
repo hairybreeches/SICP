@@ -1,4 +1,5 @@
-(ns sicp.chapter-2.sequences)
+(ns sicp.chapter-2.sequences
+  (:use sicp.chapter-2.pairs))
 
 (defn last-pair[things]
   (loop [things things]
@@ -73,22 +74,22 @@
 ;only the selectors and costructors need to change if we change the representation of mobiles
 ;(weight? would need to be changed if we stopped representing weight structures as a simple integer.
 (defn make-mobile [left right]
-  (list left right))
+  (func-cons left right))
 
 (defn make-branch [length structure]
-  (list length structure))
+  (func-cons length structure))
 
 (defn left-branch[mobile]
-  (first mobile))
+  (func-car mobile))
 
 (defn right-branch[mobile]
-  (second mobile))
+  (func-cdr mobile))
 
 (defn branch-length[branch]
-  (first branch))
+  (func-car branch))
 
 (defn branch-structure[branch]
-  (second branch))
+  (func-cdr branch))
 
 (defn weight? [structure]
   (number? structure))
