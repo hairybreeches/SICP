@@ -103,7 +103,6 @@
 (defn simply-balanced? [mobile]
   (= (torque (left-branch mobile)) (torque (right-branch mobile))))
 
-
 (defn balanced?[mobile]
   (if (weight? mobile) true
       (and (simply-balanced? mobile)
