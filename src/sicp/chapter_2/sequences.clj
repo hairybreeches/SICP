@@ -123,11 +123,8 @@
 (defn square-tree-map[tree]
   (tree-map square tree))
 
-
-
-
-
-
-
-
-
+(defn subsets[elements]
+  (if (empty? elements) '(())
+      (let [current (first elements)
+            subsets-without-current (subsets (rest elements))]
+        (concat subsets-without-current (map #(cons current %) subsets-without-current)))))
