@@ -42,4 +42,15 @@
 
         :else (recur (rest values) result))))))
 
+(defn square[x]
+  (*' x x))
+
+(defn square-list-primitives[items]
+  (if (empty? items)
+    '()
+    (cons (square (first items)) (square-list-primitives (rest items)))))
+
+(defn square-list-map[items]
+  (map square items))
+
 

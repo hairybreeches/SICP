@@ -27,3 +27,12 @@
 (deftest same-parity-even
   (is (= '(2 4 6) (same-parity 2 3 4 5 6 7))))
 
+(defn test-square-list[function]
+  (is (= '(1 4 9 16) (function '(1 2 3 4)))))
+
+(deftest test-square-list-primitives
+  (test-square-list square-list-primitives))
+
+(deftest test-square-list-map
+  (test-square-list square-list-map))
+
