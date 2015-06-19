@@ -117,8 +117,11 @@
         (empty? tree) tree
         :else (cons (square-tree-primitive (first tree)) (square-tree-primitive (rest tree)))))
 
+(defn tree-map[function tree]
+  (map #(if (not (coll? %)) (function %) (tree-map function %)) tree))
+
 (defn square-tree-map[tree]
-  (map #(if (not (coll? %)) (square %) (square-tree-map %)) tree))
+  (tree-map square tree))
 
 
 
