@@ -10,13 +10,19 @@
   (is (= 6 (last-pair '(1 2 3 4 5 6)))))
 
 (deftest reverse-empty-sequence
-  (is (empty? (reverse-impl '()))))
+  (is (empty? (deep-reverse '()))))
 
 (deftest reverse-single-element-sequence
-  (is (= '(:zi) (reverse-impl '(:zi)))))
+  (is (= '(:zi) (deep-reverse '(:zi)))))
+
+(deftest reverse-nil
+  (is (= nil (deep-reverse nil))))
+
+(deftest test-deep-reverse
+  (is (= '(((23 (22) (21 20 19)) (18 17 16) 15 14 13) 12 (11 10 9 (8 7 6)) (5 4 3) (2 1) ) (deep-reverse '((1 2) (3 4 5) ((6 7 8) 9 10 11) 12 (13 14 15 (16 17 18) ((19 20 21) (22) 23)))))))
 
 (deftest reverse-several-element-sequence
-  (is (= '(6 5 4 3 2 1) (reverse-impl '(1 2 3 4 5 6)))))
+  (is (= '(6 5 4 3 2 1) (deep-reverse '(1 2 3 4 5 6)))))
 
 (deftest count-change-book-example
   (is (= 292 (count-change 100 us-coins))))

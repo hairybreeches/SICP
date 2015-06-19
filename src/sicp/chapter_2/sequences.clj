@@ -7,13 +7,6 @@
         (first things)
         (recur cdr)))))
 
-(defn reverse-impl[things]
-  (loop [so-far '()
-         things things]
-    (if (empty? things)
-        so-far
-        (recur (cons (first things) so-far) (rest things)))))
-
 (def us-coins '(50 25 10 5 1))
 (def uk-coins '(100 50 20 10 5 2 1 0.5))
 
@@ -66,6 +59,12 @@
         (empty? x) 0
         :else (+ (count-leaves (first x))
                  (count-leaves (rest x)))))
+
+(defn deep-reverse[things]
+    (cond (not (coll? things)) things
+          (empty? things) things
+          :else (concat (deep-reverse (rest things)) [(deep-reverse (first things))])))
+
 
 
 
