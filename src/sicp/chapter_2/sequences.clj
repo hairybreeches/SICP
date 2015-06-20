@@ -123,7 +123,7 @@
             subsets-without-current (subsets (rest elements))]
         (concat subsets-without-current (map #(cons current %) subsets-without-current)))))
 
-;note that this is basically foldl, which Clojure doesn't have
+;note that this is basically foldr, which Clojure doesn't have
 ;since it's hard to implement lazily
 (defn accumulate[op initial items]
   (if (empty? items) initial
