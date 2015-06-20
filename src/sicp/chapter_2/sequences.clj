@@ -156,6 +156,14 @@
 (defn matrix-*-vector[m v]
   (map #(dot-product % v) m))
 
+(defn transpose[m]
+  (accumulate-n cons '() m))
+
+(defn matrix-*[m n]
+  (let [cols (transpose n)]
+    (map #(matrix-*-vector cols %) m)))
+
+
 
 
 

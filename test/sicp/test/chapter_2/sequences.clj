@@ -108,6 +108,12 @@
 (deftest test-matrix-*-vector
   (is (= (matrix-*-vector '((1 2 3) (4 5 6) (7 8 9)) '(10 11 12)) '(68 167 266))))
 
+(deftest test-transpose
+  (is (= (transpose '((1 2 3) (4 5 6) (7 8 9))) '((1 4 7) (2 5 8) (3 6 9)))))
+
+(deftest test-matrix-*
+  (is (= (matrix-* '((1 2) (3 4)) '((5 6) (7 8))) '((19 22) (43 50)))))
+
 
 
 
