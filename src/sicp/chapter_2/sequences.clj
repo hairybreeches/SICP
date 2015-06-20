@@ -145,6 +145,12 @@
 (defn count-leaves[tree]
   (accumulate + 0 (map #(if (seq? %) (count-leaves %) 1) tree)))
 
+(defn accumulate-n [op init seqs]
+  (if (empty? (first seqs)) '()
+      (cons (accumulate op init (map first seqs))
+            (accumulate-n op init (map rest seqs)))))
+
+
 
 
 
