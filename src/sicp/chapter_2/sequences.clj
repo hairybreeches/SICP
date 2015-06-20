@@ -145,6 +145,10 @@
   (accumulate (fn [current so-far] (inc so-far)) 0 items))
 
 
+(defn horner-eval[x coefficients]
+  (accumulate (fn [this-coefficient higher-terms] (+ this-coefficient (* higher-terms x))) 0 coefficients))
+
+
 
 
 

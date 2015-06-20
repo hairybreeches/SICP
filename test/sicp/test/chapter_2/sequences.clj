@@ -96,6 +96,9 @@
 (deftest map-impl-test
   (is (= (map-impl square '(1 2 3)) '(1 4 9))))
 
+(deftest evaluate-polynomial
+  (is (= (horner-eval 2 '(3 0 4 2)) 35)))
+
 
 
 
