@@ -127,6 +127,14 @@
   (if (empty? items) initial
       (op (first items) (fold-right op initial (rest items)))))
 
+;note that this is equivalent to Clojure's map
+(defn fold-left[op initial items]
+  (loop [result initial
+         items items]
+    (if (empty? items) result
+      (recur (op result (first items))
+             (rest items)))))
+
 (defn map-impl [proc items]
   (fold-right (fn [current so-far] (cons (proc current) so-far)) '() items))
 
