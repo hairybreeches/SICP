@@ -153,6 +153,9 @@
 (defn dot-product[v w]
   (accumulate + 0 (map * v w)))
 
+(defn matrix-*-vector[m v]
+  (map #(dot-product % v) m))
+
 
 
 

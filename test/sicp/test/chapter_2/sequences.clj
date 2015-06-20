@@ -105,6 +105,9 @@
 (deftest test-dot-product
   (is (= (dot-product '(1 2 3) '(4 5 6)) 32)))
 
+(deftest test-matrix-*-vector
+  (is (= (matrix-*-vector '((1 2 3) (4 5 6) (7 8 9)) '(10 11 12)) '(68 167 266))))
+
 
 
 
