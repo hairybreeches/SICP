@@ -120,6 +120,14 @@
   (is (= (fold-right list '() '(1 2 3)) '(1 (2 (3 ())))))
   (is (= (fold-left list '() '(1 2 3)) '(((() 1) 2) 3))))
 
+(deftest test-reverse-foldl
+  (is (= (reverse-foldl '(1 2 3 4)) '(4 3 2 1))))
+
+(deftest test-reverse-foldr
+  (is (= (reverse-foldr '(1 2 3 4)) '(4 3 2 1))))
+
+
+
 
 
 
