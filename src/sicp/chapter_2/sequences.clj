@@ -169,7 +169,7 @@
     (map #(matrix-*-vector cols %) m)))
 
 (defn reverse-foldr[items]
-  (fold-right (fn[current so-far] (concat so-far [current])) '() items))
+  (fold-right (fn[current so-far] (conj so-far current)) [] items))
 
 (defn reverse-foldl[items]
   (fold-left (fn[so-far current] (cons current so-far)) '() items))
