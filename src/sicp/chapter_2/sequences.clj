@@ -55,12 +55,6 @@
         (function (first items))
         (recur (rest items))))))
 
-(defn count-leaves[x]
-  (cond (not (or (coll? x) (nil? x))) 1
-        (empty? x) 0
-        :else (+ (count-leaves (first x))
-                 (count-leaves (rest x)))))
-
 (defn deep-reverse[things]
     (cond (not (coll? things)) things
           (empty? things) things
@@ -147,6 +141,9 @@
 
 (defn horner-eval[x coefficients]
   (accumulate (fn [this-coefficient higher-terms] (+ this-coefficient (* higher-terms x))) 0 coefficients))
+
+(defn count-leaves[tree]
+  (accumulate + 0 (map #(if (seq? %) (count-leaves %) 1) tree)))
 
 
 
