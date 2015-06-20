@@ -128,3 +128,28 @@
       (let [current (first elements)
             subsets-without-current (subsets (rest elements))]
         (concat subsets-without-current (map #(cons current %) subsets-without-current)))))
+
+
+(defn map-impl [proc items]
+  (reduce (fn [so-far current] (concat so-far [(proc current)])) '() items))
+
+;note that since the arguments for the operation in map are different
+;between the sicp 'accumulate' and the clojure 'reduce'
+;this requires a lambda to switch arguments to cons
+(defn append [seq1 seq2]
+  (reduce (fn [so-far current] (cons current so-far)) seq2 (reverse seq1)))
+
+(defn length [items]
+  (reduce (fn [so-far current] (inc so-far)) 0 items))
+
+
+
+
+
+
+
+
+
+
+
+

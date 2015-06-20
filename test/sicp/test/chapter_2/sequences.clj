@@ -87,6 +87,15 @@
 (deftest subsets-test
   (is (= (subsets '(1 2 3)) '(() (3) (2) (2 3) (1) (1 3) (1 2) (1 2 3)))))
 
+(deftest length-test
+  (is (= (length '(1 2 3)) 3)))
+
+(deftest append-test
+  (is (= (append '(1 2 3) '(4 5 6)) '(1 2 3 4 5 6))))
+
+(deftest map-impl-test
+  (is (= (map-impl square '(1 2 3)) '(1 4 9))))
+
 
 
 
