@@ -102,6 +102,9 @@
 (deftest test-accumulate-n
   (is (= (accumulate-n + 0 '((1 2 3) (4 5 6) (7 8 9) (10 11 12))) '(22 26 30))))
 
+(deftest test-dot-product
+  (is (= (dot-product '(1 2 3) '(4 5 6)) 32)))
+
 
 
 

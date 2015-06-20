@@ -150,6 +150,9 @@
       (cons (accumulate op init (map first seqs))
             (accumulate-n op init (map rest seqs)))))
 
+(defn dot-product[v w]
+  (accumulate + 0 (map * v w)))
+
 
 
 
