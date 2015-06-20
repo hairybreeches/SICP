@@ -123,41 +123,38 @@
             subsets-without-current (subsets (rest elements))]
         (concat subsets-without-current (map #(cons current %) subsets-without-current)))))
 
-;note that this is basically foldr, which Clojure doesn't have
-;since it's hard to implement lazily
-(defn accumulate[op initial items]
+(defn fold-right[op initial items]
   (if (empty? items) initial
-      (op (first items) (accumulate op initial (rest items)))))
+      (op (first items) (fold-right op initial (rest items)))))
 
 (defn map-impl [proc items]
-  (accumulate (fn [current so-far] (cons (proc current) so-far)) '() items))
+  (fold-right (fn [current so-far] (cons (proc current) so-far)) '() items))
 
 (defn append [seq1 seq2]
-  (accumulate cons seq2 seq1))
+  (fold-right cons seq2 seq1))
 
 (defn length [items]
-  (accumulate (fn [current so-far] (inc so-far)) 0 items))
-
+  (fold-right (fn [current so-far] (inc so-far)) 0 items))
 
 (defn horner-eval[x coefficients]
-  (accumulate (fn [this-coefficient higher-terms] (+ this-coefficient (* higher-terms x))) 0 coefficients))
+  (fold-right (fn [this-coefficient higher-terms] (+ this-coefficient (* higher-terms x))) 0 coefficients))
 
 (defn count-leaves[tree]
-  (accumulate + 0 (map #(if (seq? %) (count-leaves %) 1) tree)))
+  (fold-right + 0 (map #(if (seq? %) (count-leaves %) 1) tree)))
 
-(defn accumulate-n [op init seqs]
+(defn fold-right-n [op init seqs]
   (if (empty? (first seqs)) '()
-      (cons (accumulate op init (map first seqs))
-            (accumulate-n op init (map rest seqs)))))
+      (cons (fold-right op init (map first seqs))
+            (fold-right-n op init (map rest seqs)))))
 
 (defn dot-product[v w]
-  (accumulate + 0 (map * v w)))
+  (fold-right + 0 (map * v w)))
 
 (defn matrix-*-vector[m v]
   (map #(dot-product % v) m))
 
 (defn transpose[m]
-  (accumulate-n cons '() m))
+  (fold-right-n cons '() m))
 
 (defn matrix-*[m n]
   (let [cols (transpose n)]
