@@ -129,18 +129,20 @@
             subsets-without-current (subsets (rest elements))]
         (concat subsets-without-current (map #(cons current %) subsets-without-current)))))
 
+;note that this is basically foldl, which Clojure doesn't have
+;since it's hard to implement lazily
+(defn accumulate[op initial items]
+  (if (empty? items) initial
+      (op (first items) (accumulate op initial (rest items)))))
 
 (defn map-impl [proc items]
-  (reduce (fn [so-far current] (concat so-far [(proc current)])) '() items))
+  (accumulate (fn [current so-far] (cons (proc current) so-far)) '() items))
 
-;note that since the arguments for the operation in map are different
-;between the sicp 'accumulate' and the clojure 'reduce'
-;this requires a lambda to switch arguments to cons
 (defn append [seq1 seq2]
-  (reduce (fn [so-far current] (cons current so-far)) seq2 (reverse seq1)))
+  (accumulate cons seq2 seq1))
 
 (defn length [items]
-  (reduce (fn [so-far current] (inc so-far)) 0 items))
+  (accumulate (fn [current so-far] (inc so-far)) 0 items))
 
 
 
