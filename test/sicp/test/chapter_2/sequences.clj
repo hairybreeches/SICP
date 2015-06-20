@@ -114,6 +114,7 @@
 (deftest test-matrix-*
   (is (= (matrix-* '((1 2) (3 4)) '((5 6) (7 8))) '((19 22) (43 50)))))
 
+;find the rest of my answer to 2.38 here: http://community.schemewiki.org/?sicp-ex-2.38
 (deftest exercise-2-38
   (is (= (fold-right / 1 '(1 2 3)) 3/2))
   (is (= (fold-left / 1 '(1 2 3)) 1/6))
