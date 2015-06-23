@@ -1,5 +1,4 @@
 (ns sicp.chapter-1.ex-27
-  (:use sicp.chapter-1.ex-21)
   (:use sicp.chapter-1.primes))
 
 (defn carmichael? [n]

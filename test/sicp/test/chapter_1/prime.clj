@@ -1,6 +1,5 @@
 (ns sicp.test.chapter-1.prime
   (:use clojure.test)
-  (:use sicp.chapter-1.ex-21)
   (:use sicp.chapter-1.primes))
 
 (defn prime-success [prime-predicate?]

@@ -1,6 +1,6 @@
 (ns sicp.chapter-1.ex-32
   (:use clojure.math.numeric-tower)
-  (:use sicp.chapter-1.ex-21))
+  (:use sicp.chapter-1.primes))
 
 (defn filtered-accumulate [predicate combiner null-value term start iterator finish]
   (loop [start start
