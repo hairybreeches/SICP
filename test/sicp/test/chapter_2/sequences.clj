@@ -127,6 +127,12 @@
 (deftest test-reverse-foldr
   (is (= (reverse-foldr '(1 2 3 4)) '(4 3 2 1))))
 
+(deftest test-unique-pairs
+  (is (= (unique-pairs 4) '((2 1) (3 1) (3 2) (4 1) (4 2) (4 3)))))
+
+(deftest test-prime-sum-pairs
+  (is (= (prime-sum-pairs 6) '((2 1 3) (3 2 5) (4 1 5) (4 3 7) (5 2 7) (6 1 7) (6 5 11)))))
+
 
 
 

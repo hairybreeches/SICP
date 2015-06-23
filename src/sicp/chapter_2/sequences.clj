@@ -1,5 +1,6 @@
 (ns sicp.chapter-2.sequences
-  (:use sicp.chapter-2.pairs))
+  (:use sicp.chapter-2.pairs)
+  (:use sicp.chapter-1.primes))
 
 (defn last-pair[things]
   (loop [things things]
@@ -173,6 +174,27 @@
 
 (defn reverse-foldl[items]
   (fold-left (fn[so-far current] (cons current so-far)) '() items))
+
+(defn add-pair[pair]
+  (apply + pair))
+
+(defn prime-sum?[pair]
+  (prime? (add-pair pair)))
+
+(defn make-pair-sum[pair]
+  (list (first pair) (second pair) (add-pair pair)))
+
+(defn unique-pairs[n]
+  (mapcat
+    (fn[i] (map (fn[j] (list i j))
+              (range 1 i)))
+          (range 1 (inc n))))
+
+(defn prime-sum-pairs[n]
+  (map make-pair-sum
+       (filter prime-sum?
+               (unique-pairs n))))
+
 
 
 
