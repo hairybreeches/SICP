@@ -200,12 +200,13 @@
     (and (< third-summand (second pair)) (> third-summand 0))))
 
 
-(defn ordered-triples[max-value sum]
-  (map
-    #(list (first %) (second %) (- sum (add-pair %)))
-    (filter
-      #(makes-sum-triple % sum)
-      (unique-pairs max-value))))
+(defn ordered-triples[value-limit sum]
+  (let [max-value (min (- sum 3) value-limit)]
+    (map
+      #(list (first %) (second %) (- sum (add-pair %)))
+      (filter
+        #(makes-sum-triple % sum)
+        (unique-pairs max-value)))))
 
 
 
