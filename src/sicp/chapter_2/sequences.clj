@@ -1,6 +1,7 @@
 (ns sicp.chapter-2.sequences
   (:use sicp.chapter-2.pairs)
-  (:use sicp.chapter-1.primes))
+  (:use sicp.chapter-1.primes)
+  (:use clojure.math.numeric-tower))
 
 (defn last-pair[things]
   (loop [things things]
@@ -207,6 +208,58 @@
       (filter
         #(makes-sum-triple % sum)
         (unique-pairs max-value)))))
+
+(defn make-square[column row]
+  (list column row))
+
+(defn get-column[square]
+  (first square))
+
+(defn get-row[square]
+  (second square))
+
+(defn attackable-by-row?[checkee checkers]
+  (some #(= % (get-row checkee)) (map get-row checkers)))
+
+(defn attackable-by-column?[checkee checkers]
+  (some #(= % (get-column checkee)) (map get-column checkers)))
+
+(defn on-same-diagonal?[queen1 queen2]
+  (let [row-difference (- (get-row queen1) (get-row queen2))
+        col-difference (- (get-column queen1) (get-column queen2))]
+    (= (abs row-difference) (abs col-difference))))
+
+(defn attackable-by-diagonal?[checkee checkers]
+  (some #(on-same-diagonal? checkee %) checkers))
+
+(defn in-check?[checkee checkers]
+  (or (attackable-by-row? checkee checkers)
+      (attackable-by-column? checkee checkers)
+      (attackable-by-diagonal? checkee checkers)))
+
+;I've changed the signature of this method from the book definition
+;since this seems to be more in line with the next three functions
+;encapsulating how we store our board positions
+(defn newest-queen-safe?[positions]
+  (not (in-check? (first positions) (rest positions))))
+
+(defn adjoin-position[row column others]
+  (cons (make-square column row) others))
+
+(def empty-board '())
+
+(defn queens[board-size]
+  (defn queen-cols[k]
+    (if (= k 0)
+      (list empty-board)
+      (filter
+         (fn[positions] (newest-queen-safe? positions))
+         (mapcat (fn[rest-of-queens]
+                 (map (fn[new-row]
+                        (adjoin-position new-row k rest-of-queens))
+                      (range 1 (inc board-size))))
+               (queen-cols (dec k))))))
+  (queen-cols board-size))
 
 
 

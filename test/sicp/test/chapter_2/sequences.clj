@@ -148,6 +148,8 @@
 (deftest ordered-triples-max-value-restricts
   (is (= (ordered-triples 6 11) '((5 4 2) (6 3 2) (6 4 1)))))
 
+(deftest four-queens-test
+  (is (= (queens 4) '(((4 3) (3 1) (2 4) (1 2)) ((4 2) (3 4) (2 1) (1 3))))))
 
 
 
