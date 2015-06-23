@@ -195,6 +195,17 @@
        (filter prime-sum?
                (unique-pairs n))))
 
+(defn makes-sum-triple[pair sum]
+  (let [third-summand (- sum (add-pair pair))]
+    (and (< third-summand (second pair)) (> third-summand 0))))
+
+
+(defn ordered-triples[max-value sum]
+  (map
+    #(list (first %) (second %) (- sum (add-pair %)))
+    (filter
+      #(makes-sum-triple % sum)
+      (unique-pairs max-value))))
 
 
 

@@ -133,6 +133,21 @@
 (deftest test-prime-sum-pairs
   (is (= (prime-sum-pairs 6) '((2 1 3) (3 2 5) (4 1 5) (4 3 7) (5 2 7) (6 1 7) (6 5 11)))))
 
+(deftest ordered-triples-max-value-greater-than-sum
+  (is (= (ordered-triples 9 6) '((3 2 1)))))
+
+(deftest ordered-triples-sum-0-mod-3
+  (is (= (ordered-triples 5 9) '((4 3 2) (5 3 1)))))
+
+(deftest ordered-triples-sum-1-mod-3
+  (is (= (ordered-triples 7 10) '((5 3 2) (5 4 1) (6 3 1) (7 2 1)))))
+
+(deftest ordered-triples-sum-2-mod-3
+  (is (= (ordered-triples 9 11) '((5 4 2) (6 3 2) (6 4 1) (7 3 1) (8 2 1)))))
+
+(deftest ordered-triples-max-value-restricts
+  (is (= (ordered-triples 6 11) '((5 4 2) (6 3 2) (6 4 1)))))
+
 
 
 
