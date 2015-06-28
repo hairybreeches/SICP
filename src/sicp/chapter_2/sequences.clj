@@ -129,7 +129,7 @@
   (if (empty? items) initial
       (op (first items) (fold-right op initial (rest items)))))
 
-;note that this is equivalent to Clojure's map
+;note that this is equivalent to Clojure's reduce
 (defn fold-left[op initial items]
   (loop [result initial
          items items]
