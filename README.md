@@ -1,14 +1,13 @@
 # sicp
 
-A Clojure library designed to ... well, that part is up to you.
+Exercises from the MIT Structure and Interpretation of Computer Programs course.
 
 ## Usage
 
-FIXME
+http://thecodelesscode.com/case/122
 
 ## License
 
-Copyright © 2015 FIXME
+Copyright © 2015 Dave Conlin
 
-Distributed under the Eclipse Public License either version 1.0 or (at
-your option) any later version.
+Distributed under the Eclipse Public License 1.0
