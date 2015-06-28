@@ -1,4 +1,5 @@
-(ns sicp.chapter-2.henderson-escher)
+(ns sicp.chapter-2.henderson-escher
+  (:use sicp.chapter-2.pairs))
 
 ;vectors
 (defn make-vect[x-cor y-cor]
@@ -25,14 +26,29 @@
 
 ;frames
 
+(defn make-frame[origin edge1 edge2]
+  (list origin edge1 edge2))
+
 (defn origin-frame[frame]
-  )
+  (first frame))
 
 (defn edge1-frame[frame]
-  )
+  (first (rest frame)))
 
 (defn edge2-frame[frame]
-  )
+  (first (rest (rest frame))))
+
+(defn make-frame-pair[origin edge1 edge2]
+  (func-cons origin (func-cons edge1 edge2)))
+
+(defn origin-frame-pair[frame]
+  (func-car frame))
+
+(defn edge1-frame-pair[frame]
+  (func-car (func-cdr frame)))
+
+(defn edge2-frame-pair[frame]
+  (func-cdr (func-cdr frame)))
 
 (defn frame-coord-map[frame]
   (fn [v]
