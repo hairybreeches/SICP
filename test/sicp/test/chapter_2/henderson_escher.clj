@@ -29,3 +29,40 @@
 
 (deftest pairs-frame-model-correct
   (test-frame-model make-frame-pair origin-frame-pair edge1-frame-pair edge2-frame-pair))
+
+(def whole-canvas
+  (make-frame bottom-left bottom-right top-left))
+
+(def bottom-left-quarter
+  (make-frame (make-vect 0.0 0.0) (make-vect 0.5 0.0) (make-vect 0.0 0.5)))
+
+(def top-left-quarter
+  (make-frame (make-vect 0.0 0.5) (make-vect 0.5 0.0) (make-vect 0.0 0.5)))
+
+(def funky-paralellogram
+  (make-frame (make-vect 0.5 0.5) (make-vect 0.25 0.0) (make-vect 0.25 0.5)))
+
+;when the frame is the whole canvas, the mapper should be the identity
+(deftest test-vector-mapping-with-whole-canvas
+  (let [mapper (frame-coord-map whole-canvas)]
+    (is (= (mapper (make-vect 0.0 0.0)) (make-vect 0.0 0.0)))
+    (is (= (mapper (make-vect 0.5 0.0)) (make-vect 0.5 0.0)))
+    (is (= (mapper (make-vect 0.0 1.0)) (make-vect 0.0 1.0)))
+    (is (= (mapper (make-vect 1.0 0.8)) (make-vect 1.0 0.8)))))
+
+;when the frame is the bottom left quadrant, the mapper should multiply everything by half.
+(deftest test-vector-mapping-with-bottom-left-quarter
+  (let [mapper (frame-coord-map bottom-left-quarter)]
+    (is (= (mapper (make-vect 0.0 0.0)) (make-vect 0.0 0.0)))
+    (is (= (mapper (make-vect 0.5 0.0)) (make-vect 0.25 0.0)))
+    (is (= (mapper (make-vect 0.0 1.0)) (make-vect 0.0 0.5)))
+    (is (= (mapper (make-vect 1.0 0.8)) (make-vect 0.5 0.4)))))
+
+
+;when the frame is the top left quadrant, the mapper should multiply everything by half and then add (0, 0.5)
+(deftest test-vector-mapping-with-top-left-quarter
+  (let [mapper (frame-coord-map top-left-quarter)]
+    (is (= (mapper (make-vect 0.0 0.0)) (make-vect 0.0 0.5)))
+    (is (= (mapper (make-vect 0.5 0.0)) (make-vect 0.25 0.5)))
+    (is (= (mapper (make-vect 0.0 1.0)) (make-vect 0.0 1.0)))
+    (is (= (mapper (make-vect 1.0 0.8)) (make-vect 0.5 0.9)))))
