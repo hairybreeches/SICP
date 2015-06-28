@@ -1,5 +1,9 @@
 (ns sicp.chapter-2.henderson-escher
-  (:use sicp.chapter-2.pairs))
+  (:use sicp.chapter-2.pairs)
+  (:use sicp.chapter-2.sequences))
+
+(defn string-concat[& args]
+  (clojure.string/join args))
 
 ;vectors
 (defn make-vect[x-cor y-cor]
@@ -23,6 +27,18 @@
   (add-vect
      v
      (scale-vect -1 w)))
+
+(defn make-segment[v w]
+  (list v w))
+
+(defn start-segment[segment]
+  (first segment))
+
+(defn end-segment[segment]
+  (second segment))
+
+(defn to-string-vect[v]
+  (string-concat "[" (xcor-vect v) ", " (ycor-vect v) "]"))
 
 ;frames
 
@@ -61,6 +77,32 @@
 
 
 ;painters
+(defn draw-line[start-vector end-vector]
+  (prn (string-concat "Drawing line between " (to-string-vect start-vector) " and " (to-string-vect end-vector))))
+
+(defn segments->painter[segment-list]
+  (fn[frame]
+    (let [mapper (frame-coord-map frame)]
+      (for-each
+        (fn [segment]
+          (draw-line
+           (mapper (start-segment segment))
+           (mapper (end-segment segment))))
+        segment-list))))
+
+(def bottom-left (make-vect 0.0 0.0))
+(def top-left (make-vect 0.0 1.0))
+(def bottom-right (make-vect 1.0 0.0))
+(def top-right (make-vect 1.0 1.0))
+
+(def frame-outline-painter
+  (segments->painter
+   (list (make-segment bottom-left top-left)
+         (make-segment top-left top-right)
+         (make-segment top-right bottom-right)
+         (make-segment bottom-right bottom-left))))
+
+;transformations
 (defn flip-horiz[painter]
   )
 
