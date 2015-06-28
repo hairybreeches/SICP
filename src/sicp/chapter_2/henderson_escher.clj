@@ -77,8 +77,11 @@
 
 
 ;painters
+(defn line-to-string[start-vector end-vector]
+  (string-concat "Drawing line between " (to-string-vect start-vector) " and " (to-string-vect end-vector)))
+
 (defn draw-line[start-vector end-vector]
-  (prn (string-concat "Drawing line between " (to-string-vect start-vector) " and " (to-string-vect end-vector))))
+  (prn (line-to-string start-vector end-vector)))
 
 (defn segments->painter[segment-list]
   (fn[frame]
