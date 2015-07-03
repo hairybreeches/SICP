@@ -144,6 +144,12 @@
                            (sub-vect (m corner1) new-origin)
                            (sub-vect (m corner2) new-origin))))))
 
+(defn rotate-180[painter]
+  (transform-painter painter
+                     top-right
+                     top-left
+                     bottom-right))
+
 
 (defn flip-horiz[painter]
   (transform-painter painter
@@ -174,8 +180,6 @@
 (defn below[bottom top]
   )
 
-(defn rotate180[painter]
-  )
 
 (defn split[outer-transform inner-transform]
  (fn split-return[painter n]
@@ -208,7 +212,7 @@
       (below bottom top))))
 
 (defn square-limit[painter n]
-  (let [combine4 (square-of-four flip-horiz identity rotate180 flip-vert)]
+  (let [combine4 (square-of-four flip-horiz identity rotate-180 flip-vert)]
        (combine4 (corner-split painter n))))
 
 
