@@ -190,18 +190,7 @@
       (paint-right frame))))
 
 (defn below[bottom top]
-  (let [split-point (make-vect 0.0 0.5)
-        paint-bottom (transform-painter bottom
-                                      bottom-left
-                                      bottom-right
-                                      split-point)
-        paint-top (transform-painter top
-                                     split-point
-                                     (make-vect 1.0 0.5)
-                                     top-left)]
-    (fn [frame]
-      (paint-bottom frame)
-      (paint-top frame))))
+    (rotate-270 (beside (rotate-90 top) (rotate-90 bottom))))
 
 
 (defn split[outer-transform inner-transform]
