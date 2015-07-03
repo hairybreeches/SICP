@@ -109,3 +109,6 @@
 (deftest test-rotate-180
   (is (= (first (get-lines-drawn (rotate-180 backslash-painter) whole-canvas)) (line-to-string [0.0 1.0] [1.0 0.0]))))
 
+(deftest test-rotate-270
+  (is (= (first (get-lines-drawn (rotate-270 backslash-painter) whole-canvas)) (line-to-string [0.0 0.0] [1.0 1.0]))))
+
