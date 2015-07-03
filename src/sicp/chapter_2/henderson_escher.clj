@@ -169,7 +169,7 @@
 
 (defn flip-horiz[painter]
   (transform-painter painter
-                     top-left
+                     bottom-right
                      bottom-left
                      top-right))
 
