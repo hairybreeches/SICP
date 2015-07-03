@@ -138,3 +138,17 @@
              (line-to-string [0.75 0.5] [1.0 0.75])
              (line-to-string [0.75 0.75] [1.0 1.0])
              }))
+
+(deftest test-corner-split
+  (is-set= (get-lines-drawn (corner-split forwardslash-painter 1) whole-canvas)
+           #{
+             ;one big one taking up the bottom left quarter
+             (line-to-string [0.0 0.0] [0.5 0.5])
+             ;four smaller (stretched) ones around the edges
+             (line-to-string [0.0 0.5] [0.25 1.0])
+             (line-to-string [0.25 0.5] [0.5 1.0])
+             (line-to-string [0.5 0.0] [1.0 0.25])
+             (line-to-string [0.5 0.25] [1.0 0.5])
+             ;and another big one in the top right corner
+             (line-to-string [0.5 0.5] [1.0 1.0])
+             }))
