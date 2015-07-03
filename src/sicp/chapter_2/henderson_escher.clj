@@ -232,7 +232,7 @@
       (below bottom top))))
 
 (defn square-limit[painter n]
-  (let [combine4 (square-of-four flip-vert rotate-180 identity flip-horiz)]
+  (let [combine4 (square-of-four flip-horiz identity rotate-180 flip-vert)]
        (combine4 (corner-split painter n))))
 
 
