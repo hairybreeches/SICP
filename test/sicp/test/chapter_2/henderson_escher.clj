@@ -123,3 +123,18 @@
 
 (deftest test-below-forwardslash-backslash
   (is-set= (get-lines-drawn (below forwardslash-painter backslash-painter) whole-canvas) #{(line-to-string [0.0 0.0] [1.0 0.5]) (line-to-string [1.0 0.5] [0.0 1.0])}))
+
+(deftest test-right-split
+  (is-set= (get-lines-drawn (right-split forwardslash-painter 2) whole-canvas)
+           #{
+             ;one big one taking up half the canvas
+             (line-to-string [0.0 0.0] [0.5 1])
+             ;two smaller ones taking up a quarter of the canvas between them
+             (line-to-string [0.5 0.0] [0.75 0.5])
+             (line-to-string [0.5 0.5] [0.75 1.0])
+             ;four smallest ones also taking up a quarter of the canvas
+             (line-to-string [0.75 0.0] [1.0 0.25])
+             (line-to-string [0.75 0.25] [1.0 0.5])
+             (line-to-string [0.75 0.5] [1.0 0.75])
+             (line-to-string [0.75 0.75] [1.0 1.0])
+             }))
