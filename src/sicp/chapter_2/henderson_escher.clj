@@ -116,6 +116,10 @@
    (list (make-segment bottom-left top-right)
          (make-segment top-left bottom-right))))
 
+(def backslash-painter
+  (segments->painter
+   (list (make-segment bottom-right top-left))))
+
 (def diamond-painter
   (let [top (average-vect top-left top-right)
         left (average-vect bottom-left top-left)
@@ -142,13 +146,16 @@
 
 
 (defn flip-horiz[painter]
-  )
+  (transform-painter painter
+                     top-left
+                     bottom-left
+                     top-right))
 
 (defn flip-vert[painter]
   (transform-painter painter
-                     (make-vect 0.0 1.0)
-                     (make-vect 1.0 1.0)
-                     (make-vect 0.0 0.0)))
+                     top-left
+                     top-right
+                     bottom-left))
 
 (defn beside[left right]
   (let [split-point (make-vect 0.5 0.0)
