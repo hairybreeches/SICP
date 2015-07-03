@@ -153,7 +153,7 @@
 (defn rotate-90[painter]
   (transform-painter painter
                      bottom-right
-                     top-left
+                     top-right
                      bottom-left))
 
 (defn rotate-270[painter]
