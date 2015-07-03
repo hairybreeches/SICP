@@ -120,6 +120,10 @@
   (segments->painter
    (list (make-segment bottom-right top-left))))
 
+(def forwardslash-painter
+  (segments->painter
+   (list (make-segment bottom-left top-right))))
+
 (def diamond-painter
   (let [top (average-vect top-left top-right)
         left (average-vect bottom-left top-left)
