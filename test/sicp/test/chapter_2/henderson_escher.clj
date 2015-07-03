@@ -116,5 +116,5 @@
   (is (= (first (get-lines-drawn (rotate-270 backslash-painter) whole-canvas)) (line-to-string [0.0 0.0] [1.0 1.0]))))
 
 (deftest test-below
-  (is-set= (apply hash-set (get-lines-drawn (below backslash-painter cross-painter) whole-canvas)) #{(line-to-string [1.0 0.0] [0.0 0.5]) (line-to-string [0.0 0.5] [1.0 1.0]) (line-to-string [0.0 1.0] [1.0 0.5])}))
+  (is-set= (get-lines-drawn (below backslash-painter cross-painter) whole-canvas) #{(line-to-string [1.0 0.0] [0.0 0.5]) (line-to-string [0.0 0.5] [1.0 1.0]) (line-to-string [0.0 1.0] [1.0 0.5])}))
 
