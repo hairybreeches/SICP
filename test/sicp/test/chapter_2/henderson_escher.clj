@@ -1,5 +1,5 @@
 (ns sicp.test.chapter-2.henderson-escher
-  (:use sicp.test.accuracy)
+  (:use sicp.test.assertions)
   (:use sicp.chapter-2.henderson-escher)
   (:use clojure.test)
   (:use clojure.set))

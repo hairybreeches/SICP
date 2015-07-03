@@ -1,7 +1,7 @@
 (ns sicp.test.chapter-1.numerical-integration
   (:use clojure.test)
   (:use sicp.chapter-1.ex-29)
-  (:use sicp.test.accuracy))
+  (:use sicp.test.assertions))
 
 (deftest numerical-integration
   (is-roughly= (integral cube 0 1 0.01) 0.25 4)

@@ -1,7 +1,7 @@
 (ns sicp.test.chapter-2.interval-arithmetic
   (:use sicp.chapter-2.interval-arithmetic)
   (:use clojure.test)
-  (:use sicp.test.accuracy))
+  (:use sicp.test.assertions))
 
 (defn is-interval-equal [interval lower upper]
   (is (= (lower-bound interval) lower))

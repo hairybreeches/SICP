@@ -1,7 +1,7 @@
 (ns sicp.test.chapter-1.factorial
   (:use clojure.test)
   (:use sicp.chapter-1.ex-31)
-  (:use sicp.test.accuracy))
+  (:use sicp.test.assertions))
 
 
 (deftest test-factorial

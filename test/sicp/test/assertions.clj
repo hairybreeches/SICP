@@ -1,4 +1,4 @@
-(ns sicp.test.accuracy
+(ns sicp.test.assertions
   (:use clojure.test)
   (:use clojure.set)
   (:use clojure.math.numeric-tower))

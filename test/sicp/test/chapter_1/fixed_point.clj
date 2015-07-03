@@ -1,6 +1,6 @@
 (ns sicp.test.chapter-1.fixed-point
   (:use sicp.chapter-1.ex-35)
-  (:use sicp.test.accuracy)
+  (:use sicp.test.assertions)
   (:use clojure.test))
 
 (deftest calculate-phi
