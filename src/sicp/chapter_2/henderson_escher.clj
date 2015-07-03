@@ -128,6 +128,9 @@
          (make-segment bottom left)
          (make-segment left top)))))
 
+(def wave-painter
+  (fn [frame] (throw (Exception. "You are surely taking the piss."))))
+
 ;transformations
 (defn flip-horiz[painter]
   )
