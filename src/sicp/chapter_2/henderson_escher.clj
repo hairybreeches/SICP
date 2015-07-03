@@ -217,9 +217,13 @@
           right (right-split painter (dec n))
           top-left (beside up up)
           bottom-right (below right right)
-          corner (corner-split painter (dec n))]
-      (beside (below painter top-left)
-              (below bottom-right corner)))))
+          corner (corner-split painter (dec n))
+          original-corner-split (beside (below painter top-left)
+              (below bottom-right corner))]
+      (fn [frame]
+        (corner-split frame)
+        (forwardslash-painter frame))
+      )))
 
 (defn square-of-four[tl tr bl br]
   (fn [painter]
