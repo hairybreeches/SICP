@@ -88,8 +88,13 @@
         "")
     #"\r\n")))
 
-(deftest test-frame-outline-drawer
+(deftest test-frame-outline-painter
   (is-set= (get-lines-drawn frame-outline-painter whole-canvas) (expected-box-strings [0.0 0.0] [0.0 1.0] [1.0 1.0] [1.0 0.0]))
   (is-set= (get-lines-drawn frame-outline-painter top-left-quarter) (expected-box-strings [0.0 0.5] [0.0 1.0] [0.5 1.0] [0.5 0.5]))
   (is-set= (get-lines-drawn frame-outline-painter funky-paralellogram) (expected-box-strings [0.5 0.5] [0.75 1.0] [1.0 1.0] [0.75 0.5])))
+
+(deftest test-cross-painter
+  (is-set= (get-lines-drawn cross-painter whole-canvas) #{(line-to-string [0.0 0.0] [1.0 1.0]) (line-to-string [0.0 1.0] [1.0 0.0])})
+  (is-set= (get-lines-drawn cross-painter top-left-quarter) #{(line-to-string [0.0 0.5] [0.5 1.0]) (line-to-string [0.0 1.0] [0.5 0.5])})
+  (is-set= (get-lines-drawn cross-painter funky-paralellogram) #{(line-to-string [0.5 0.5] [1.0 1.0]) (line-to-string [0.75 1.0] [0.75 0.5])}))
 

@@ -105,6 +105,11 @@
          (make-segment top-right bottom-right)
          (make-segment bottom-right bottom-left))))
 
+(def cross-painter
+  (segments->painter
+   (list (make-segment bottom-left top-right)
+         (make-segment top-left bottom-right))))
+
 ;transformations
 (defn flip-horiz[painter]
   )
