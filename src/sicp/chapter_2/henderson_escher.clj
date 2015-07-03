@@ -137,7 +137,7 @@
          (make-segment left top)))))
 
 (def wave-painter
-  (fn [frame] (throw (Exception. "You are surely taking the piss."))))
+  diamond-painter)
 
 ;transformations
 (defn transform-painter[painter origin corner1 corner2]
