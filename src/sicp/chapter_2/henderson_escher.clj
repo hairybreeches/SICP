@@ -132,14 +132,37 @@
   (fn [frame] (throw (Exception. "You are surely taking the piss."))))
 
 ;transformations
+(defn transform-painter[painter origin corner1 corner2]
+  (fn [frame]
+    (let [m (frame-coord-map frame)
+          new-origin (m origin)]
+      (painter (make-frame new-origin
+                           (sub-vect (m corner1) new-origin)
+                           (sub-vect (m corner2) new-origin))))))
+
+
 (defn flip-horiz[painter]
   )
 
 (defn flip-vert[painter]
-  )
+  (transform-painter painter
+                     (make-vect 0.0 1.0)
+                     (make-vect 1.0 1.0)
+                     (make-vect 0.0 0.0)))
 
 (defn beside[left right]
-  )
+  (let [split-point (make-vect 0.5 0.0)
+        paint-left (transform-painter left
+                                      bottom-left
+                                      split-point
+                                      top-left)
+        paint-right (transform-painter right
+                                       split-point
+                                       bottom-right
+                                       (make-vect 0.5 1.0))]
+    (fn [frame]
+      (paint-left frame)
+      (paint-right frame))))
 
 (defn below[bottom top]
   )
