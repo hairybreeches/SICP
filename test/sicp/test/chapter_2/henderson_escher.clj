@@ -155,3 +155,11 @@
              ;and another big one in the top right corner
              (line-to-string [0.5 0.5] [1.0 1.0])
              }))
+
+(deftest test-square-limit-simplest
+  (is-set= (get-lines-drawn (square-limit forwardslash-painter 0) whole-canvas)
+           #{;four big pictures in the middle
+             (line-to-string [0.5 0.5] [1.0 1.0])
+             (line-to-string [0.5 0.5] [0.0 1.0])
+             (line-to-string [0.5 0.5] [1.0 0.0])
+             (line-to-string [0.5 0.5] [0.0 0.0])}))
