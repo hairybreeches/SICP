@@ -98,3 +98,8 @@
   (is-set= (get-lines-drawn cross-painter top-left-quarter) #{(line-to-string [0.0 0.5] [0.5 1.0]) (line-to-string [0.0 1.0] [0.5 0.5])})
   (is-set= (get-lines-drawn cross-painter funky-paralellogram) #{(line-to-string [0.5 0.5] [1.0 1.0]) (line-to-string [0.75 1.0] [0.75 0.5])}))
 
+(deftest test-diamond-painter
+  (is-set= (get-lines-drawn diamond-painter whole-canvas) (expected-box-strings [0.5 1.0] [1.0 0.5] [0.5 0.0] [0.0 0.5]))
+  (is-set= (get-lines-drawn diamond-painter top-left-quarter) (expected-box-strings [0.25 1.0] [0.5 0.75] [0.25 0.5] [0.0 0.75]))
+  (is-set= (get-lines-drawn diamond-painter funky-paralellogram) (expected-box-strings [0.625 0.75] [0.875 1.0] [0.875 0.75] [0.625 0.5])))
+

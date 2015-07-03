@@ -1,4 +1,5 @@
 (ns sicp.chapter-2.henderson-escher
+  (:use sicp.average)
   (:use sicp.chapter-2.pairs)
   (:use sicp.chapter-2.sequences))
 
@@ -39,6 +40,10 @@
 
 (defn to-string-vect[v]
   (string-concat "[" (xcor-vect v) ", " (ycor-vect v) "]"))
+
+(defn average-vect[& args]
+  (make-vect (apply average (map xcor-vect args))
+             (apply average (map ycor-vect args))))
 
 ;frames
 
@@ -98,6 +103,7 @@
 (def bottom-right (make-vect 1.0 0.0))
 (def top-right (make-vect 1.0 1.0))
 
+
 (def frame-outline-painter
   (segments->painter
    (list (make-segment bottom-left top-left)
@@ -109,6 +115,18 @@
   (segments->painter
    (list (make-segment bottom-left top-right)
          (make-segment top-left bottom-right))))
+
+(def diamond-painter
+  (let [top (average-vect top-left top-right)
+        left (average-vect bottom-left top-left)
+        bottom (average-vect bottom-left bottom-right)
+        right (average-vect bottom-right top-right)]
+
+  (segments->painter
+   (list (make-segment top right)
+         (make-segment right bottom)
+         (make-segment bottom left)
+         (make-segment left top)))))
 
 ;transformations
 (defn flip-horiz[painter]
