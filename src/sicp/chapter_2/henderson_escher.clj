@@ -144,7 +144,7 @@
 (defn below[bottom top]
   )
 
-(defn rotate180[bottom top]
+(defn rotate180[painter]
   )
 
 (defn split[outer-transform inner-transform]
