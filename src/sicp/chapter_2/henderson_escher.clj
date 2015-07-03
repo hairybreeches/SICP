@@ -150,6 +150,12 @@
                      top-left
                      bottom-right))
 
+(defn rotate-90[painter]
+  (transform-painter painter
+                     bottom-right
+                     top-left
+                     bottom-left))
+
 (defn rotate-270[painter]
   (transform-painter painter
                      top-left
