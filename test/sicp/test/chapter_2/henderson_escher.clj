@@ -1,6 +1,8 @@
 (ns sicp.test.chapter-2.henderson-escher
+  (:use sicp.test.accuracy)
   (:use sicp.chapter-2.henderson-escher)
-  (:use clojure.test))
+  (:use clojure.test)
+  (:use clojure.set))
 
 ;vectors
 
@@ -67,20 +69,27 @@
     (is (= (mapper (make-vect 0.0 1.0)) (make-vect 0.0 1.0)))
     (is (= (mapper (make-vect 1.0 0.8)) (make-vect 0.5 0.9)))))
 
-(defn expected-line-string[from to]
-  (string-concat "\"" (line-to-string from to) "\"\r\n"))
-
-(defn expected-box-string[bl tl tr br]
-  (clojure.string/join  [(expected-line-string bl tl)
-              (expected-line-string tl tr)
-              (expected-line-string tr br)
-              (expected-line-string br bl)]))
+(defn expected-box-strings[bl tl tr br]
+  (hash-set
+   (line-to-string bl tl)
+   (line-to-string tl tr)
+   (line-to-string tr br)
+   (line-to-string br bl)))
 
 (defn get-print-out[painter frame]
   (with-out-str (painter frame)))
 
+(defn get-lines-drawn[painter frame]
+  (apply hash-set
+    (clojure.string/split
+     (clojure.string/replace
+        (get-print-out painter frame)
+        #"\""
+        "")
+    #"\r\n")))
+
 (deftest test-frame-outline-drawer
-  (is (= (get-print-out frame-outline-painter whole-canvas) (expected-box-string [0.0 0.0] [0.0 1.0] [1.0 1.0] [1.0 0.0])))
-  (is (= (get-print-out frame-outline-painter top-left-quarter) (expected-box-string [0.0 0.5] [0.0 1.0] [0.5 1.0] [0.5 0.5])))
-  (is (= (get-print-out frame-outline-painter funky-paralellogram) (expected-box-string [0.5 0.5] [0.75 1.0] [1.0 1.0] [0.75 0.5]))))
+  (is-set= (get-lines-drawn frame-outline-painter whole-canvas) (expected-box-strings [0.0 0.0] [0.0 1.0] [1.0 1.0] [1.0 0.0]))
+  (is-set= (get-lines-drawn frame-outline-painter top-left-quarter) (expected-box-strings [0.0 0.5] [0.0 1.0] [0.5 1.0] [0.5 0.5]))
+  (is-set= (get-lines-drawn frame-outline-painter funky-paralellogram) (expected-box-strings [0.5 0.5] [0.75 1.0] [1.0 1.0] [0.75 0.5])))
 
