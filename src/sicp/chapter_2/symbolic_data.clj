@@ -25,7 +25,10 @@
   (nth e 2))
 
 (defn make-sum[e1 e2]
-  (list '+ e1 e2))
+  (cond (= e1 0) e2
+        (= e2 0) e1
+        (and (number? e1) (number? e2)) (+ e1 e2)
+        :else (list '+ e1 e2)))
 
 (defn product?[e]
   (and (seq? e) (= (first e) '*)))
