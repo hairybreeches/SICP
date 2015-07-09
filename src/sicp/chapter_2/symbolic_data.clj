@@ -9,3 +9,47 @@
           (not= (first a) (first b)) false
           :else (recur (rest a) (rest b)))))
 
+(defn variable?[e]
+  (symbol? e))
+
+(defn same-variable?[e1 e2]
+  (and (variable? e1) (variable? e2) (= e1 e2)))
+
+(defn sum?[e]
+  (and (seq? e) (= (first e) '+)))
+
+(defn addend[e]
+  (second e))
+
+(defn augend[e]
+  (nth e 2))
+
+(defn make-sum[e1 e2]
+  (list '+ e1 e2))
+
+(defn product?[e]
+  (and (seq? e) (= (first e) '*)))
+
+(defn multiplier[e]
+  (second e))
+
+(defn multiplicand[e]
+  (nth e 2))
+
+(defn make-product[e1 e2]
+  (list '* e1 e2))
+
+
+(defn deriv[exp var]
+  (cond (number? exp) 0
+        (variable? exp) (if (same-variable? exp var) 1 0)
+        (sum? exp) (make-sum (deriv (addend exp) var)
+                             (deriv (augend exp) var))
+        (product? exp) (make-sum
+                        (make-product (multiplier exp)
+                                      (deriv (multiplicand exp) var))
+                        (make-product (deriv (multiplier exp) var)
+                                      (multiplicand exp)))
+        :else (throw (Exception. (str "unknown expression type: " exp)))))
+
+
