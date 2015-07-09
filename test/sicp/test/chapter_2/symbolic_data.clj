@@ -22,9 +22,8 @@
   (is (= (deriv '(+ x 3) 'x) 1)))
 
 (deftest deriv-multi
-  (is (= (deriv '(* x y) 'x) '(+ (* x 0) (* 1 y)))))
+  (is (= (deriv '(* x y) 'x) 'y)))
 
 (deftest deriv-polynomial
-  (is (= (deriv '(* (* x y) (+ x 3)) 'x) '(+ (* (* x y) 1)
-                                             (* (+ (* x 0) (* 1 y))
-                                                (+ x 3))))))
+  (is (= (deriv '(* (* x y) (+ x 3)) 'x) '(+ (* x y)
+                                             (* y (+ x 3))))))
