@@ -25,7 +25,7 @@
   (nth e 2))
 
 (defn make-expression[operator first-argument second-argument]
-  '(operator first-argument second-argument))
+  (list operator first-argument second-argument))
 
 (defn exponentiation?[e]
   (and (seq? e) (= (operator e) '**)))
