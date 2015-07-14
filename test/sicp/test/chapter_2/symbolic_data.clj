@@ -24,6 +24,13 @@
 (deftest deriv-multi
   (is (= (deriv '(* x y) 'x) 'y)))
 
-(deftest deriv-polynomial
+(deftest deriv-product-and-sum
   (is (= (deriv '(* (* x y) (+ x 3)) 'x) '(+ (* x y)
                                              (* y (+ x 3))))))
+
+(deftest deriv-polynomial
+  (is (= (deriv '(+ (* (** x 3) y) (* 4 (** x 2))) 'x)
+         '(+ (* (* 3 (** x 2)) y) (* 4 (* 2 x))))))
+
+(deftest deriv-exponent-zero
+  (is (= (deriv (deriv '(+ (** y 3) (** x 2)) 'x) 'x) 2)))
