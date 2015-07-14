@@ -15,14 +15,23 @@
 (defn same-variable?[e1 e2]
   (and (variable? e1) (variable? e2) (= e1 e2)))
 
-(defn sum?[e]
-  (and (seq? e) (= (first e) '+)))
+(defn operator[e]
+  (first e))
 
-(defn addend[e]
+(defn first-argument[e]
   (second e))
 
-(defn augend[e]
+(defn second-argument[e]
   (nth e 2))
+
+(defn sum?[e]
+  (and (seq? e) (= (operator e) '+)))
+
+(defn addend[e]
+  (first-argument e))
+
+(defn augend[e]
+  (second-argument e))
 
 (defn make-sum[e1 e2]
   (cond (= e1 0) e2
@@ -31,13 +40,13 @@
         :else (list '+ e1 e2)))
 
 (defn product?[e]
-  (and (seq? e) (= (first e) '*)))
+  (and (seq? e) (= (operator e) '*)))
 
 (defn multiplier[e]
-  (second e))
+  (first-argument e))
 
 (defn multiplicand[e]
-  (nth e 2))
+  (second-argument e))
 
 (defn make-product[e1 e2]
   (cond (or (= e1 0) (= e2 0)) 0
