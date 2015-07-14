@@ -24,6 +24,15 @@
 (defn second-argument[e]
   (nth e 2))
 
+(defn exponentiation?[e]
+  (and (seq? e) (= (operator e) '**)))
+
+(defn base[e]
+  (first-argument e))
+
+(defn exponent[e]
+  (second-argument e))
+
 (defn sum?[e]
   (and (seq? e) (= (operator e) '+)))
 
