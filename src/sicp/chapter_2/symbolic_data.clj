@@ -36,6 +36,9 @@
 (defn exponent[e]
   (second-argument e))
 
+(defn make-exponentiation[base exponent]
+  (make-expression '** base exponent))
+
 (defn sum?[e]
   (and (seq? e) (= (operator e) '+)))
 
