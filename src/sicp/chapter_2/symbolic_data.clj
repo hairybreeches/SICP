@@ -8,13 +8,13 @@
           (empty? b) false
           (not= (first a) (first b)) false
           :else (recur (rest a) (rest b)))))
-
+;variables
 (defn variable?[e]
   (symbol? e))
 
 (defn same-variable?[e1 e2]
   (and (variable? e1) (variable? e2) (= e1 e2)))
-
+;shared
 (defn operator[e]
   (first e))
 
@@ -24,9 +24,14 @@
 (defn second-argument[e]
   (nth e 2))
 
+(defn rest-arguments[e]
+  (cond (= (count e) 3) (second-argument e)
+        :else (list (operator e) (rest (rest e)))))
+
 (defn make-expression[operator first-argument second-argument]
   (list operator first-argument second-argument))
 
+;exponentiation
 (defn exponentiation?[e]
   (and (seq? e) (= (operator e) '**)))
 
@@ -40,7 +45,7 @@
   (cond (= exponent 0) 1
         (= exponent 1) base
         :else (make-expression '** base exponent)))
-
+;sums
 (defn sum?[e]
   (and (seq? e) (= (operator e) '+)))
 
@@ -48,14 +53,14 @@
   (first-argument e))
 
 (defn augend[e]
-  (second-argument e))
+  (rest-arguments e))
 
 (defn make-sum[e1 e2]
   (cond (= e1 0) e2
         (= e2 0) e1
         (and (number? e1) (number? e2)) (+ e1 e2)
         :else (list '+ e1 e2)))
-
+;products
 (defn product?[e]
   (and (seq? e) (= (operator e) '*)))
 
@@ -63,7 +68,7 @@
   (first-argument e))
 
 (defn multiplicand[e]
-  (second-argument e))
+  (rest-arguments e))
 
 (defn make-product[e1 e2]
   (cond (or (= e1 0) (= e2 0)) 0
