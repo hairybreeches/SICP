@@ -55,11 +55,16 @@
 (defn augend[e]
   (rest-arguments e))
 
-(defn make-sum[e1 e2]
-  (cond (= e1 0) e2
-        (= e2 0) e1
-        (and (number? e1) (number? e2)) (+ e1 e2)
-        :else (list '+ e1 e2)))
+(defn make-sum[& args]
+  (let [number-split (group-by number? args)
+        sum-split (group-by sum? (number-split false))
+        non-sums (sum-split false)
+        sums (sum-split true)
+        numbers (filter #(!= % 0) (number-split true))]
+    (cond (> (count numbers) 1) (apply make-sum (apply + numbers) non-numbers)
+          (not (empty? sums)) (apply make-sum (apply concat
+          :else (apply list '+ (concat numbers non-numbers))))
+
 ;products
 (defn product?[e]
   (and (seq? e) (= (operator e) '*)))
