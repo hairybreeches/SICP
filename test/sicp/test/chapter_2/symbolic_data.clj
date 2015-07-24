@@ -37,6 +37,8 @@
 (deftest deriv-exponent-zero
   (is (= (deriv (deriv '(y * y * y + x * x) 'x) 'x) 2)))
 
+(deftest deriv-many-sum-simple
+  (is (= (deriv '(x + x + x) 'x) 3)))
 
-(deftest deriv-multi-sum
+(deftest deriv-many-sum-complex
   (is (= (deriv '(2 * x + y * x + z * x) 'x) '(y + z + 2))))
