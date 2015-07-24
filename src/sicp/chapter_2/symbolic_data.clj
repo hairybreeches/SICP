@@ -55,15 +55,24 @@
 (defn augend[e]
   (rest-arguments e))
 
+(defn get-sum-components[sums]
+  (mapcat #(list (addend %) (augend %)) sums))
+
 (defn make-sum[& args]
-  (let [number-split (group-by number? args)
-        sum-split (group-by sum? (number-split false))
+  (let [number-summands (count args)
+        number-split (group-by number? args)
+        numbers (number-split true)
+        non-numbers (number-split false)
+        sum-split (group-by sum? args)
         non-sums (sum-split false)
-        sums (sum-split true)
-        numbers (filter #(!= % 0) (number-split true))]
-    (cond (> (count numbers) 1) (apply make-sum (apply + numbers) non-numbers)
-          (not (empty? sums)) (apply make-sum (apply concat
-          :else (apply list '+ (concat numbers non-numbers))))
+        sums (sum-split true)]
+
+    (cond (= number-summands 0) 0
+          (= number-summands 1) (first args)
+          (> (count numbers) 1) (apply make-sum (apply + numbers) non-numbers)
+          (and (not (empty? numbers)) (= (first numbers) 0)) (apply make-sum non-numbers)
+          (not (empty? sums)) (apply make-sum (concat (get-sum-components sums) non-sums))
+          :else (apply list '+ args))))
 
 ;products
 (defn product?[e]
@@ -100,5 +109,4 @@
                                   (deriv (base exp) var))
 
         :else (throw (Exception. (str "unknown expression type: " exp)))))
-
 
