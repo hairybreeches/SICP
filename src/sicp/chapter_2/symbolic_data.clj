@@ -16,20 +16,23 @@
   (and (variable? e1) (variable? e2) (= e1 e2)))
 ;shared
 (defn operator[e]
-  (first e))
+  (second e))
 
 (defn first-argument[e]
-  (second e))
+  (first e))
 
 (defn second-argument[e]
   (nth e 2))
 
 (defn rest-arguments[e]
-  (cond (= (count e) 3) (second-argument e)
-        :else (list (operator e) (rest (rest e)))))
+  (cond (= (count e) 3) (first (rest (rest e)))
+        :else (rest (rest e))))
 
 (defn make-expression[operator first-argument second-argument]
-  (list operator first-argument second-argument))
+  (list first-argument operator second-argument))
+
+(defn make-multi-expression[operator args]
+  (interpose operator args))
 
 ;exponentiation
 (defn exponentiation?[e]
@@ -72,7 +75,7 @@
           (> (count numbers) 1) (apply make-sum (apply + numbers) non-numbers)
           (and (not (empty? numbers)) (= (first numbers) 0)) (apply make-sum non-numbers)
           (not (empty? sums)) (apply make-sum (concat (get-sum-components sums) non-sums))
-          :else (apply list '+ args))))
+          :else (make-multi-expression '+ args))))
 
 ;products
 (defn product?[e]
@@ -101,7 +104,7 @@
           (and (not (empty? numbers)) (= (first numbers) 0)) 0
           (and (not (empty? numbers)) (= (first numbers) 1)) (apply make-product non-numbers)
           (not (empty? products)) (apply make-product (concat (get-product-components products) non-products))
-          :else (apply list '* args))))
+          :else (make-multi-expression '* args))))
 
 
 (defn deriv[exp var]
