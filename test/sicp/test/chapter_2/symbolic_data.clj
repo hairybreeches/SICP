@@ -24,8 +24,6 @@
 (deftest deriv-multi
   (is (= (deriv '(x * y) 'x) 'y)))
 
-(deftest deriv-simple-power
-  (is (= (deriv '(4 * x * x) 'x) '(4 * (x + x)))))
 
 (deftest deriv-product-and-sum
   (is (= (deriv '(x * y * (x + 3)) 'x) '(x * y + y * (x + 3)))))
@@ -37,6 +35,27 @@
 (deftest deriv-polynomial-2
   (is (= (deriv '(x * x + 4 * x * x) 'x)
          '(x + x + 4 * (x + x)))))
+
+(deftest sum-test
+  (is (sum? '(x * x + 4 * x * x))))
+
+(deftest addend-test
+  (is (= (addend '(x * x + 4 * x * x)) '(x * x))))
+
+(deftest augend-test
+  (is (= (augend '(x * x + 4 * x * x)) '(4 * x * x))))
+
+(deftest deriv-square
+  (is (= (deriv '(x * x) 'x) '(x + x))))
+
+(deftest deriv-simple-power
+  (is (= (deriv '(4 * x * x) 'x) '(4 * (x + x)))))
+
+(deftest make-sum-test
+  (is (= (make-sum '(x + x) '(4 * (x + x))) '(x + x + 4 * (x + x)))))
+
+(deftest make-sum-test-simple
+  (is (= (make-sum '(x + x) '(4 * x)) '(x + x + 4 * x))))
 
 (deftest deriv-exponent-zero
   (is (= (deriv (deriv '(y * y * y + x * x) 'x) 'x) 2)))
