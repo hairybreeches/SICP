@@ -24,6 +24,9 @@
 (deftest deriv-multi
   (is (= (deriv '(x * y) 'x) 'y)))
 
+(deftest deriv-simple-power
+  (is (= (deriv '(4 * x * x) 'x) '(4 * (x + x)))))
+
 (deftest deriv-product-and-sum
   (is (= (deriv '(x * y * (x + 3)) 'x) '(x * y + y * (x + 3)))))
 
