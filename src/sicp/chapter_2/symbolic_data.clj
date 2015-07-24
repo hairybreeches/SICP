@@ -14,29 +14,33 @@
 
 (defn same-variable?[e1 e2]
   (and (variable? e1) (variable? e2) (= e1 e2)))
+
 ;shared
-(defn operator[e]
-  (second e))
+(defn first-argument[e operator]
+  (let [before (take-while #(not= % operator) e)]
+    (if (= (count before) 1)
+      (first before)
+      before)))
 
-(defn first-argument[e]
-  (first e))
+(defn rest-arguments[e operator]
+  (let [after (rest (drop-while #(not= % operator) e))]
+    (if (= (count after) 1)
+      (first after)
+      after)))
 
-(defn rest-arguments[e]
-  (cond (= (count e) 3) (first (rest (rest e)))
-        :else (rest (rest e))))
 
 (defn make-multi-expression[operator args]
   (interpose operator args))
 
 ;sums
 (defn sum?[e]
-  (and (seq? e) (= (operator e) '+)))
+  (and (seq? e) (some #(= % '+) e)))
 
 (defn addend[e]
-  (first-argument e))
+  (first-argument e '+))
 
 (defn augend[e]
-  (rest-arguments e))
+  (rest-arguments e '+))
 
 (defn get-sum-components[sums]
   (mapcat #(list (addend %) (augend %)) sums))
@@ -59,13 +63,13 @@
 
 ;products
 (defn product?[e]
-  (and (seq? e) (= (operator e) '*)))
+  (and (seq? e) (not-any? #(= % '+) e) (some #(= % '*) e)))
 
 (defn multiplier[e]
-  (first-argument e))
+  (first-argument e '*))
 
 (defn multiplicand[e]
-  (rest-arguments e))
+  (rest-arguments e '*))
 
 (defn get-product-components[sums]
   (mapcat #(list (multiplier %) (multiplicand %)) sums))
@@ -98,5 +102,5 @@
                         (make-product (deriv (multiplier exp) var)
                                       (multiplicand exp)))
 
-        :else (throw (Exception. (str "unknown expression type: " exp)))))
+        :else (throw (Exception. (str "unknown expression type: " (apply list exp))))))
 

@@ -25,16 +25,15 @@
   (is (= (deriv '(x * y) 'x) 'y)))
 
 (deftest deriv-product-and-sum
-  (is (= (deriv '((x * y) * (x + 3)) 'x) '((x * y) +
-                                             (y * (x + 3))))))
+  (is (= (deriv '(x * y * (x + 3)) 'x) '(x * y + y * (x + 3)))))
 
 (deftest deriv-polynomial
-  (is (= (deriv '((x * x * x * y) + (4 * x * x)) 'x)
-         '((x * ((x * y) + (x * y))) + (x * x * y) + (4 * (x + x))))))
+  (is (= (deriv '(x * x * x * y + 4 * x * x) 'x)
+         '(x * (x * y + x * y) + x * x * y + 4 * (x + x)))))
 
 (deftest deriv-exponent-zero
-  (is (= (deriv (deriv '((y * y * y) + (x * x)) 'x) 'x) 2)))
+  (is (= (deriv (deriv '(y * y * y + x * x) 'x) 'x) 2)))
 
 
 (deftest deriv-multi-sum
-  (is (= (deriv '((2 * x) + (y * x) + (z * x)) 'x) '(y + z + 2))))
+  (is (= (deriv '(2 * x + y * x + z * x) 'x) '(y + z + 2))))
