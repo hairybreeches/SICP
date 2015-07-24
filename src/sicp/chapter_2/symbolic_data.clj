@@ -84,12 +84,24 @@
 (defn multiplicand[e]
   (rest-arguments e))
 
-(defn make-product[e1 e2]
-  (cond (or (= e1 0) (= e2 0)) 0
-        (= e1 1) e2
-        (= e2 1) e1
-        (and (number? e1) (number? e2)) (* e1 e2)
-        :else (list '* e1 e2)))
+(defn get-product-components[sums]
+  (mapcat #(list (multiplier %) (multiplicand %)) sums))
+
+(defn make-product[& args]
+  (let [number-multiplicands (count args)
+        number-split (group-by number? args)
+        numbers (number-split true)
+        non-numbers (number-split false)
+        product-split (group-by product? args)
+        non-products (product-split false)
+        products (product-split true)]
+      (cond (= number-multiplicands 0) 1
+          (= number-multiplicands 1) (first args)
+          (> (count numbers) 1) (apply make-product (apply * numbers) non-numbers)
+          (and (not (empty? numbers)) (= (first numbers) 0)) 0
+          (and (not (empty? numbers)) (= (first numbers) 1)) (apply make-product non-numbers)
+          (not (empty? products)) (apply make-product (concat (get-product-components products) non-products))
+          :else (apply list '* args))))
 
 
 (defn deriv[exp var]

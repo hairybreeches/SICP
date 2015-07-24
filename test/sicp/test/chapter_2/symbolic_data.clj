@@ -30,7 +30,7 @@
 
 (deftest deriv-polynomial
   (is (= (deriv '(+ (* (** x 3) y) (* 4 (** x 2))) 'x)
-         '(+ (* (* 3 (** x 2)) y) (* 4 (* 2 x))))))
+         '(+ (* 3 (** x 2) y) (* 8 x)))))
 
 (deftest deriv-exponent-zero
   (is (= (deriv (deriv '(+ (** y 3) (** x 2)) 'x) 'x) 2)))
