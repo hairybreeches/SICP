@@ -59,7 +59,7 @@
           (> (count numbers) 1) (apply make-sum (apply + numbers) non-numbers)
           (and (not (empty? numbers)) (= (first numbers) 0)) (apply make-sum non-numbers)
           (not (empty? sums)) (apply make-sum (concat (get-sum-components sums) non-sums))
-          :else (make-multi-expression '+ args))))
+          :else (mapcat #(if (seq? %) % [%]) (make-multi-expression '+ args)))))
 
 ;products
 (defn product?[e]
