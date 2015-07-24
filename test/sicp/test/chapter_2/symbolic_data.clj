@@ -29,11 +29,11 @@
                                              (y * (x + 3))))))
 
 (deftest deriv-polynomial
-  (is (= (deriv '(((x ** 3) * y) + (4 * (x ** 2))) 'x)
-         '((3 * (x ** 2) * y) + (8 * x)))))
+  (is (= (deriv '((x * x * x * y) + (4 * x * x)) 'x)
+         '((x * ((x * y) + (x * y))) + (x * x * y) + (4 * (x + x))))))
 
 (deftest deriv-exponent-zero
-  (is (= (deriv (deriv '((y ** 3) + (x ** 2)) 'x) 'x) 2)))
+  (is (= (deriv (deriv '((y * y * y) + (x * x)) 'x) 'x) 2)))
 
 
 (deftest deriv-multi-sum
