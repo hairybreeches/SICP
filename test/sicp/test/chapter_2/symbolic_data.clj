@@ -34,6 +34,10 @@
   (is (= (deriv '(x * x * x * y + 4 * x * x) 'x)
          '(x * (x * y + x * y) + x * x * y + 4 * (x + x)))))
 
+(deftest deriv-polynomial-2
+  (is (= (deriv '(x * x + 4 * x * x) 'x)
+         '(x + x + 4 * (x + x)))))
+
 (deftest deriv-exponent-zero
   (is (= (deriv (deriv '(y * y * y + x * x) 'x) 'x) 2)))
 
