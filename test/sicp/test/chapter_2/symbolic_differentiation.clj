@@ -1,5 +1,5 @@
-(ns sicp.test.chapter-2.symbolic-data
-  (:use sicp.chapter-2.symbolic-data)
+(ns sicp.test.chapter-2.symbolic-differentiation
+  (:use sicp.chapter-2.symbolic-differentiation)
   (:use clojure.test))
 
 (deftest sequence-equal-empty

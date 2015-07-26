@@ -1,4 +1,4 @@
-(ns sicp.chapter-2.symbolic-data)
+(ns sicp.chapter-2.symbolic-differentiation)
 
 (defn sequence-equal[a b]
   (loop [a a
