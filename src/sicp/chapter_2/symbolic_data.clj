@@ -34,7 +34,7 @@
 
 ;sums
 (defn sum?[e]
-  (and (seq? e) (some #(= % '+) e)))
+  (not (not (and (seq? e) (some #(= % '+) e)))))
 
 (defn addend[e]
   (first-argument e '+))
@@ -63,7 +63,7 @@
 
 ;products
 (defn product?[e]
-  (and (seq? e) (not-any? #(= % '+) e) (some #(= % '*) e)))
+  (not (not (and (seq? e) (not-any? #(= % '+) e) (some #(= % '*) e)))))
 
 (defn multiplier[e]
   (first-argument e '*))
