@@ -18,6 +18,17 @@
         (ul-element-of-set? (first set1) set2) (cons (first set1) (ul-intersection-set (rest set1) set2))
         :else (ul-intersection-set (rest set1) set2)))
 
+(defn ul-union-set[set1 set2]
+  (loop [set1 set1
+         set2 set2]
+    (cond (empty? set1) set2
+          :else (recur (rest set1) (ul-adjoin-set (first set1) set2)))))
+
+
 (defn ul-make-set[& args]
   args)
+
+(defn ul-set=[set1 set2]
+  (= (sort set1) (sort set2)))
+
 
