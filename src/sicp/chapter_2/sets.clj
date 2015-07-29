@@ -40,7 +40,7 @@
           :else (recur x (rest a-set)))))
 
 ;note that this isn't really "half" the number of steps of the unordered version,
-;since the append just involves slamming the new element on the front. so the worst case is traversing the list twice.
+;since in the unordered version the append just involves slamming the new element on the front. so the worst case is traversing the list twice.
 ;it's still order n, but you need to parse the "before" elements three times (once on the stack, once for the reverse and once for the concat)
 ;the version on the solutions wiki (http://community.schemewiki.org/?sicp-ex-2.61) only goes through the "before" stack once
 ;since you avoid the reverse + concat by queuing the appends up as part of one "step".
