@@ -108,7 +108,6 @@
 (defn ul-repeat-set=[set1 set2]
   (= (sort (distinct set1)) (sort (distinct set2))))
 
-;sets as trees
 ;trees
 (defn entry [tree]
   (first tree))
@@ -154,6 +153,35 @@
 
 (defn list->tree[elements]
   (first (partial-tree elements (count elements))))
+
+;sets as trees
+(defn tree-element-of-set?[x a-set]
+  (cond (empty? a-set) false
+        (= x (entry a-set)) true
+        (< x (entry a-set)) (tree-element-of-set? x (left-branch a-set))
+        (> x (entry a-set)) (tree-element-of-set? x (right-branch a-set))))
+
+(defn tree-adjoin-set[x a-set]
+  (if (empty? a-set)
+      (make-tree x '() ())
+      (let [current (entry a-set)]
+        (cond
+          (= x current) a-set
+          (< x current) (make-tree current (tree-adjoin-set x (left-branch a-set)) (right-branch a-set))
+          (> x current) (make-tree current (left-branch a-set) (tree-adjoin-set x (right-branch a-set)))))))
+
+(defn tree-intersection-set[set1 set2]
+  )
+
+(defn tree-union-set[set1 set2]
+  )
+
+(defn tree-make-set[& args]
+  (list->tree (sort args)))
+
+(defn tree-set=[set1 set2]
+  (= (tree->list-2 set1) (tree->list-2 set2)))
+
 
 
 
