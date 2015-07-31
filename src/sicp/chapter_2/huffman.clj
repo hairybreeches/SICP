@@ -20,7 +20,7 @@
 
 (defn symbols[tree]
   (if (leaf? tree)
-      (symbol-leaf tree)
+      (list (symbol-leaf tree))
       (nth tree 2)))
 
 (defn weight[tree]
@@ -53,3 +53,26 @@
           (if (leaf? next-branch)
             (recur (rest bits) tree (cons (symbol-leaf next-branch) message))
             (recur (rest bits) next-branch message)))))))
+
+;encoding
+(defn branch-contains?[sym branch]
+  (some #(= sym %) (symbols branch)))
+
+(defn encode-symbol [sym tree]
+  (reverse
+    (loop [current-branch tree
+           result '()]
+      (if (not (branch-contains? sym current-branch))
+          (throw (Exception. "symbol not in branch!"))
+          (cond
+            (leaf? current-branch) result
+            (branch-contains? sym (left-branch current-branch)) (recur (left-branch current-branch) (cons 0 result))
+            :else (recur (right-branch current-branch) (cons 1 result)))))))
+
+(defn encode[message tree]
+  (if (empty? message)
+    '()
+    (concat
+      (encode-symbol (first message) tree)
+      (encode (rest message) tree))))
+
