@@ -182,6 +182,25 @@
 (defn tree-set=[set1 set2]
   (= (tree->list-2 set1) (tree->list-2 set2)))
 
+;lookup from numerical tree
+
+(defn make-kvp[a-key a-value]
+  (list a-key a-value))
+
+(defn get-key[kvp]
+  (first kvp))
+
+(defn get-value[kvp]
+  (second kvp))
+
+(defn lookup [a-key tree]
+  (if (empty? tree) (throw (Exception. "key not found"))
+        (let [current-key (get-key (entry tree))]
+          (cond
+            (= a-key current-key) (get-value (entry tree))
+            (< a-key current-key) (lookup a-key (left-branch tree))
+            (> a-key current-key) (lookup a-key (right-branch tree))))))
+
 
 
 

@@ -65,3 +65,36 @@
 (deftest list-to-tree
   (is (= '(5 (1 () (3 () ())) (9 (7 () ()) (11 () ()))) (list->tree '(1 3 5 7 9 11)))))
 
+(def numbers-to-names-tree `( ~(make-kvp 5 "five") ( ~(make-kvp 3 "three") ( ~(make-kvp 1 "one") () ()) ()) ( ~(make-kvp 9 "nine") ( ~(make-kvp 7 "seven") () ()) ( ~(make-kvp 11 "eleven") () ()))))
+
+(deftest lookup-test
+  (is (= (lookup 1 numbers-to-names-tree) "one"))
+  (is (= (lookup 3 numbers-to-names-tree) "three"))
+  (is (= (lookup 5 numbers-to-names-tree) "five"))
+  (is (= (lookup 7 numbers-to-names-tree) "seven"))
+  (is (= (lookup 9 numbers-to-names-tree) "nine"))
+  (is (= (lookup 11 numbers-to-names-tree) "eleven")))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
