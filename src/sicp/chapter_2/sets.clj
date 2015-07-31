@@ -171,10 +171,10 @@
           (> x current) (make-tree current (left-branch a-set) (tree-adjoin-set x (right-branch a-set)))))))
 
 (defn tree-intersection-set[set1 set2]
-  )
+  (list->tree (ol-intersection-set (tree->list-1 set1) (tree->list-1 set2))))
 
 (defn tree-union-set[set1 set2]
-  )
+  (list->tree (ol-union-set (tree->list-1 set1) (tree->list-1 set2))))
 
 (defn tree-make-set[& args]
   (list->tree (sort args)))
