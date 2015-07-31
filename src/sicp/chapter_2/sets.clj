@@ -107,3 +107,39 @@
 
 (defn ul-repeat-set=[set1 set2]
   (= (sort (distinct set1)) (sort (distinct set2))))
+
+;sets as trees
+;trees
+(defn entry [tree]
+  (first tree))
+
+(defn left-branch [tree]
+  (second tree))
+
+(defn right-branch [tree]
+  (nth tree 2))
+
+(defn make-tree [entry left right]
+  (list entry left right))
+
+(defn tree->list-1 [tree]
+  (if (empty? tree)
+      '()
+    (concat (tree->list-1 (left-branch tree))
+            (cons (entry tree)
+                  (tree->list-1 (right-branch tree))))))
+
+(defn tree->list-2 [tree]
+  (defn copy-to-list [tree result-list]
+    (if (empty? tree)
+        result-list
+        (copy-to-list (left-branch tree)
+                      (cons (entry tree)
+                            (copy-to-list (right-branch tree) result-list)))))
+  (copy-to-list tree '()))
+
+
+
+
+
+

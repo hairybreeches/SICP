@@ -38,3 +38,21 @@
        ul-set= ul-union-set ul-make-set
        ol-set= ol-union-set ol-make-set
        ul-repeat-set= ul-repeat-union-set ul-repeat-make-set))
+
+
+;trees
+;the example trees from diagram 2-16
+(def tree-2-16-1 '(7 (3 (1 () ()) (5 () ())) (9 () (11 () ()))))
+(def tree-2-16-2 '(3 (1 () ()) (7 (5 () ()) (9 () (11 () ())))))
+(def tree-2-16-3 '(5 (3 (1 () ()) ()) (9 (7 () ()) (11 () ()))))
+
+(deftest list-program-1-orders-elements
+  (is (= '(1 3 5 7 9 11) (tree->list-1 tree-2-16-1)))
+  (is (= '(1 3 5 7 9 11) (tree->list-1 tree-2-16-2)))
+  (is (= '(1 3 5 7 9 11) (tree->list-1 tree-2-16-3))))
+
+(deftest list-program-2-orders-elements
+  (is (= '(1 3 5 7 9 11) (tree->list-2 tree-2-16-1)))
+  (is (= '(1 3 5 7 9 11) (tree->list-2 tree-2-16-2)))
+  (is (= '(1 3 5 7 9 11) (tree->list-2 tree-2-16-3))))
+
