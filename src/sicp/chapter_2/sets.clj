@@ -138,6 +138,25 @@
                             (copy-to-list (right-branch tree) result-list)))))
   (copy-to-list tree '()))
 
+(defn partial-tree[elements n]
+  (if (= n 0)
+      (cons '() elements)
+      (let [left-size (quot (dec n) 2)
+            left-result (partial-tree elements left-size)
+            left-tree (first left-result)
+            non-left-elements (rest left-result)
+            right-size (- n (inc left-size))
+            this-entry (first non-left-elements)
+            right-result (partial-tree (rest non-left-elements) right-size)
+            right-tree (first right-result)
+            remaining-elements (rest right-result)]
+        (cons (make-tree this-entry left-tree right-tree) remaining-elements))))
+
+(defn list->tree[elements]
+  (first (partial-tree elements (count elements))))
+
+
+
 
 
 
