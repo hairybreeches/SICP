@@ -27,3 +27,20 @@
 
 (deftest can-build-tree
   (is (= (generate-huffman-tree '((A 4) (C 1) (B 2) (D 1))) sample-tree)))
+
+(def punk-symbols '((A 2) (BOOM 1) (GET 2) (JOB 2) (NA 16) (SHA 3) (YIP 9) (WAH 1)))
+
+(def sha-na (cons 'SHA (repeat 8 'NA)))
+
+(def wah-yip (cons 'WAH (repeat 9 'YIP)))
+
+(def punk-song (concat '(GET A JOB) sha-na '(GET A JOB) sha-na wah-yip '(SHA BOOM)))
+
+(def encoded-punk-song '(1 1 1 1 1 1 1 0 0 1 1 1 1 0 1 1 1 0 0 0 0 0 0 0 0 0 1 1 1 1 1 1 1 0 0 1 1 1 1 0 1 1 1 0 0 0 0 0 0 0 0 0 1 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 1 1 0 1 1 0 1 1))
+
+(deftest can-encode-punk-songs
+  (is (= (encode punk-song (generate-huffman-tree punk-symbols)) encoded-punk-song)))
+
+(deftest can-encode-decode-punk-songs
+  (let [tree (generate-huffman-tree punk-symbols)]
+    (is (= (decode (encode punk-song tree) tree) punk-song))))
