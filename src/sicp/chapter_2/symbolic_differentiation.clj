@@ -91,7 +91,7 @@
           (not (empty? products)) (apply make-product (concat (get-product-components products) non-products))
           :else (apply list '* args))))
 
-
+;deriv
 (defn deriv[exp var]
   (cond (number? exp) 0
         (variable? exp) (if (same-variable? exp var) 1 0)
