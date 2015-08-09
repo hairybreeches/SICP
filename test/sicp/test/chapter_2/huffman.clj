@@ -24,3 +24,6 @@
 
 (deftest can-encode
   (is (= (encode sample-text sample-tree) sample-message)))
+
+(deftest can-build-tree
+  (is (= (generate-huffman-tree '((A 4) (C 1) (B 2) (D 1))) sample-tree)))

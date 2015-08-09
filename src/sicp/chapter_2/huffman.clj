@@ -35,6 +35,30 @@
    (concat (symbols left) (symbols right))
    (+ (weight left) (weight right))))
 
+(defn adjoin-set[x a-set]
+  (cond (empty? a-set) (list x)
+        (< (weight x) (weight (first a-set))) (cons x a-set)
+        :else (cons (first a-set) (adjoin-set x (rest a-set)))))
+
+(defn make-leaf-set[pairs]
+  (if (empty? pairs)
+      '()
+      (let [pair (first pairs)]
+        (adjoin-set (make-leaf (first pair) (second pair))
+                    (make-leaf-set (rest pairs))))))
+
+(defn successive-merge[leaf-set]
+  (loop[node-set leaf-set]
+    (if (= (count node-set) 1)
+      (first node-set)
+      (let [new-node (make-code-tree (first node-set) (second node-set))]
+        (recur (adjoin-set new-node (rest (rest node-set))))))))
+
+
+(defn generate-huffman-tree[pairs]
+  (successive-merge (make-leaf-set pairs)))
+
+
 ;decoding
 (defn choose-branch[bit branch]
   (cond
