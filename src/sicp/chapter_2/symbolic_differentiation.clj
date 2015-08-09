@@ -33,6 +33,14 @@
 (defn make-expression[operator first-argument second-argument]
   (list operator first-argument second-argument))
 
+;deriv
+(defmulti deriv-expression (fn [exp var] (operator exp)))
+
+(defn deriv[exp var]
+  (cond (number? exp) 0
+        (variable? exp) (if (same-variable? exp var) 1 0)
+        :else (deriv-expression exp var)))
+
 ;sums
 (defn sum?[e]
   (and (seq? e) (= (operator e) '+)))
@@ -61,6 +69,8 @@
           (and (not (empty? numbers)) (= (first numbers) 0)) (apply make-sum non-numbers)
           (not (empty? sums)) (apply make-sum (concat (get-sum-components sums) non-sums))
           :else (apply list '+ args))))
+
+(defmethod deriv-expression '+  [exp var] (make-sum (deriv (addend exp) var) (deriv (augend exp) var)))
 
 ;products
 (defn product?[e]
@@ -91,24 +101,12 @@
           (not (empty? products)) (apply make-product (concat (get-product-components products) non-products))
           :else (apply list '* args))))
 
-;deriv
-(defn deriv[exp var]
-  (cond (number? exp) 0
-        (variable? exp) (if (same-variable? exp var) 1 0)
-        (sum? exp) (make-sum (deriv (addend exp) var)
-                             (deriv (augend exp) var))
-        (product? exp) (make-sum
-                        (make-product (multiplier exp)
-                                      (deriv (multiplicand exp) var))
-                        (make-product (deriv (multiplier exp) var)
-                                      (multiplicand exp)))
-        (exponentiation? exp) (make-product
-                                (make-product
-                                  (exponent exp)
-                                  (make-exponentiation (base exp) (dec (exponent exp))))
-                                  (deriv (base exp) var))
-
-        :else (throw (Exception. (str "unknown expression type: " exp)))))
+(defmethod deriv-expression '*  [exp var]
+  (make-sum
+    (make-product (multiplier exp)
+                  (deriv (multiplicand exp) var))
+    (make-product (deriv (multiplier exp) var)
+                  (multiplicand exp))))
 
 ;exponentiation
 (defn exponentiation?[e]
@@ -124,4 +122,11 @@
   (cond (= exponent 0) 1
         (= exponent 1) base
         :else (make-expression '** base exponent)))
+
+(defmethod deriv-expression '**  [exp var]
+  (make-product
+    (make-product
+      (exponent exp)
+      (make-exponentiation (base exp) (dec (exponent exp))))
+    (deriv (base exp) var)))
 
