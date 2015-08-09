@@ -19,49 +19,22 @@
   (is (not (sequence-equal '(1 2 3 4 5) '(1 2 3 4 6)))))
 
 (deftest deriv-sum
-  (is (= (deriv '(x + 3) 'x) 1)))
+  (is (= (deriv '(+ x 3) 'x) 1)))
 
 (deftest deriv-multi
-  (is (= (deriv '(x * y) 'x) 'y)))
-
+  (is (= (deriv '(* x y) 'x) 'y)))
 
 (deftest deriv-product-and-sum
-  (is (= (deriv '(x * y * (x + 3)) 'x) '(x * y + y * (x + 3)))))
+  (is (= (deriv '(* (* x y) (+ x 3)) 'x) '(+ (* x y)
+                                             (* y (+ x 3))))))
 
 (deftest deriv-polynomial
-  (is (= (deriv '(x * x * x * y + 4 * x * x) 'x)
-         '(x * (x * y + x * y) + x * x * y + 4 * (x + x)))))
-
-(deftest deriv-polynomial-2
-  (is (= (deriv '(x * x + 4 * x * x) 'x)
-         '(x + x + 4 * (x + x)))))
-
-(deftest sum-test
-  (is (sum? '(x * x + 4 * x * x))))
-
-(deftest addend-test
-  (is (= (addend '(x * x + 4 * x * x)) '(x * x))))
-
-(deftest augend-test
-  (is (= (augend '(x * x + 4 * x * x)) '(4 * x * x))))
-
-(deftest deriv-square
-  (is (= (deriv '(x * x) 'x) '(x + x))))
-
-(deftest deriv-simple-power
-  (is (= (deriv '(4 * x * x) 'x) '(4 * (x + x)))))
-
-(deftest make-sum-test
-  (is (= (make-sum '(x + x) '(4 * (x + x))) '(x + x + 4 * (x + x)))))
-
-(deftest make-sum-test-simple
-  (is (= (make-sum '(x + x) '(4 * x)) '(x + x + 4 * x))))
+  (is (= (deriv '(+ (* (** x 3) y) (* 4 (** x 2))) 'x)
+         '(+ (* 3 (** x 2) y) (* 8 x)))))
 
 (deftest deriv-exponent-zero
-  (is (= (deriv (deriv '(y * y * y + x * x) 'x) 'x) 2)))
+  (is (= (deriv (deriv '(+ (** y 3) (** x 2)) 'x) 'x) 2)))
 
-(deftest deriv-many-sum-simple
-  (is (= (deriv '(x + x + x) 'x) 3)))
 
-(deftest deriv-many-sum-complex
-  (is (= (deriv '(2 * x + y * x + z * x) 'x) '(y + z + 2))))
+(deftest deriv-multi-sum
+  (is (= (deriv '(+ (+ (* 2 x) (* y x)) (* z x)) 'x) '(+ 2 y z))))
