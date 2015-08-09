@@ -8,12 +8,14 @@
           (empty? b) false
           (not= (first a) (first b)) false
           :else (recur (rest a) (rest b)))))
+
 ;variables
 (defn variable?[e]
   (symbol? e))
 
 (defn same-variable?[e1 e2]
   (and (variable? e1) (variable? e2) (= e1 e2)))
+
 ;shared
 (defn operator[e]
   (first e))
