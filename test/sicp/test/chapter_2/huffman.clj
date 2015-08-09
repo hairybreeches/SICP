@@ -41,6 +41,12 @@
 (deftest can-encode-punk-songs
   (is (= (encode punk-song (generate-huffman-tree punk-symbols)) encoded-punk-song)))
 
+(deftest song-length
+  (is (= (count punk-song) 36)))
+
+(deftest encoding-length
+  (is (= (count encoded-punk-song) 84)))
+
 (deftest can-encode-decode-punk-songs
   (let [tree (generate-huffman-tree punk-symbols)]
     (is (= (decode (encode punk-song tree) tree) punk-song))))
