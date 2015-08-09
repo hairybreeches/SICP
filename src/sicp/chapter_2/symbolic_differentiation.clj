@@ -33,20 +33,6 @@
 (defn make-expression[operator first-argument second-argument]
   (list operator first-argument second-argument))
 
-;exponentiation
-(defn exponentiation?[e]
-  (and (seq? e) (= (operator e) '**)))
-
-(defn base[e]
-  (first-argument e))
-
-(defn exponent[e]
-  (second-argument e))
-
-(defn make-exponentiation[base exponent]
-  (cond (= exponent 0) 1
-        (= exponent 1) base
-        :else (make-expression '** base exponent)))
 ;sums
 (defn sum?[e]
   (and (seq? e) (= (operator e) '+)))
@@ -123,4 +109,19 @@
                                   (deriv (base exp) var))
 
         :else (throw (Exception. (str "unknown expression type: " exp)))))
+
+;exponentiation
+(defn exponentiation?[e]
+  (and (seq? e) (= (operator e) '**)))
+
+(defn base[e]
+  (first-argument e))
+
+(defn exponent[e]
+  (second-argument e))
+
+(defn make-exponentiation[base exponent]
+  (cond (= exponent 0) 1
+        (= exponent 1) base
+        :else (make-expression '** base exponent)))
 
