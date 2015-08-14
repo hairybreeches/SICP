@@ -35,14 +35,6 @@
 (defmulti equ? (fn [a b] (type-lookup a b)))
 (defmulti nought? (fn [a] (type-lookup a)))
 
-;inbuilt numbers
-(defmethod add Long [a b] (+ a b))
-(defmethod sub Long [a b] (- a b))
-(defmethod mul Long [a b] (* a b))
-(defmethod div Long [a b] (/ a b))
-(defmethod equ? Long [a b] (= a b))
-(defmethod nought? Long [a] (equ? a 0))
-
 (defmethod add ::mixed [a b] (apply add (make-same a b)))
 (defmethod sub ::mixed [a b] (apply sub (make-same a b)))
 (defmethod mul ::mixed [a b] (apply mul (make-same a b)))
