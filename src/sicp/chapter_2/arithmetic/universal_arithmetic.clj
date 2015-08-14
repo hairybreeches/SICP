@@ -14,7 +14,7 @@
 
 (defn convert-to-type[target object]
   (loop [object object]
-    (if (= (type object) target)
+    (if (= (get-type-tag object) target)
         object
         (recur (raise object)))))
 
