@@ -1,6 +1,7 @@
 (ns sicp.test.chapter-2.universal-arithmetic
   (:use sicp.chapter-2.rational-numbers)
   (:use sicp.chapter-2.universal-arithmetic)
+  (:use sicp.chapter-2.complex-numbers)
   (:use clojure.test))
 
 (deftest can-add-integers
@@ -26,3 +27,15 @@
 
 (deftest can-divide-rationals
   (is (= (div (make-rat 1 2) (make-rat 2 3)) (make-rat 3 4))))
+
+(deftest can-add-two-real-imag-numbers
+  (is (= (add (make-from-real-imag 2 5) (make-from-real-imag -3 8)) (make-from-real-imag -1 13))))
+
+(deftest can-subtract-two-real-imag-numbers
+  (is (= (sub (make-from-real-imag 2 5) (make-from-real-imag -3 8)) (make-from-real-imag 5 -3))))
+
+(deftest can-multiply-two-mag-angle-numbers
+  (is (= (mul (make-from-mag-ang 2 5) (make-from-mag-ang -3 8)) (make-from-mag-ang -6 13))))
+
+(deftest can-divide-two-mag-angle-numbers
+  (is (= (div (make-from-mag-ang 4 2) (make-from-mag-ang 2 4)) (make-from-mag-ang 2 -2))))
