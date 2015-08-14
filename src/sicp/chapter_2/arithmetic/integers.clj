@@ -6,5 +6,4 @@
 (defmethod mul Long [a b] (* a b))
 (defmethod div Long [a b] (/ a b))
 (defmethod equ? Long [a b] (= a b))
-(defmethod nought? Long [a] (equ? a 0))
 

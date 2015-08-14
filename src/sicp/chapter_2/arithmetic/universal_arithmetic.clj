@@ -33,7 +33,7 @@
 (defmulti mul (fn [a b] (type-lookup a b)))
 (defmulti div (fn [a b] (type-lookup a b)))
 (defmulti equ? (fn [a b] (type-lookup a b)))
-(defmulti nought? (fn [a] (type-lookup a)))
+(defn nought?[a] (equ? a 0))
 
 (defmethod add ::mixed [a b] (apply add (make-same a b)))
 (defmethod sub ::mixed [a b] (apply sub (make-same a b)))
