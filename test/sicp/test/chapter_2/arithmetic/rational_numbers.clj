@@ -1,6 +1,6 @@
-(ns sicp.test.chapter-2.rational-numbers
+(ns sicp.test.chapter-2.arithmetic.rational-numbers
   (:use clojure.test)
-  (:use sicp.chapter-2.rational-numbers))
+  (:use sicp.chapter-2.arithmetic.rational-numbers))
 
 (defn is-rat-equal [rat n d]
   (is (= (numer rat) n))

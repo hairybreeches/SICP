@@ -1,4 +1,4 @@
-(ns sicp.chapter-2.universal-arithmetic
+(ns sicp.chapter-2.arithmetic.universal-arithmetic
   (:use clojure.set))
 
 ;type coercion

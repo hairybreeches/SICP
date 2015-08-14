@@ -1,5 +1,5 @@
-(ns sicp.test.chapter-2.complex-numbers
-  (:use sicp.chapter-2.complex-numbers)
+(ns sicp.test.chapter-2.arithmetic.complex-numbers
+  (:use sicp.chapter-2.arithmetic.complex-numbers)
   (:use clojure.math.numeric-tower)
   (:use clojure.test)
   (:use sicp.test.assertions))

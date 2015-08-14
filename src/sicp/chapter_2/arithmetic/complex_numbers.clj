@@ -1,7 +1,7 @@
-(ns sicp.chapter-2.complex-numbers
+(ns sicp.chapter-2.arithmetic.complex-numbers
   (:use clojure.math.numeric-tower)
-  (:use sicp.chapter-2.real-numbers)
-  (:use sicp.chapter-2.universal-arithmetic))
+  (:use sicp.chapter-2.arithmetic.real-numbers)
+  (:use sicp.chapter-2.arithmetic.universal-arithmetic))
 
 (defn get-format[object]
   (:format (meta object)))
@@ -63,6 +63,6 @@
 (defmethod equ? ::complex [a b] (equ?-complex a b))
 (defmethod nought? ::complex [a] (nought?-complex a))
 
-(defmethod raise :sicp.chapter-2.real-numbers/real [a] (make-from-real-imag a 0))
-(derive :sicp.chapter-2.real-numbers/real ::complex)
+(defmethod raise :sicp.chapter-2.arithmetic.real-numbers/real [a] (make-from-real-imag a 0))
+(derive :sicp.chapter-2.arithmetic.real-numbers/real ::complex)
 
