@@ -35,7 +35,13 @@
 (defn div-rat [x y]
   (mul-rat x (make-rat (denom y) (numer y))))
 
+
+(defn equ?-rat[a b]
+  (= (* (numer a) (denom b))
+     (* (denom a) (numer b))))
+
 (defmethod add ::rational [a b] (add-rat a b))
 (defmethod sub ::rational [a b] (sub-rat a b))
 (defmethod mul ::rational [a b] (mul-rat a b))
 (defmethod div ::rational [a b] (div-rat a b))
+(defmethod equ? ::rational [a b] (equ?-rat a b))

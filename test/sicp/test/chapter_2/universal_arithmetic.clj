@@ -39,3 +39,21 @@
 
 (deftest can-divide-two-mag-angle-numbers
   (is (= (div (make-from-mag-ang 4 2) (make-from-mag-ang 2 4)) (make-from-mag-ang 2 -2))))
+
+(deftest can-determine-equality-of-integers
+  (is (equ? 3 3)))
+
+(deftest can-determine-inequality-of-integers
+  (is (not (equ? 3 4))))
+
+(deftest can-determine-equality-of-rationals
+  (is (equ? (make-rat 3 4) (make-rat -6 -8))))
+
+(deftest can-determine-inequality-of-rationals
+  (is (not (equ? (make-rat 3 4) (make-rat 5 8)))))
+
+(deftest can-determine-equality-of-complex
+  (is (equ? (make-from-real-imag 3 4) (make-from-real-imag 3 4))))
+
+(deftest can-determine-inequality-of-complex
+  (is (not (equ? (make-from-real-imag 3 4) (make-from-real-imag 3 2)))))

@@ -48,8 +48,13 @@
   (make-from-mag-ang (/ (magnitude a) (magnitude b))
                      (- (angle a) (angle b))))
 
+(defn equ?-complex[a b]
+  (and (= (real-part a) (real-part b))
+       (= (imag-part a) (imag-part b))))
+
 (defmethod add ::complex [a b] (add-complex a b))
 (defmethod sub ::complex [a b] (sub-complex a b))
 (defmethod mul ::complex [a b] (mul-complex a b))
 (defmethod div ::complex [a b] (div-complex a b))
+(defmethod equ? ::complex [a b] (equ?-complex a b))
 
