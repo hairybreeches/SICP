@@ -50,8 +50,8 @@
                      (- (angle a) (angle b))))
 
 (defn equ?-complex[a b]
-  (and (= (real-part a) (real-part b))
-       (= (imag-part a) (imag-part b))))
+  (and (equ? (real-part a) (real-part b))
+       (equ? (imag-part a) (imag-part b))))
 
 (defn nought?-complex[a]
   (equ?-complex a (make-from-real-imag 0 0)))

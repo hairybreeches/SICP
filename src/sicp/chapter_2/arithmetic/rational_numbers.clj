@@ -37,8 +37,8 @@
 
 
 (defn equ?-rat[a b]
-  (= (* (numer a) (denom b))
-     (* (denom a) (numer b))))
+  (equ? (mul (numer a) (denom b))
+        (mul (denom a) (numer b))))
 
 (defn nought?-rat[a]
   (equ?-rat a (make-rat 0 1)))
