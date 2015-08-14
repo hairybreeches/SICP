@@ -7,8 +7,7 @@
 (defmethod mul ::real [a b] (* a b))
 (defmethod div ::real [a b] (/ a b))
 (defmethod equ? ::real [a b] (= a b))
-(defmethod nought? ::real [a] (equ? a 0))
 
-(defmethod raise :sicp.chapter-2.arithmetic.rational-numbers/rational [a] (float (/ (numer a) (denom a))))
+(defmethod raise :sicp.chapter-2.arithmetic.rational-numbers/rational [a] (double (/ (numer a) (denom a))))
 (derive :sicp.chapter-2.arithmetic.rational-numbers/rational ::real)
-(defmethod get-type-tag Float [a] ::real)
+(defmethod get-type-tag Double [a] ::real)
