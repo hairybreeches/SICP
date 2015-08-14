@@ -1,5 +1,6 @@
 (ns sicp.chapter-2.rational-numbers
-  (:use clojure.math.numeric-tower))
+  (:use clojure.math.numeric-tower)
+  (:use sicp.chapter-2.universal-arithmetic))
 
 
 (defn signed-gcd [a b]
@@ -10,13 +11,14 @@
 
 (defn make-rat [n d]
   (let [g (signed-gcd n d)]
-    [(/ n g) (/ d g)]))
+    ^{:type ::rational}
+    {:numerator (/ n g) :denominator (/ d g)}))
 
 (defn numer [x]
-  (first x))
+  (:numerator x))
 
 (defn denom [x]
-  (second x))
+  (:denominator x))
 
 (defn add-rat [x y]
   (make-rat (+ (* (numer x) (denom y))
@@ -32,3 +34,8 @@
 
 (defn div-rat [x y]
   (mul-rat x (make-rat (denom y) (numer y))))
+
+(defmethod add [::rational ::rational] [a b] (add-rat a b))
+(defmethod sub [::rational ::rational] [a b] (sub-rat a b))
+(defmethod mul [::rational ::rational] [a b] (mul-rat a b))
+(defmethod div [::rational ::rational] [a b] (div-rat a b))

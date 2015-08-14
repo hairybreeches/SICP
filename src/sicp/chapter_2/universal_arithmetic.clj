@@ -1,6 +1,4 @@
-(ns sicp.chapter-2.universal-arithmetic
-  (:use sicp.chapter-2.rational-numbers)
-  (:use sicp.chapter-2.complex-numbers))
+(ns sicp.chapter-2.universal-arithmetic)
 
 (defmulti add (fn [a b] (map type [a b])))
 (defmulti sub (fn [a b] (map type [a b])))
@@ -21,6 +19,8 @@
 (defmethod sub [Long Long] [a b] (- a b))
 (defmethod mul [Long Long] [a b] (* a b))
 (defmethod div [Long Long] [a b] (/ a b))
+
+
 
 
 
