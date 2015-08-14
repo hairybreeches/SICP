@@ -76,4 +76,10 @@
 (deftest can-determine-non-zeroness-of-complex
   (is (not (nought? (make-from-real-imag 3 0)))))
 
+(deftest can-add-rational-and-int
+  (is (= (add (make-rat 3 4) 1) (make-rat 7 4))))
+
+(deftest can-subtract-complex-and-rational
+  (is (= (sub (make-rat 3 4) (make-from-real-imag 1 -2)) (make-from-real-imag -0.25 2))))
+
 

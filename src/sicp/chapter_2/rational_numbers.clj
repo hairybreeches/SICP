@@ -49,3 +49,6 @@
 (defmethod div ::rational [a b] (div-rat a b))
 (defmethod equ? ::rational [a b] (equ?-rat a b))
 (defmethod nought? ::rational [a] (nought?-rat a))
+
+(defmethod raise Long [a] (make-rat a 1))
+(derive Long ::rational)

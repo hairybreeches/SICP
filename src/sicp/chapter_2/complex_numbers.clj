@@ -1,19 +1,20 @@
 (ns sicp.chapter-2.complex-numbers
   (:use clojure.math.numeric-tower)
+  (:use sicp.chapter-2.real-numbers)
   (:use sicp.chapter-2.universal-arithmetic))
 
-(derive ::polar ::complex)
-(derive ::real-imag ::complex)
+(defn get-format[object]
+  (:format (meta object)))
 
-(defmulti real-part type)
-(defmulti imag-part type)
-(defmulti magnitude type)
-(defmulti angle type)
+(defmulti real-part get-format)
+(defmulti imag-part get-format)
+(defmulti magnitude get-format)
+(defmulti angle get-format)
 
 
 ;polar representation
 (defn make-from-mag-ang[magnitude angle]
-  ^{:type ::polar}
+  ^{:type ::complex :format ::polar}
   {:magnitude magnitude :angle angle})
 
 (defmethod magnitude ::polar [z] (:magnitude z))
@@ -23,7 +24,7 @@
 
 ;cartesian representation
 (defn make-from-real-imag[real imag]
-  ^{:type ::real-imag}
+  ^{:type ::complex :format ::real-imag}
   {:real real :imag imag})
 
 (defmethod real-part ::real-imag [z] (:real z))
@@ -61,4 +62,7 @@
 (defmethod div ::complex [a b] (div-complex a b))
 (defmethod equ? ::complex [a b] (equ?-complex a b))
 (defmethod nought? ::complex [a] (nought?-complex a))
+
+(defmethod raise :sicp.chapter-2.real-numbers/real [a] (make-from-real-imag a 0))
+(derive :sicp.chapter-2.real-numbers/real ::complex)
 
