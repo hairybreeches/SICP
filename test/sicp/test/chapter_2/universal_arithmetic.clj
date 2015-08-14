@@ -57,3 +57,23 @@
 
 (deftest can-determine-inequality-of-complex
   (is (not (equ? (make-from-real-imag 3 4) (make-from-real-imag 3 2)))))
+
+(deftest can-determine-zeroness-of-integers
+  (is (nought? 0)))
+
+(deftest can-determine-non-zeroness-of-integers
+  (is (not (nought? 3))))
+
+(deftest can-determine-zeroness-of-rationals
+  (is (nought? (make-rat 0 4))))
+
+(deftest can-determine-non-zeroness-of-rationals
+  (is (not (nought? (make-rat 3 4)))))
+
+(deftest can-determine-zeroness-of-complex
+  (is (nought? (make-from-real-imag 0 0))))
+
+(deftest can-determine-non-zeroness-of-complex
+  (is (not (nought? (make-from-real-imag 3 0)))))
+
+

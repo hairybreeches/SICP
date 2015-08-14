@@ -40,8 +40,12 @@
   (= (* (numer a) (denom b))
      (* (denom a) (numer b))))
 
+(defn nought?-rat[a]
+  (equ?-rat a (make-rat 0 1)))
+
 (defmethod add ::rational [a b] (add-rat a b))
 (defmethod sub ::rational [a b] (sub-rat a b))
 (defmethod mul ::rational [a b] (mul-rat a b))
 (defmethod div ::rational [a b] (div-rat a b))
 (defmethod equ? ::rational [a b] (equ?-rat a b))
+(defmethod nought? ::rational [a] (nought?-rat a))

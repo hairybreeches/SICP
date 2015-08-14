@@ -5,6 +5,7 @@
 (defmulti mul (fn [a b] (type a)))
 (defmulti div (fn [a b] (type a)))
 (defmulti equ? (fn [a b] (type a)))
+(defmulti nought? (fn [a] (type a)))
 
 (defn fail-lookup[operation & args]
   (throw (Exception. (str "Cannot resolve " operation " for type: "  (type (first args))))))
@@ -21,6 +22,7 @@
 (defmethod mul Long [a b] (* a b))
 (defmethod div Long [a b] (/ a b))
 (defmethod equ? Long [a b] (= a b))
+(defmethod nought? Long [a] (equ? a 0))
 
 
 
