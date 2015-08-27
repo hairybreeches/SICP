@@ -41,11 +41,12 @@
         (mul (denom a) (numer b))))
 
 
-(defmethod add ::rational [a b] (add-rat a b))
-(defmethod sub ::rational [a b] (sub-rat a b))
-(defmethod mul ::rational [a b] (mul-rat a b))
-(defmethod div ::rational [a b] (div-rat a b))
+(defmethod add-pair ::rational [a b] (add-rat a b))
+(defmethod sub-pair ::rational [a b] (sub-rat a b))
+(defmethod mul-pair ::rational [a b] (mul-rat a b))
+(defmethod div-pair ::rational [a b] (div-rat a b))
 (defmethod equ? ::rational [a b] (equ?-rat a b))
 
 (defmethod raise Long [a] (make-rat a 1))
+(defmethod number-project ::rational [a] (numer a))
 (derive Long ::rational)

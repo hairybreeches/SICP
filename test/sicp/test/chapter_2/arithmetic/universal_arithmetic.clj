@@ -83,4 +83,10 @@
 (deftest can-subtract-complex-and-rational
   (is (= (sub (make-rat 3 4) (make-from-real-imag 1 -2)) (make-from-real-imag -0.25 2))))
 
+(deftest projects-when-possible
+  (is (= (mul (make-from-real-imag 3 4) (make-from-real-imag 3 -4)) 25)))
+
+(deftest stops-projecting
+  (is (= (mul (make-from-real-imag 0.5 0.5) (make-from-real-imag 0.5 -0.5)) (make-rat 1 2))))
+
 

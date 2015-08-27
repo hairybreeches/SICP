@@ -53,12 +53,13 @@
   (and (equ? (real-part a) (real-part b))
        (equ? (imag-part a) (imag-part b))))
 
-(defmethod add ::complex [a b] (add-complex a b))
-(defmethod sub ::complex [a b] (sub-complex a b))
-(defmethod mul ::complex [a b] (mul-complex a b))
-(defmethod div ::complex [a b] (div-complex a b))
+(defmethod add-pair ::complex [a b] (add-complex a b))
+(defmethod sub-pair ::complex [a b] (sub-complex a b))
+(defmethod mul-pair ::complex [a b] (mul-complex a b))
+(defmethod div-pair ::complex [a b] (div-complex a b))
 (defmethod equ? ::complex [a b] (equ?-complex a b))
 
 (defmethod raise :sicp.chapter-2.arithmetic.real-numbers/real [a] (make-from-real-imag a 0))
+(defmethod number-project ::complex [a] (real-part a))
 (derive :sicp.chapter-2.arithmetic.real-numbers/real ::complex)
 
