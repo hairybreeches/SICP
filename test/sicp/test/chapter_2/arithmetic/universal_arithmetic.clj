@@ -90,3 +90,16 @@
   (is (= (mul (make-from-real-imag 0.5 0.5) (make-from-real-imag 0.5 -0.5)) (make-rat 1 2))))
 
 
+(deftest can-add-complex-numbers-with-rational-coefficients
+  (let [add-1 (make-from-real-imag (make-rat 1 2) (make-rat 4 5))
+        add-2 (make-from-real-imag (make-rat 3 2) 1)
+        result (make-from-real-imag 2 (make-rat 9 5))]
+      (is (= (add add-1 add-2) result))))
+
+(deftest can-multiply-complex-numbers-with-rational-coefficients
+  (let [mul-1 (make-from-real-imag (make-rat 1 5) (make-rat 1 2))
+        mul-2 (make-from-real-imag (make-rat 1 5) (make-rat -1 2))
+        result (mul mul-1 mul-2)]
+      (is (= (make-rat 29 100) result))))
+
+

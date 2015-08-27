@@ -3,6 +3,8 @@
   (:use sicp.chapter-2.arithmetic.real-numbers)
   (:use sicp.chapter-2.arithmetic.universal-arithmetic))
 
+(def real (partial convert-to-type :sicp.chapter-2.arithmetic.real-numbers/real))
+
 (defn get-format[object]
   (:format (meta object)))
 
@@ -15,39 +17,39 @@
 ;polar representation
 (defn make-from-mag-ang[magnitude angle]
   ^{:type ::complex :format ::polar}
-  {:magnitude magnitude :angle angle})
+  {:magnitude (simplify magnitude) :angle (simplify angle)})
 
 (defmethod magnitude ::polar [z] (:magnitude z))
 (defmethod angle ::polar [z] (:angle z))
-(defmethod real-part ::polar [z] (* (magnitude z) (java.lang.Math/cos (angle z))))
-(defmethod imag-part ::polar [z] (* (magnitude z) (java.lang.Math/sin (angle z))))
+(defmethod real-part ::polar [z] (mul (magnitude z) (java.lang.Math/cos (real (angle z)))))
+(defmethod imag-part ::polar [z] (mul (magnitude z) (java.lang.Math/sin (real (angle z)))))
 
 ;cartesian representation
 (defn make-from-real-imag[real imag]
   ^{:type ::complex :format ::real-imag}
-  {:real real :imag imag})
+  {:real (simplify real) :imag (simplify imag)})
 
 (defmethod real-part ::real-imag [z] (:real z))
 (defmethod imag-part ::real-imag [z] (:imag z))
-(defmethod magnitude ::real-imag [z] (sqrt (+ (expt (real-part z) 2) (expt (imag-part z) 2))))
-(defmethod angle ::real-imag [z] (java.lang.Math/atan2 (imag-part z) (real-part z)))
+(defmethod magnitude ::real-imag [z] (sqrt (real (add (mul (real-part z) (real-part z)) (mul (imag-part z) (imag-part z))))))
+(defmethod angle ::real-imag [z] (java.lang.Math/atan2 (real (imag-part z)) (real (real-part z))))
 
 ;interface methods
 (defn add-complex[a b]
-  (make-from-real-imag (+ (real-part a) (real-part b))
-                       (+ (imag-part a) (imag-part b))))
+  (make-from-real-imag (add (real-part a) (real-part b))
+                       (add (imag-part a) (imag-part b))))
 
 (defn sub-complex[a b]
-  (make-from-real-imag (- (real-part a) (real-part b))
-                       (- (imag-part a) (imag-part b))))
+  (make-from-real-imag (sub (real-part a) (real-part b))
+                       (sub (imag-part a) (imag-part b))))
 
 (defn mul-complex[a b]
-  (make-from-mag-ang (* (magnitude a) (magnitude b))
-                     (+ (angle a) (angle b))))
+  (make-from-mag-ang (mul (magnitude a) (magnitude b))
+                     (add (angle a) (angle b))))
 
 (defn div-complex[a b]
-  (make-from-mag-ang (/ (magnitude a) (magnitude b))
-                     (- (angle a) (angle b))))
+  (make-from-mag-ang (div (magnitude a) (magnitude b))
+                     (sub (angle a) (angle b))))
 
 (defn equ?-complex[a b]
   (and (equ? (real-part a) (real-part b))
