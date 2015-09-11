@@ -92,8 +92,13 @@
 (deftest can-add-polynomials
   (is (= quadratic-2 (add-poly linear-1 quadratic-1))))
 
+(deftest can-sub-polynomials
+  (is (= linear-1 (sub quadratic-2 quadratic-1))))
+
 (deftest can-mul-rat-polynomials
   (is (= cubic-rat (mul-poly quadratic-rat linear-rat))))
+
+
 
 
 (deftest can-mul-multivariate
