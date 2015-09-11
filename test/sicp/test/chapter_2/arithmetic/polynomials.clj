@@ -98,9 +98,6 @@
 (deftest can-mul-rat-polynomials
   (is (= cubic-rat (mul-poly quadratic-rat linear-rat))))
 
-
-
-
 (deftest can-mul-multivariate
   (is (= multivariate-3 (mul-poly multivariate-1 multivariate-2))))
 
