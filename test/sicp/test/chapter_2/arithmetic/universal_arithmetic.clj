@@ -33,7 +33,7 @@
   (is (= (add (make-from-real-imag 2 5) (make-from-real-imag -3 8)) (make-from-real-imag -1 13))))
 
 (deftest can-subtract-two-real-imag-numbers
-  (is (= (sub (make-from-real-imag 2 5) (make-from-real-imag -3 8)) (make-from-real-imag 5 -3))))
+  (is (equ? (sub (make-from-real-imag 2 5) (make-from-real-imag -3 8)) (make-from-real-imag 5 -3))))
 
 (deftest can-multiply-two-mag-angle-numbers
   (is (= (mul (make-from-mag-ang 2 5) (make-from-mag-ang -3 8)) (make-from-mag-ang -6 13))))

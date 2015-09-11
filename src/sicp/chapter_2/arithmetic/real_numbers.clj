@@ -4,7 +4,6 @@
   (:use sicp.chapter-2.arithmetic.rational-numbers))
 
 (defmethod add-pair ::real [a b] (+ a b))
-(defmethod sub-pair ::real [a b] (- a b))
 (defmethod mul-pair ::real [a b] (* a b))
 (defmethod div-pair ::real [a b] (/ a b))
 (defmethod equ? ::real [a b] (< (abs (- a b)) 0.000001))

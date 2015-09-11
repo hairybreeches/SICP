@@ -41,8 +41,9 @@
           a))))
 
 (defmulti add-pair (fn [a b] (type-lookup a b)))
-(defmulti sub-pair (fn [a b] (type-lookup a b)))
 (defmulti mul-pair (fn [a b] (type-lookup a b)))
+(defn negate [a] (mul-pair -1 a))
+(defn sub-pair [a b] (add-pair a (negate b)))
 (defmulti div-pair (fn [a b] (type-lookup a b)))
 
 (defn operation[pair-op & args]
@@ -56,7 +57,6 @@
 (defn nought?[a] (equ? a 0))
 
 (defmethod add-pair ::mixed [a b] (apply add (make-same a b)))
-(defmethod sub-pair ::mixed [a b] (apply sub (make-same a b)))
 (defmethod mul-pair ::mixed [a b] (apply mul (make-same a b)))
 (defmethod div-pair ::mixed [a b] (apply div (make-same a b)))
 

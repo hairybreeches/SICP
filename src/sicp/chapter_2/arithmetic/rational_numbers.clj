@@ -25,9 +25,6 @@
                (* (denom x) (numer y)))
             (* (denom x) (denom y))))
 
-(defn sub-rat [x y]
-  (add-rat x (make-rat (* -1 (numer y)) (denom y))))
-
 (defn mul-rat [x y]
   (make-rat (* (numer x) (numer y))
             (* (denom x) (denom y))))
@@ -42,7 +39,6 @@
 
 
 (defmethod add-pair ::rational [a b] (add-rat a b))
-(defmethod sub-pair ::rational [a b] (sub-rat a b))
 (defmethod mul-pair ::rational [a b] (mul-rat a b))
 (defmethod div-pair ::rational [a b] (div-rat a b))
 (defmethod equ? ::rational [a b] (equ?-rat a b))

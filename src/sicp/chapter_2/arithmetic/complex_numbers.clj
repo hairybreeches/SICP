@@ -39,10 +39,6 @@
   (make-from-real-imag (add (real-part a) (real-part b))
                        (add (imag-part a) (imag-part b))))
 
-(defn sub-complex[a b]
-  (make-from-real-imag (sub (real-part a) (real-part b))
-                       (sub (imag-part a) (imag-part b))))
-
 (defn mul-complex[a b]
   (make-from-mag-ang (mul (magnitude a) (magnitude b))
                      (add (angle a) (angle b))))
@@ -56,7 +52,6 @@
        (equ? (imag-part a) (imag-part b))))
 
 (defmethod add-pair ::complex [a b] (add-complex a b))
-(defmethod sub-pair ::complex [a b] (sub-complex a b))
 (defmethod mul-pair ::complex [a b] (mul-complex a b))
 (defmethod div-pair ::complex [a b] (div-complex a b))
 (defmethod equ? ::complex [a b] (equ?-complex a b))

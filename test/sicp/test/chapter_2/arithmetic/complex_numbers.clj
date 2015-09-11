@@ -2,6 +2,7 @@
   (:use sicp.chapter-2.arithmetic.complex-numbers)
   (:use clojure.math.numeric-tower)
   (:use clojure.test)
+  (:use sicp.chapter-2.arithmetic.universal-arithmetic)
   (:use sicp.test.assertions))
 
 (def pi java.lang.Math/PI)
@@ -20,7 +21,7 @@
   (is-complex= (add-complex (make-from-real-imag 2 5) (make-from-real-imag -3 8)) (make-from-real-imag -1 13)))
 
 (deftest can-subtract-two-real-imag-numbers
-  (is-complex= (sub-complex (make-from-real-imag 2 5) (make-from-real-imag -3 8)) (make-from-real-imag 5 -3)))
+  (is-complex= (sub (make-from-real-imag 2 5) (make-from-real-imag -3 8)) (make-from-real-imag 5 -3)))
 
 (deftest can-multiply-two-real-imag-numbers
   (is-complex= (mul-complex (make-from-real-imag 2 5) (make-from-real-imag -3 8)) (make-from-real-imag -46 1)))
@@ -32,7 +33,7 @@
   (is-complex= (add-complex (make-from-mag-ang 2 (/ pi 3)) (make-from-mag-ang 2 (/ pi 6))) (make-from-real-imag (+ 1 (sqrt 3)) (+ 1 (sqrt 3)))))
 
 (deftest can-subtract-two-mag-angle-numbers
-  (is-complex= (sub-complex  (make-from-mag-ang 2 (/ pi 3)) (make-from-mag-ang 2 (/ pi 6))) (make-from-real-imag (- 1 (sqrt 3)) (- (sqrt 3) 1))))
+  (is-complex= (sub  (make-from-mag-ang 2 (/ pi 3)) (make-from-mag-ang 2 (/ pi 6))) (make-from-real-imag (- 1 (sqrt 3)) (- (sqrt 3) 1))))
 
 (deftest can-multiply-two-mag-angle-numbers
   (is-complex= (mul-complex (make-from-mag-ang 2 5) (make-from-mag-ang -3 8)) (make-from-mag-ang -6 13)))
@@ -44,7 +45,7 @@
   (is-complex= (add-complex (make-from-real-imag 2 5) (make-from-mag-ang (sqrt 2) (/ pi 4))) (make-from-real-imag 3 6)))
 
 (deftest can-subtract-mixed-numbers
-  (is-complex= (sub-complex (make-from-mag-ang (sqrt 2) (/ pi 4)) (make-from-real-imag -3 8)) (make-from-real-imag 4 -7)))
+  (is-complex= (sub (make-from-mag-ang (sqrt 2) (/ pi 4)) (make-from-real-imag -3 8)) (make-from-real-imag 4 -7)))
 
 (deftest can-multiply-mixed-numbers
   (is-complex= (mul-complex (make-from-real-imag 2 5) (make-from-mag-ang (sqrt 2) (/ pi 4))) (make-from-real-imag -3 7)))
