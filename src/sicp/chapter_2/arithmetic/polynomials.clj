@@ -19,8 +19,23 @@
 (def first-term
   first)
 
+(def last-term
+  last)
+
 (defn the-empty-termlist []
   '())
+
+(defn term= [a b]
+  (and (equ? (coeff a)
+             (coeff b))
+       (= (order a)
+          (order b))))
+
+(defn term-list= [a b]
+  (cond (empty-termlist? a) (empty-termlist? b)
+        (empty-termlist? b) false
+        :else (and (term= (first-term a) (first-term b))
+                   (term-list= (rest-terms a) (rest-terms b)))))
 
 (defn make-termlist[& args]
   (apply list args))
@@ -87,4 +102,17 @@
                  (mul-terms (term-list p1)
                             (term-list p2)))
       (throw (Exception. (str "polys not same variable: " (variable p1) (variable p2))))))
+
+(defn equ?-poly[a b]
+  (and (= (variable a) (variable b))
+       (term-list= (term-list a) (term-list b))))
+
+(defmethod add-pair ::polynomial [a b] (add-poly a b))
+(defmethod mul-pair ::polynomial [a b] (mul-poly a b))
+(defmethod equ? ::polynomial [a b] (equ?-poly a b))
+
+;this isn't a great decision to just pick a variable, but I don't think it will matter yet.
+(defmethod raise :sicp.chapter-2.arithmetic.complex-numbers/complex [a] (make-poly 'x (make-termlist (make-term 0 a))))
+(defmethod number-project ::polynomial [a] (coeff (last-term (term-list a))))
+(derive :sicp.chapter-2.arithmetic.complex-numbers/complex ::polynomial)
 
