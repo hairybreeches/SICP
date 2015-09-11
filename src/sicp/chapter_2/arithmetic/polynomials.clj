@@ -25,6 +25,9 @@
 (defn the-empty-termlist []
   '())
 
+(defn constant-term[l]
+  (coeff (last-term l)))
+
 (defn term= [a b]
   (and (equ? (coeff a)
              (coeff b))
@@ -113,6 +116,6 @@
 
 ;this isn't a great decision to just pick a variable, but I don't think it will matter yet.
 (defmethod raise :sicp.chapter-2.arithmetic.complex-numbers/complex [a] (make-poly 'x (make-termlist (make-term 0 a))))
-(defmethod number-project ::polynomial [a] (coeff (last-term (term-list a))))
+(defmethod number-project ::polynomial [a] (constant-term (term-list a)))
 (derive :sicp.chapter-2.arithmetic.complex-numbers/complex ::polynomial)
 
