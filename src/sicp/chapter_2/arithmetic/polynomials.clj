@@ -173,6 +173,24 @@
 (defn variable [poly]
   (:variable poly))
 
+(defn div-terms [l1 l2]
+  (if (empty-termlist? l1) [(make-sparse-termlist) (make-sparse-termlist)]
+      (let [l1-order (term-list-order l1)
+            l2-order (term-list-order l2)]
+      (if (> l2-order l1-order)
+          [(make-sparse-termlist) l1]
+          (let [new-term-coefficient (div (get-leading-coefficient l1) (get-leading-coefficient l2))
+                new-term-order (- l1-order l2-order)
+                new-term (make-term new-term-order new-term-coefficient)
+                result (make-sparse-termlist new-term)
+                to-poly (partial make-poly 'e)]
+            (adjoin-term
+               new-term
+               (div-terms
+                  (term-list
+                     (sub (to-poly l1) (mul (to-poly result) (to-poly l2))))
+                  l2)))))))
+
 (defn polynomial-order[poly]
   (term-list-order (term-list poly)))
 
@@ -191,6 +209,11 @@
   (make-poly (shared-variable p1 p2)
              (mul-terms (term-list p1)
                         (term-list p2))))
+
+(defn div-poly[p1 p2]
+  (let [variable (shared-variable p1 p2)]
+    (map (partial make-poly variable) (div-terms (term-list p1) (term-list p2)))))
+
 
 (defn equ?-poly[a b]
   (and (= (variable a) (variable b))
