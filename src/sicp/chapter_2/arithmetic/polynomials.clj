@@ -1,6 +1,7 @@
 (ns sicp.chapter-2.arithmetic.polynomials
-  (:use sicp.chapter-2.arithmetic.universal-arithmetic)
-  (:use clojure.math.numeric-tower))
+  (:use clojure.math.numeric-tower)
+  (:use sicp.chapter-2.arithmetic.arithmetic-operations)
+  (:use sicp.chapter-2.arithmetic.numerical-type-system))
 
 ;termlist
 (def empty-termlist?

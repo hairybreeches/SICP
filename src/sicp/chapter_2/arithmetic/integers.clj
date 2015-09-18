@@ -1,5 +1,5 @@
 (ns sicp.chapter-2.arithmetic.integers
-  (:use sicp.chapter-2.arithmetic.universal-arithmetic))
+  (:use sicp.chapter-2.arithmetic.arithmetic-operations))
 
 (defmethod add-pair Long [a b] (+ a b))
 (defmethod mul-pair Long [a b] (* a b))

@@ -1,6 +1,7 @@
 (ns sicp.chapter-2.arithmetic.rational-numbers
   (:use clojure.math.numeric-tower)
-  (:use sicp.chapter-2.arithmetic.universal-arithmetic))
+  (:use sicp.chapter-2.arithmetic.arithmetic-operations)
+  (:use sicp.chapter-2.arithmetic.numerical-type-system))
 
 
 (defn signed-gcd [a b]
