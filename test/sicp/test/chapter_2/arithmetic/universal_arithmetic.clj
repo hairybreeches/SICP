@@ -1,8 +1,8 @@
 (ns sicp.test.chapter-2.arithmetic.universal-arithmetic
   (:require sicp.chapter-2.arithmetic.universal-arithmetic)
   (:use sicp.chapter-2.arithmetic.arithmetic-operations)
-  (:use sicp.chapter-2.arithmetic.rational-numbers)
-  (:use sicp.chapter-2.arithmetic.complex-numbers)
+  (:use sicp.chapter-2.arithmetic.elements.rational-numbers)
+  (:use sicp.chapter-2.arithmetic.elements.complex-numbers)
   (:use clojure.test))
 
 (deftest can-add-integers

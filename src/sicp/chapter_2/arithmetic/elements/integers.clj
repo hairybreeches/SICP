@@ -1,4 +1,4 @@
-(ns sicp.chapter-2.arithmetic.integers
+(ns sicp.chapter-2.arithmetic.elements.integers
   (:use sicp.chapter-2.arithmetic.arithmetic-operations))
 
 (defmethod add-pair Long [a b] (+ a b))

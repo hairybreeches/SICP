@@ -1,9 +1,9 @@
 (ns sicp.chapter-2.arithmetic.universal-arithmetic
-  (:require sicp.chapter-2.arithmetic.complex-numbers)
-  (:require sicp.chapter-2.arithmetic.integers)
-  (:require sicp.chapter-2.arithmetic.polynomials)
-  (:require sicp.chapter-2.arithmetic.rational-numbers)
-  (:require sicp.chapter-2.arithmetic.real-numbers)
+  (:require sicp.chapter-2.arithmetic.elements.complex-numbers)
+  (:require sicp.chapter-2.arithmetic.elements.integers)
+  (:require sicp.chapter-2.arithmetic.elements.polynomials)
+  (:require sicp.chapter-2.arithmetic.elements.rational-numbers)
+  (:require sicp.chapter-2.arithmetic.elements.real-numbers)
   (:use sicp.chapter-2.arithmetic.arithmetic-operations)
   (:use sicp.chapter-2.arithmetic.numerical-type-system))
 

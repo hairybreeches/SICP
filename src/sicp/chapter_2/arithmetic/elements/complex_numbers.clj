@@ -1,10 +1,10 @@
-(ns sicp.chapter-2.arithmetic.complex-numbers
+(ns sicp.chapter-2.arithmetic.elements.complex-numbers
   (:use clojure.math.numeric-tower)
   (:use sicp.chapter-2.arithmetic.arithmetic-operations)
   (:use sicp.chapter-2.arithmetic.numerical-type-system)
-  (:use sicp.chapter-2.arithmetic.real-numbers))
+  (:use sicp.chapter-2.arithmetic.elements.real-numbers))
 
-(def real (partial convert-to-type :sicp.chapter-2.arithmetic.real-numbers/real))
+(def real (partial convert-to-type :sicp.chapter-2.arithmetic.elements.real-numbers/real))
 
 (defn get-format[object]
   (:format (meta object)))
@@ -57,7 +57,7 @@
 (defmethod div-pair ::complex [a b] (div-complex a b))
 (defmethod equ? ::complex [a b] (equ?-complex a b))
 
-(defmethod raise :sicp.chapter-2.arithmetic.real-numbers/real [a] (make-from-real-imag a 0))
+(defmethod raise :sicp.chapter-2.arithmetic.elements.real-numbers/real [a] (make-from-real-imag a 0))
 (defmethod number-project ::complex [a] (real-part a))
-(derive :sicp.chapter-2.arithmetic.real-numbers/real ::complex)
+(derive :sicp.chapter-2.arithmetic.elements.real-numbers/real ::complex)
 

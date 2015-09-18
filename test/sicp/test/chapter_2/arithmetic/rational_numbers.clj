@@ -1,6 +1,6 @@
 (ns sicp.test.chapter-2.arithmetic.rational-numbers
   (:use clojure.test)
-  (:use sicp.chapter-2.arithmetic.rational-numbers)
+  (:use sicp.chapter-2.arithmetic.elements.rational-numbers)
   (:require sicp.chapter-2.arithmetic.universal-arithmetic)
   (:use sicp.chapter-2.arithmetic.arithmetic-operations))
 

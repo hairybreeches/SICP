@@ -1,4 +1,4 @@
-(ns sicp.chapter-2.arithmetic.polynomials
+(ns sicp.chapter-2.arithmetic.elements.polynomials
   (:use clojure.math.numeric-tower)
   (:use sicp.chapter-2.arithmetic.arithmetic-operations)
   (:use sicp.chapter-2.arithmetic.numerical-type-system))
@@ -202,7 +202,7 @@
 (defmethod equ? ::polynomial [a b] (equ?-poly a b))
 
 ;this isn't a great decision to just pick a variable, but I don't think it will matter yet.
-(defmethod raise :sicp.chapter-2.arithmetic.complex-numbers/complex [a] (make-poly 'x (make-dense-termlist a)))
+(defmethod raise :sicp.chapter-2.arithmetic.elements.complex-numbers/complex [a] (make-poly 'x (make-dense-termlist a)))
 (defmethod number-project ::polynomial [a] (constant-term (term-list a)))
-(derive :sicp.chapter-2.arithmetic.complex-numbers/complex ::polynomial)
+(derive :sicp.chapter-2.arithmetic.elements.complex-numbers/complex ::polynomial)
 

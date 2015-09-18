@@ -1,7 +1,7 @@
 (ns sicp.test.chapter-2.arithmetic.polynomials
-  (:use sicp.chapter-2.arithmetic.polynomials)
+  (:use sicp.chapter-2.arithmetic.elements.polynomials)
   (:require sicp.chapter-2.arithmetic.universal-arithmetic)
-  (:use sicp.chapter-2.arithmetic.rational-numbers)
+  (:use sicp.chapter-2.arithmetic.elements.rational-numbers)
   (:use sicp.chapter-2.arithmetic.arithmetic-operations)
   (:use sicp.chapter-2.arithmetic.numerical-type-system)
   (:use clojure.test))

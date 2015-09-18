@@ -1,4 +1,4 @@
-(ns sicp.chapter-2.arithmetic.rational-numbers
+(ns sicp.chapter-2.arithmetic.elements.rational-numbers
   (:use clojure.math.numeric-tower)
   (:use sicp.chapter-2.arithmetic.arithmetic-operations)
   (:use sicp.chapter-2.arithmetic.numerical-type-system))
