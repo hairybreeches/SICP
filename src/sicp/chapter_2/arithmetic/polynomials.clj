@@ -37,6 +37,7 @@
 (defmulti term-list-order get-format)
 (defmulti get-leading-coefficient get-format)
 (defmulti mul-term-by-all-terms get-format-of-first)
+(defmulti to-sparse-format get-format)
 
 
 (defn mul-terms [l1 l2]
@@ -111,6 +112,9 @@
                         (mul term-coefficient (coeff t2)))
              (mul-term-by-all-terms (rest-terms termlist) term-order term-coefficient)))))
 
+(defmethod to-sparse-format :sparse [termlist]
+  termlist)
+
 ;dense termlist representation
 
 (defn make-dense-termlist[& terms]
@@ -148,6 +152,8 @@
 (defmethod mul-term-by-all-terms :dense [termlist term-order term-coefficient]
   (apply make-dense-termlist (concat (map #(mul % term-coefficient) termlist) (repeat term-order 0))))
 
+(defmethod to-sparse-format :dense [termlist]
+  (apply make-sparse-termlist (map make-term (reverse (range 0 (inc (term-list-order termlist)))) termlist )))
 
 ;polynomials
 (defn make-poly [var terms]

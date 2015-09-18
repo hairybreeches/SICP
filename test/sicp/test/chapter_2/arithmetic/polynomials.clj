@@ -3,7 +3,7 @@
   (:use sicp.chapter-2.arithmetic.universal-arithmetic)
   (:use sicp.chapter-2.arithmetic.rational-numbers)
   (:use clojure.test))
-
+;sparse tests
 (def linear-poly-in-y
   (make-poly
      'y
@@ -118,7 +118,7 @@
 
 (deftest can-project-to-last-coefficient
   (is (= (number-project multivariate-1) (make-poly 'y (make-sparse-termlist (make-term 1 1) (make-term 0 -1))))))
-
+;dense tests
 (def quadratic-1-dense
   (make-poly
      'x
@@ -206,6 +206,22 @@
 
 (deftest can-project-to-last-coefficient-dense
   (is (= (number-project multivariate-1-dense) (make-poly 'y (make-sparse-termlist (make-term 1 1) (make-term 0 -1))))))
+
+;conversion tests
+(defn convert-polynomial-to-sparse[poly]
+  (make-poly (variable poly) (to-sparse-format (term-list poly))))
+
+(deftest can-convert-dense-to-sparse-quadratic
+  (is (= quadratic-1 (convert-polynomial-to-sparse quadratic-1-dense))))
+
+(deftest can-convert-dense-to-sparse-linear
+  (is (= linear-1 (convert-polynomial-to-sparse linear-1-dense))))
+
+(deftest can-convert-dense-to-sparse-rational
+  (is (= quadratic-1 (convert-polynomial-to-sparse quadratic-1-dense))))
+
+(deftest can-convert-dense-to-sparse-rational
+  (is (= multivariate-3 (convert-polynomial-to-sparse multivariate-3-dense))))
 
 
 
