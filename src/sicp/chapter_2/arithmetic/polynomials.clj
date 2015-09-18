@@ -121,19 +121,20 @@
 (defn variable [poly]
   (:variable poly))
 
-(defn add-poly [p1 p2]
+(defn shared-variable [p1 p2]
   (if (= (variable p1) (variable p2))
-    (make-poly (variable p1)
-               (add-terms (term-list p1)
-                          (term-list p2)))
+    (variable p1)
     (throw (Exception. (str "polys not same variable: " (variable p1) (variable p2))))))
 
+(defn add-poly [p1 p2]
+  (make-poly (shared-variable p1 p2)
+             (add-terms (term-list p1)
+                        (term-list p2))))
+
 (defn mul-poly [p1 p2]
-  (if (= (variable p1) (variable p2))
-      (make-poly (variable p1)
-                 (mul-terms (term-list p1)
-                            (term-list p2)))
-      (throw (Exception. (str "polys not same variable: " (variable p1) (variable p2))))))
+  (make-poly (shared-variable p1 p2)
+             (mul-terms (term-list p1)
+                        (term-list p2))))
 
 (defn equ?-poly[a b]
   (and (= (variable a) (variable b))
