@@ -1,0 +1,322 @@
+1.1	
+
+10
+13 WRONG learn to add
+8
+3
+6
+a WRONG value: a
+b WRONG value: b
+19
+false WRONG #f
+4
+16
+6
+16
+
+1.2 
+(/ (+ 5 4 (- 2 (- 3 (+ 6 (/ 4 5))))) (* 3 (- 6 2) (- 2 7)))
+
+1.3
+
+(define (square x) (* x x))
+(define (smallest a b) (if (< a b) a b))
+(define (smallest-of-three a b c) (if (< a b) (smallest a c) (smallest b c)))
+(define (answer a b c) (- (+ (square a) (square b) (square c)) (square (smallest-of-three a b c))))
+
+1.4
+
+(if (> b 0) + -) makes us do an add/subtract based on the sign of b, so we end up adding the absolute value.
+
+1.5
+Normal order:
+
+(test 0 (p))
+(if (= 0 0)
+	0
+	(p))
+Carries on trying to resolve (p) forever.
+
+Applicative order.
+(test 0 (p))
+(if (= 0 0)
+	0
+	(p))
+(if true 0 (p))
+0
+
+WRONG - the wrong way round! Applicative order - evaluate the arguments then apply. Normal order - fully expand then reduce.
+
+1.6
+This new-if doesn't take clauses, it takes values, which are always evaluated. Therefore we carry on evaluating answers forever (calculating more accurate square roots).
+
+1.7
+eg find the square root of .0001 - since 0 squared is 0, which is within .001 of the correct answer, it will be accepted, despite a 100% error.
+if the numbers are very large, then error will (although relatively small), be very large, much bigger than .001, so the process will never converge.
+
+(define (average a b) (/ (+ a b) 2))
+
+(define (improve guess x)
+    (average guess (/ x guess)))
+
+(define (good-enough? guess x) 
+    (< (/ (abs (- guess (improve guess x))) guess) .001))
+    
+(define (sqrt-iter guess x)
+    (if (good-enough? guess x)
+        guess
+        (sqrt-iter (improve guess x)
+            x)))
+            
+(define (sqrt x) (sqrt-iter 1 x))
+
+1.8
+(define (average a b) (/ (+ a b) 2))
+
+(define (improve-square guess x)
+    (average guess (/ x guess)))
+    
+(define (improve-cube guess x)
+    (/ (+ (/ x (* guess guess))(* 2 guess)) 3))
+
+(define (good-enough? guess x improve) 
+    (< (/ (abs (- guess (improve guess x))) guess) .001))
+    
+(define (iter guess x improve)
+    (if (good-enough? guess x improve)
+        guess
+        (iter (improve guess x)
+            x improve)))
+            
+(define (sqrt x) (iter 1 x improve-square))
+(define (cuberoot x) (iter 1 x improve-cube))
+
+1.9 
+(define (+ a b)
+	(if (= a 0)
+		b
+		(inc (+ (dec a) b))))
+		
+a = 4, b =5
+
+(inc (+ (dec 4) 5))
+(inc (+ 3 5))
+(inc (inc (+ (dec 3) 5)))
+(inc (inc (+ 2 5)))
+(inc (inc (inc (+ (dec 2) 5))))
+(inc (inc (inc (+ 1 5))))
+(inc (inc (inc (inc (+ (dec 1) 5)))))
+(inc (inc (inc (inc (+ 0 5)))))
+(inc (inc (inc (inc 5))))
+(inc (inc (inc 6)))
+(inc (inc 7))
+(inc 8)
+9
+
+process is recursive
+
+(define (+ a b)
+(if (= a 0)
+	b
+	(+ (dec a) (inc b))))
+	
+a = 4, b = 5
+(+ (dec 4) (inc 5))
+(+ 3 6)
+(+ (dec 3) (inc 6))
+(+ 2 7)
+(+ (dec 2) (inc 7))
+(+ 1 8)
+(+ (dec 1) (inc 8))
+(+ 0 9)
+9
+
+process is iterative.
+
+1.10
+(define (A x y)
+(cond 
+	((= y 0) 0)
+	((= x 0) (* 2 y))
+	((= y 1) 2)
+	(else (A 
+			(- x 1)
+			(A x (- y 1))))))
+			
+(A 1 10)
+(A 0 (A 1 9))
+(A 0 (A 0 (A 1 8)))
+(A 0 (A 0 (A 0 (A 1 7))))
+(A 0 (A 0 (A 0 (A 0 (A 1 6)))))
+(A 0 (A 0 (A 0 (A 0 (A 0 (A 1 5))))))
+(A 0 (A 0 (A 0 (A 0 (A 0 (A 0 (A 1 4)))))))
+(A 0 (A 0 (A 0 (A 0 (A 0 (A 0 (A 0 (A 1 3))))))))
+(A 0 (A 0 (A 0 (A 0 (A 0 (A 0 (A 0 (A 0 (A 1 2)))))))))
+(A 0 (A 0 (A 0 (A 0 (A 0 (A 0 (A 0 (A 0 (A 0 (A 1 1))))))))))
+(A 0 (A 0 (A 0 (A 0 (A 0 (A 0 (A 0 (A 0 (A 0 2)))))))))
+(A 0 (A 0 (A 0 (A 0 (A 0 (A 0 (A 0 (A 0 4))))))))
+(A 0 (A 0 (A 0 (A 0 (A 0 (A 0 (A 0 8)))))))
+(A 0 (A 0 (A 0 (A 0 (A 0 (A 0 16))))))
+(A 0 (A 0 (A 0 (A 0 (A 0 32)))))
+(A 0 (A 0 (A 0 (A 0 64))))
+(A 0 (A 0 (A 0 128)))
+(A 0 (A 0 256))
+(A 0 512)
+1024
+note that (g n) = (A 1 n) = 2^n, unless n =0, in which case (A 1 n) = 0.
+
+(A 2 2)
+(A 1 (A 2 1))
+(A 1 2)
+4
+
+(A 2 3)
+(A 1 (A 2 2))
+(A 1 4)
+
+
+
+(A 2 4)
+(A 1 (A 2 3))
+(A 1 (A 1 (A 2 2)))
+(A 1 (A 1 (A 1 (A 2 1))))
+(A 1 (A 1 (A 1 2)))
+(A 1 (A 1 (A 0 (A 1 1))))
+(A 1 (A 1 (A 0 2)))
+(A 1 (A 1 4))
+(A 1 (A 0 (A 1 3)))
+(A 1 (A 0 (A 0 (A 1 2))))
+(A 1 (A 0 (A 0 (A 0 (A 1 1)))))
+(A 1 (A 0 (A 0 (A 0 2))))
+(A 1 (A 0 (A 0 4)))
+(A 1 (A 0 8))
+(A 1 16)
+= 2^16 = 65536 since
+
+
+(h n) = (A 2 n) = (g^n-1 (A 2 1)) = (g^n-1 2) so h(1) = 2, h(n+1) = 2^h(n)
+
+(A 3 3)
+(A 2 (A 3 2))
+(A 2 (A 2 (A 3 1)))
+(A 2 (A 2 2))
+(A 2 4)
+=65536
+
+(f n) = (A 0 n) = 2n
+
+
+1.11 
+
+(define (function n)
+    (cond ((< n 3) n)
+        (else (+ 
+            (function (- n 1)) 
+            (* 2 (function (- n 2))) 
+            (* 3 (function (- n 3)))))))
+			
+(define (calculate-next a b c)
+            (+ a
+            (* 2 b)
+            (* 3 c)))
+
+(define (func-iter a b c count)
+    (if (= count 0)
+        c
+        (func-iter (calculate-next a b c) a b (- count 1))))
+
+
+(define (function n)
+    (func-iter 2 1 0 n))
+	
+1.12
+
+(define (Pascal row column)
+    (cond 
+        ((= 1 column) 1)
+        ((= row column) 1)
+        (else (+ 
+            (Pascal (- row 1) (- column 1)) 
+            (Pascal (- row 1) column)))))
+			
+
+1.13
+
+Call 
+a = (1 + √5)/2
+b = (1 - √5)/2
+
+Prove that fib(n) = (a^n - b^n)/√5
+
+Observe true for n<2
+	fib(0) = 0 = (a^0 - b^0)/√5
+	fib(1) = 1 = (a^1 - b^1)/√5
+
+Suppose true for values <= n. Then	
+√5fib(n+1) = √5(fib(n) + fib(n-1))
+
+	= a^n - b^n + a^n-1 - b^n-1	
+	
+	=(a^n - b^n + a^n-1 - b^n-1)(a + b)  since a + b = 1
+	
+	=a^n+1 - ab^n + a^n - ab^n-1 + ba^n - b^n+1 + ba^n-1 - b^n
+	
+	=a^n+1 - b^n+1 
+		+ a^n - b^n
+		+ ba^n - ab^n
+		+ ba^n-1 - ab^n-1 	
+		
+	=a^n+1 - b^n+1 
+		+ a^n - b^n
+		- a^n-1 + b^n-1
+		- a^n-2 + b^n-2 since a = -1/b, b = -1/a
+		
+	=a^n+1 - b^n+1 
+		+ √5(fib(n) - fib(n-1) - fib(n-2))		
+		
+	=a^n+1 - b^n+1 
+
+So true for all n by induction.
+
+since  2 < √5 < 3
+       1-2   > 1-√5 > 1-3
+	   -1/2 > b > -1
+	   so absolute value of b gets smaller, is always less than 1.
+	   
+so absolute value of b^n/√5 always less than 1/2, so 
+
+fib(n) = (a^n - b^n)/√5
+       = a^n/√5 - b^n/√5 is always an integer and less than 1/2 away from a^n/√5, ie the closes integer to it.
+	   
+1.14
+Amount of steps and space used grow with the factorial of the amount to be changed
+
+(cc 11 5)
+(+ (cc 11 4) (cc -39 5))
+(+ (+ (cc 11 3) (cc -14 4)) 0)
+(+ (+ (+ (cc 11 2) (cc 1 3)) 0) 0)
+(+ (+ (+ (+ (cc 11 1) (cc 6 2)) (+ (cc 1 2) (cc -9 3))) 0) 0)
+(+ (+ (+ (+ (+ (cc 11 0) (cc 10 1)) (+ (cc 6 1) (cc 1 2))) (+ (+ (cc 1 1) (cc -4 2)) 0)) 0) 0)
+(+ (+ (+ (+ (+ (cc 11 0) (cc 10 1)) (+ (cc 6 1) (cc 1 2))) (+ (+ (+ (cc 1 0) (cc 0 1)) 0) 0)) 0) 0)
+
+WRONG
+
+1.15
+5 times.
+amount of space and number of steps is equal to number of times a must be divided by 3 to make < 0.1
+
+if x is # steps, 
+
+a/3^x = c
+a= c3^x
+so x proportional to log(a)
+
+
+
+
+
+
+
+
+	   
+	   
