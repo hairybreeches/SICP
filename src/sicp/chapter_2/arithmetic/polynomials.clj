@@ -1,5 +1,6 @@
 (ns sicp.chapter-2.arithmetic.polynomials
-  (:use sicp.chapter-2.arithmetic.universal-arithmetic))
+  (:use sicp.chapter-2.arithmetic.universal-arithmetic)
+  (:use clojure.math.numeric-tower))
 
 ;termlist
 (def empty-termlist?
@@ -109,6 +110,44 @@
              (make-term (+ term-order (order t2))
                         (mul term-coefficient (coeff t2)))
              (mul-term-by-all-terms (rest-terms termlist) term-order term-coefficient)))))
+
+;dense termlist representation
+
+(defn make-dense-termlist[& terms]
+    (with-meta
+      (apply list terms)
+      {:format :dense}))
+
+(defmethod term-list-order :dense [termlist]
+  (dec (count termlist)))
+
+(defmethod get-leading-coefficient :dense [termlist]
+  (first termlist))
+
+(defmethod constant-term :dense [l] (last-term l))
+
+(defmethod term-list= :dense [l m] (= l m))
+
+(defn add-equal-length-term-lists [l m]
+  (apply make-dense-termlist (reverse (map add (reverse l)  (reverse m)))))
+
+(defn pad-terms[l m]
+  (let [length-l (count l)
+        length-m (count m)
+        difference (abs (- length-l length-m))
+        padding (repeat difference 0)]
+    (if (> length-l length-m)
+        [l (concat padding m)]
+        [(concat padding l) m])))
+
+
+(defmethod add-terms :dense [l m]
+  (apply add-equal-length-term-lists (pad-terms l m)))
+
+
+(defmethod mul-term-by-all-terms :dense [termlist term-order term-coefficient]
+  (apply make-dense-termlist (concat (map #(mul % term-coefficient) termlist) (repeat term-order 0))))
+
 
 ;polynomials
 (defn make-poly [var terms]

@@ -119,6 +119,102 @@
 (deftest can-project-to-last-coefficient
   (is (= (number-project multivariate-1) (make-poly 'y (make-sparse-termlist (make-term 1 1) (make-term 0 -1))))))
 
+(def quadratic-1-dense
+  (make-poly
+     'x
+     (make-dense-termlist 1 -5 6)))
+
+(def quadratic-2-dense
+  (make-poly
+     'x
+     (make-dense-termlist 1 -4 4)))
+
+(def linear-1-dense
+  (make-poly
+     'x
+     (make-dense-termlist 1 -2)))
+
+(def linear-2-dense
+  (make-poly
+     'x
+     (make-dense-termlist 1 -3)))
+
+(def linear-1-dense
+  (make-poly
+     'x
+     (make-dense-termlist 1 -2)))
+
+(def linear-2-dense
+  (make-poly
+     'x
+     (make-dense-termlist 1 -3)))
+
+
+(def linear-rat-dense
+  (make-poly
+     'x
+     (make-dense-termlist (make-rat 3 4) (make-rat 4 5))))
+
+(def quadratic-rat-dense
+  (make-poly
+     'x
+     (make-dense-termlist 1 (make-rat 8 3) (make-rat 1 2))))
+
+(def cubic-rat-dense
+  (make-poly
+     'x
+    (make-dense-termlist (make-rat 3 4)
+                    (make-rat 14 5)
+                    (make-rat 301 120)
+                    (make-rat 2 5))))
+
+(def multivariate-1-dense
+  (make-poly
+   'x
+   (make-dense-termlist (make-poly 'y (make-sparse-termlist (make-term 1 1) (make-term 0 1)))
+                  (make-poly 'y (make-sparse-termlist (make-term 2 1) (make-term 0 1)))
+                  (make-poly 'y (make-sparse-termlist (make-term 1 1) (make-term 0 -1))))))
+
+(def multivariate-2-dense
+  (make-poly
+   'x
+   (make-dense-termlist (make-poly 'y (make-sparse-termlist (make-term 1 1) (make-term 0 -2)))
+                  (make-poly 'y (make-sparse-termlist (make-term 3 1) (make-term 0 7))))))
+
+(def multivariate-3-dense
+  (make-poly
+   'x
+   (make-dense-termlist (make-poly 'y (make-sparse-termlist (make-term 2 1) (make-term 1 -1) (make-term 0 -2)))
+                  (make-poly 'y (make-sparse-termlist (make-term 4 1) (make-term 3 2) (make-term 2 -2) (make-term 1 8) (make-term 0 5)))
+                  (make-poly 'y (make-sparse-termlist (make-term 5 1) (make-term 3 1) (make-term 2 8) (make-term 1 -3) (make-term 0 9)))
+                  (make-poly 'y (make-sparse-termlist (make-term 4 1) (make-term 3 -1) (make-term 1 7) (make-term 0 -7))))))
+
+(deftest can-mul-polynomials-dense
+  (is (= quadratic-1-dense (mul-poly linear-1-dense linear-2-dense))))
+
+(deftest can-add-polynomials-dense
+  (is (= quadratic-2-dense (add-poly linear-1-dense quadratic-1-dense))))
+
+(deftest can-sub-polynomials-dense
+  (is (= linear-1-dense (sub quadratic-2-dense quadratic-1-dense))))
+
+(deftest can-mul-rat-polynomials-dense
+  (is (= cubic-rat-dense (mul-poly quadratic-rat-dense linear-rat-dense))))
+
+(deftest can-mul-multivariate-dense
+  (is (= multivariate-3-dense (mul-poly multivariate-1-dense multivariate-2-dense))))
+
+(deftest can-project-to-last-coefficient-dense
+  (is (= (number-project multivariate-1-dense) (make-poly 'y (make-sparse-termlist (make-term 1 1) (make-term 0 -1))))))
+
+
+
+
+
+
+
+
+
 
 
 
