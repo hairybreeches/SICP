@@ -20,6 +20,9 @@
 (defn get-format[object]
   (:format (meta object)))
 
+(defn get-format-of-first[a & args]
+  (get-format a))
+
 (defn get-formats[a b]
   (let [aformat (get-format a)
         bformat (get-format b)]
@@ -30,7 +33,12 @@
 (defmulti constant-term get-format)
 (defmulti term-list= get-formats)
 (defmulti add-terms get-formats)
-(defmulti mul-terms get-formats)
+(defmulti mul-term-by-all-terms get-format-of-first)
+
+(defn mul-terms [l1 l2]
+  (if (empty-termlist? l1) l1
+      (add-terms (mul-term-by-all-terms l2 (first-term l1))
+                 (mul-terms (rest-terms l1) l2))))
 
 ;sparse termlist representation
 (defn make-term[order coeff]
@@ -85,21 +93,14 @@
                                      (add-terms (rest-terms l1)
                                                 (rest-terms l2)))))))
 
-(defn mul-term-by-all-terms [t1 termlist]
+(defmethod mul-term-by-all-terms :sparse [termlist t1]
   (if (empty-termlist? termlist)
-      (make-sparse-termlist)
+      termlist
       (let [t2 (first-term termlist)]
           (adjoin-term
              (make-term (+ (order t1) (order t2))
                         (mul (coeff t1) (coeff t2)))
-             (mul-term-by-all-terms t1 (rest-terms termlist))))))
-
-
-(defmethod mul-terms :sparse [l1 l2]
-  (if (empty-termlist? l1) (make-sparse-termlist)
-      (add-terms (mul-term-by-all-terms (first-term l1) l2)
-                 (mul-terms (rest-terms l1) l2))))
-
+             (mul-term-by-all-terms (rest-terms termlist) t1)))))
 
 ;polynomials
 (defn make-poly [var terms]
