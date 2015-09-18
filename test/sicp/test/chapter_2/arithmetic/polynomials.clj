@@ -1,5 +1,4 @@
 (ns sicp.test.chapter-2.arithmetic.polynomials
-  (:use sicp.chapter-2.arithmetic.arithmetic-component-interface)
   (:use sicp.chapter-2.arithmetic.polynomials)
   (:use sicp.chapter-2.arithmetic.universal-arithmetic)
   (:use sicp.chapter-2.arithmetic.rational-numbers)

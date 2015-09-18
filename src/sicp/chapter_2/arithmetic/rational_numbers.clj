@@ -1,6 +1,6 @@
 (ns sicp.chapter-2.arithmetic.rational-numbers
   (:use clojure.math.numeric-tower)
-  (:use sicp.chapter-2.arithmetic.arithmetic-component-interface))
+  (:use sicp.chapter-2.arithmetic.universal-arithmetic))
 
 
 (defn signed-gcd [a b]
@@ -34,8 +34,8 @@
 
 
 (defn equ?-rat[a b]
-  (equ? (mul-pair (numer a) (denom b))
-        (mul-pair (denom a) (numer b))))
+  (equ? (mul (numer a) (denom b))
+        (mul (denom a) (numer b))))
 
 
 (defmethod add-pair ::rational [a b] (add-rat a b))

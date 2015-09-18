@@ -1,5 +1,5 @@
 (ns sicp.chapter-2.arithmetic.polynomials
-  (:use sicp.chapter-2.arithmetic.arithmetic-component-interface)
+  (:use sicp.chapter-2.arithmetic.universal-arithmetic)
   (:use clojure.math.numeric-tower))
 
 ;termlist
@@ -99,7 +99,7 @@
                         (adjoin-term t2 (add-terms (rest-terms l2) l1))
                       :else
                         (adjoin-term (make-term (order t1)
-                                                (add-pair (coeff t1) (coeff t2)))
+                                                (add (coeff t1) (coeff t2)))
                                      (add-terms (rest-terms l1)
                                                 (rest-terms l2)))))))
 
@@ -109,7 +109,7 @@
       (let [t2 (first-term termlist)]
           (adjoin-term
              (make-term (+ term-order (order t2))
-                        (mul-pair term-coefficient (coeff t2)))
+                        (mul term-coefficient (coeff t2)))
              (mul-term-by-all-terms (rest-terms termlist) term-order term-coefficient)))))
 
 (defmethod to-sparse-format :sparse [termlist]
@@ -133,7 +133,7 @@
 (defmethod term-list= :dense [l m] (= l m))
 
 (defn add-equal-length-term-lists [l m]
-  (apply make-dense-termlist (reverse (map add-pair (reverse l)  (reverse m)))))
+  (apply make-dense-termlist (reverse (map add (reverse l)  (reverse m)))))
 
 (defn pad-terms[l m]
   (let [length-l (count l)
@@ -150,7 +150,7 @@
 
 
 (defmethod mul-term-by-all-terms :dense [termlist term-order term-coefficient]
-  (apply make-dense-termlist (concat (map #(mul-pair % term-coefficient) termlist) (repeat term-order 0))))
+  (apply make-dense-termlist (concat (map #(mul % term-coefficient) termlist) (repeat term-order 0))))
 
 (defmethod to-sparse-format :dense [termlist]
   (apply make-sparse-termlist (map make-term (reverse (range 0 (inc (term-list-order termlist)))) termlist )))
