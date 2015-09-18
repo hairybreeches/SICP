@@ -196,7 +196,7 @@
   (is (= quadratic-2-dense (add-poly linear-1-dense quadratic-1-dense))))
 
 (deftest can-sub-polynomials-dense
-  (is (= linear-1 (sub quadratic-2-dense quadratic-1-dense))))
+  (is (= linear-1-dense (sub quadratic-2-dense quadratic-1-dense))))
 
 (deftest can-mul-rat-polynomials-dense
   (is (= cubic-rat-dense (mul-poly quadratic-rat-dense linear-rat-dense))))

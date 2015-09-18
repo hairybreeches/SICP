@@ -119,7 +119,7 @@
 
 (defn make-dense-termlist[& terms]
     (with-meta
-      (apply list terms)
+      (apply list (drop-while #(= % 0) terms))
       {:format :dense}))
 
 (defmethod term-list-order :dense [termlist]
@@ -201,7 +201,7 @@
 (defmethod equ? ::polynomial [a b] (equ?-poly a b))
 
 ;this isn't a great decision to just pick a variable, but I don't think it will matter yet.
-(defmethod raise :sicp.chapter-2.arithmetic.complex-numbers/complex [a] (make-poly 'x (make-sparse-termlist (make-term 0 a))))
+(defmethod raise :sicp.chapter-2.arithmetic.complex-numbers/complex [a] (make-poly 'x (make-dense-termlist a)))
 (defmethod number-project ::polynomial [a] (constant-term (term-list a)))
 (derive :sicp.chapter-2.arithmetic.complex-numbers/complex ::polynomial)
 
