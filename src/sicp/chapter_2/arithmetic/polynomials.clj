@@ -33,11 +33,14 @@
 (defmulti constant-term get-format)
 (defmulti term-list= get-formats)
 (defmulti add-terms get-formats)
+(defmulti term-list-order get-format)
+(defmulti get-leading-coefficient get-format)
 (defmulti mul-term-by-all-terms get-format-of-first)
+
 
 (defn mul-terms [l1 l2]
   (if (empty-termlist? l1) l1
-      (add-terms (mul-term-by-all-terms l2 (first-term l1))
+      (add-terms (mul-term-by-all-terms l2 (term-list-order l1) (get-leading-coefficient l1))
                  (mul-terms (rest-terms l1) l2))))
 
 ;sparse termlist representation
@@ -50,6 +53,11 @@
 (defn order [term]
   (first term))
 
+(defmethod term-list-order :sparse [l]
+  (order (first-term l)))
+
+(defmethod get-leading-coefficient :sparse [l]
+  (coeff (first-term l)))
 
 (defmethod constant-term :sparse [l] (coeff (last-term l)))
 
@@ -93,14 +101,14 @@
                                      (add-terms (rest-terms l1)
                                                 (rest-terms l2)))))))
 
-(defmethod mul-term-by-all-terms :sparse [termlist t1]
+(defmethod mul-term-by-all-terms :sparse [termlist term-order term-coefficient]
   (if (empty-termlist? termlist)
       termlist
       (let [t2 (first-term termlist)]
           (adjoin-term
-             (make-term (+ (order t1) (order t2))
-                        (mul (coeff t1) (coeff t2)))
-             (mul-term-by-all-terms (rest-terms termlist) t1)))))
+             (make-term (+ term-order (order t2))
+                        (mul term-coefficient (coeff t2)))
+             (mul-term-by-all-terms (rest-terms termlist) term-order term-coefficient)))))
 
 ;polynomials
 (defn make-poly [var terms]
