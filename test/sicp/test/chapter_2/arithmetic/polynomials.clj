@@ -223,6 +223,22 @@
 (deftest can-convert-dense-to-sparse-rational
   (is (= multivariate-3 (convert-polynomial-to-sparse multivariate-3-dense))))
 
+;mixed tests
+(deftest can-mul-polynomials-mixed
+  (is (= quadratic-1 (mul-poly linear-1 linear-2-dense))))
+
+(deftest can-add-polynomials-mixed
+  (is (= quadratic-2 (add-poly linear-1-dense quadratic-1))))
+
+(deftest can-sub-polynomials-mixed
+  (is (= linear-1 (sub quadratic-2 quadratic-1-dense))))
+
+(deftest can-mul-rat-polynomials-mixed
+  (is (= cubic-rat (mul-poly quadratic-rat-dense linear-rat))))
+
+(deftest can-mul-multivariate-mixed
+  (is (= multivariate-3 (mul-poly multivariate-1 multivariate-2-dense))))
+
 
 
 

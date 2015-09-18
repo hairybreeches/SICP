@@ -29,7 +29,7 @@
         bformat (get-format b)]
     (if (= aformat bformat)
         aformat
-        (throw (Exception. (str "mixed termlist types!:" aformat bformat))))))
+        :mixed)))
 
 (defmulti constant-term get-format)
 (defmulti term-list= get-formats)
@@ -154,6 +154,13 @@
 
 (defmethod to-sparse-format :dense [termlist]
   (apply make-sparse-termlist (map make-term (reverse (range 0 (inc (term-list-order termlist)))) termlist )))
+
+;mixed operations
+(defmethod add-terms :mixed [& args]
+  (apply add-terms (map to-sparse-format args)))
+
+(defmethod term-list= :mixed [& args]
+  (apply term-list= (map to-sparse-format args)))
 
 ;polynomials
 (defn make-poly [var terms]
