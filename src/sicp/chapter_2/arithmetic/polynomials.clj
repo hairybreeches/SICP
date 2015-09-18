@@ -121,10 +121,14 @@
 (defn variable [poly]
   (:variable poly))
 
+(defn polynomial-order[poly]
+  (term-list-order (term-list poly)))
+
 (defn shared-variable [p1 p2]
-  (if (= (variable p1) (variable p2))
-    (variable p1)
-    (throw (Exception. (str "polys not same variable: " (variable p1) (variable p2))))))
+  (cond (= (variable p1) (variable p2)) (variable p1)
+        (= (polynomial-order p2) 0) (variable p1)
+        (= (polynomial-order p1) 0) (variable p2)
+        :else (throw (Exception. (str "polys not same variable: " (variable p1) (variable p2))))))
 
 (defn add-poly [p1 p2]
   (make-poly (shared-variable p1 p2)

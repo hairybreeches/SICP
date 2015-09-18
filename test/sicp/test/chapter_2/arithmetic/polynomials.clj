@@ -4,6 +4,18 @@
   (:use sicp.chapter-2.arithmetic.rational-numbers)
   (:use clojure.test))
 
+(def linear-poly-in-y
+  (make-poly
+     'y
+     (make-sparse-termlist (make-term 1 1)
+                           (make-term 0 6))))
+
+(def double-linear-poly-in-y
+    (make-poly
+     'y
+     (make-sparse-termlist (make-term 1 2)
+                           (make-term 0 12))))
+
 (def quadratic-1
   (make-poly
      'x
@@ -85,6 +97,9 @@
                   (make-term 2 (make-poly 'y (make-sparse-termlist (make-term 4 1) (make-term 3 2) (make-term 2 -2) (make-term 1 8) (make-term 0 5))))
                   (make-term 1 (make-poly 'y (make-sparse-termlist (make-term 5 1) (make-term 3 1) (make-term 2 8) (make-term 1 -3) (make-term 0 9))))
                   (make-term 0 (make-poly 'y (make-sparse-termlist (make-term 4 1) (make-term 3 -1) (make-term 1 7) (make-term 0 -7)))))))
+
+(deftest can-mul-polynomial-by-constant
+  (is (= (mul linear-poly-in-y 2) double-linear-poly-in-y)))
 
 (deftest can-mul-polynomials
   (is (= quadratic-1 (mul-poly linear-1 linear-2))))
