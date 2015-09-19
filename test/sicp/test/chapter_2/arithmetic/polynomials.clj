@@ -128,6 +128,9 @@
 (deftest can-compare-to-constant
   (is (equ? (make-poly 'x (make-sparse-termlist (make-term 0 2))) 2)))
 
+(deftest can-compare-to-zero
+  (is (equ? (make-poly 'x (make-sparse-termlist)) 0)))
+
 (deftest can-compare-to-constant-when-non-x-polynomial
   (is (equ? (make-poly 'e (make-sparse-termlist (make-term 0 2))) 2)))
 
@@ -231,6 +234,9 @@
 
 (deftest can-compare-to-constant-dense
   (is (equ? (make-poly 'x (make-dense-termlist 4)) 4)))
+
+(deftest can-compare-to-zero-dense
+  (is (equ? (make-poly 'x (make-dense-termlist)) 0)))
 
 (deftest can-simplify-to-constant-integer-dense
   (is (= (simplify (make-poly 'x (make-dense-termlist 4))) 4)))
