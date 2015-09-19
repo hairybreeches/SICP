@@ -125,6 +125,9 @@
 (deftest can-subtract-to-zero
   (is (= (sub linear-1 linear-1) 0)))
 
+(deftest can-compare-to-constant-dense
+  (is (equ? (make-poly 'x (make-sparse-termlist (make-term 0 2)) 2))))
+
 (deftest can-simplify-to-constant-integer
   (is (= (simplify (make-poly 'x (make-sparse-termlist (make-term 0 4)))) 4)))
 
@@ -219,6 +222,9 @@
 
 (deftest can-project-to-last-coefficient-dense
   (is (= (number-project multivariate-1-dense) (make-poly 'y (make-sparse-termlist (make-term 1 1) (make-term 0 -1))))))
+
+(deftest can-compare-to-constant-dense
+  (is (equ? (make-poly 'x (make-dense-termlist 4)) 4)))
 
 (deftest can-simplify-to-constant-integer-dense
   (is (= (simplify (make-poly 'x (make-dense-termlist 4))) 4)))
