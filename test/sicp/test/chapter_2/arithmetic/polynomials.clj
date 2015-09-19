@@ -125,8 +125,8 @@
 (deftest can-subtract-to-zero
   (is (= (sub linear-1 linear-1) 0)))
 
-(deftest can-compare-to-constant-dense
-  (is (equ? (make-poly 'x (make-sparse-termlist (make-term 0 2)) 2))))
+(deftest can-compare-to-constant
+  (is (equ? (make-poly 'x (make-sparse-termlist (make-term 0 2))) 2)))
 
 (deftest can-simplify-to-constant-integer
   (is (= (simplify (make-poly 'x (make-sparse-termlist (make-term 0 4)))) 4)))
