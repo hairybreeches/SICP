@@ -198,7 +198,9 @@
                         (term-list p2))))
 
 (defn equ?-poly[a b]
-  (and (= (variable a) (variable b))
+  (and (or (= (variable a) (variable b))
+           (= 0 (polynomial-order a))
+           (= 0 (polynomial-order b)))
        (term-list= (term-list a) (term-list b))))
 
 (defmethod add-pair ::polynomial [a b] (add-poly a b))
