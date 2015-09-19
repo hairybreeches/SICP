@@ -128,7 +128,14 @@
 
 (defmethod constant-term :dense [l] (last-term l))
 
-(defmethod term-list= :dense [l m] (= l m))
+(defmethod term-list= :dense [l m] (= l m)
+  (loop [terms1 (drop-while #(= % 0) l)
+         terms2 (drop-while #(= % 0) m)]
+    (cond (empty? terms2) (empty? terms1)
+          (empty? terms1) false
+          (equ? (first-term terms1) (first-term terms1)) (recur (rest-terms terms1) (rest-terms terms2))
+          :else false)))
+
 
 (defn add-equal-length-term-lists [l m]
   (apply make-dense-termlist (reverse (map add (reverse l)  (reverse m)))))
