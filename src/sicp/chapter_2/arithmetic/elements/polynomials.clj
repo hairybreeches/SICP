@@ -54,7 +54,9 @@
   (first term))
 
 (defmethod term-list-order :sparse [l]
-  (order (first-term l)))
+  (if (empty? l)
+      0
+      (order (first-term l))))
 
 (defmethod get-leading-coefficient :sparse [l]
   (coeff (first-term l)))
@@ -81,7 +83,7 @@
 
 (defn make-sparse-termlist[& args]
   (with-meta
-    (apply list args)
+    (apply list (filter #(not (equ? 0 (coeff %))) args))
     {:format :sparse}))
 
 
@@ -123,11 +125,11 @@
 
 (defn make-dense-termlist[& terms]
     (with-meta
-      (apply list (drop-while #(= % 0) terms))
+      (apply list (drop-while #(equ? % 0) terms))
       {:format :dense}))
 
 (defmethod term-list-order :dense [termlist]
-  (dec (count termlist)))
+  (max (dec (count termlist)) 0))
 
 (defmethod get-leading-coefficient :dense [termlist]
   (first termlist))
@@ -139,8 +141,8 @@
       coefficient)))
 
 (defmethod term-list= :dense [l m] (= l m)
-  (loop [terms1 (drop-while #(= % 0) l)
-         terms2 (drop-while #(= % 0) m)]
+  (loop [terms1 l
+         terms2 m]
     (cond (empty? terms2) (empty? terms1)
           (empty? terms1) false
           (equ? (first-term terms1) (first-term terms1)) (recur (rest-terms terms1) (rest-terms terms2))
@@ -195,7 +197,7 @@
   (cond (= (variable p1) (variable p2)) (variable p1)
         (= (polynomial-order p2) 0) (variable p1)
         (= (polynomial-order p1) 0) (variable p2)
-        :else (throw (Exception. (str "polys not same variable: " (variable p1) (variable p2))))))
+        :else (throw (Exception. (str "polys not same variable: " (variable p1) " " (variable p2) " polynomials are:\n" p1 "\n and \n" p2)))))
 
 (defn add-poly [p1 p2]
   (make-poly (shared-variable p1 p2)
