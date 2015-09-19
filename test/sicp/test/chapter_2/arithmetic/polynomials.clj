@@ -128,6 +128,9 @@
 (deftest can-compare-to-constant
   (is (equ? (make-poly 'x (make-sparse-termlist (make-term 0 2))) 2)))
 
+(deftest can-compare-to-constant-when-non-x-polynomial
+  (is (equ? (make-poly 'e (make-sparse-termlist (make-term 0 2))) 2)))
+
 (deftest can-simplify-to-constant-integer
   (is (= (simplify (make-poly 'x (make-sparse-termlist (make-term 0 4)))) 4)))
 
