@@ -293,6 +293,15 @@
 (deftest can-divide-rat-polynomials-with-no-remainder
   (is (= [linear-rat (make-poly 'x (make-dense-termlist))] (div-poly cubic-rat quadratic-rat))))
 
+(deftest can-divide-polynomials-with-remainder
+  (is (= [quadratic-2 linear-2] (div-poly (add
+                                          (mul quadratic-1 quadratic-2)
+                                          linear-2)
+                                       quadratic-1))))
+
+(deftest can-divide-rat-polynomials-with-remainder
+  (is (= [linear-rat linear-rat] (div-poly (add cubic-rat linear-rat) quadratic-rat))))
+
 
 
 
