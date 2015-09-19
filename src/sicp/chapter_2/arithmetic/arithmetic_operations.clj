@@ -20,9 +20,9 @@
 (defn operation[pair-op & args]
   (simplify (reduce pair-op args)))
 
-(def add (partial operation add-pair))
-(def sub (partial operation sub-pair))
-(def mul (partial operation mul-pair))
-(def div (partial operation div-pair))
+(defn add [& args] (apply (partial operation add-pair) args))
+(defn sub [& args] (apply (partial operation sub-pair) args))
+(defn mul [& args] (apply (partial operation mul-pair) args))
+(defn div [& args] (apply (partial operation div-pair) args))
 
 (defn nought?[a] (equ? a 0))

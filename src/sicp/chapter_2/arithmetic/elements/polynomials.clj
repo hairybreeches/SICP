@@ -54,12 +54,20 @@
   (first term))
 
 (defmethod term-list-order :sparse [l]
-  (order (first-term l)))
+  (if (empty? l)
+      0
+      (order (first-term l))))
 
 (defmethod get-leading-coefficient :sparse [l]
   (coeff (first-term l)))
 
-(defmethod constant-term :sparse [l] (coeff (last-term l)))
+(defmethod constant-term :sparse [l]
+  (let [term (last-term l)]
+    (if (and
+           (not (nil? term))
+           (= 0 (order term)))
+        (coeff term)
+        0)))
 
 (defn term= [a b]
   (and (equ? (coeff a)
@@ -75,7 +83,7 @@
 
 (defn make-sparse-termlist[& args]
   (with-meta
-    (apply list args)
+    (apply list (filter #(not (equ? 0 (coeff %))) args))
     {:format :sparse}))
 
 
@@ -117,18 +125,29 @@
 
 (defn make-dense-termlist[& terms]
     (with-meta
-      (apply list (drop-while #(= % 0) terms))
+      (apply list (drop-while #(equ? % 0) terms))
       {:format :dense}))
 
 (defmethod term-list-order :dense [termlist]
-  (dec (count termlist)))
+  (max (dec (count termlist)) 0))
 
 (defmethod get-leading-coefficient :dense [termlist]
   (first termlist))
 
-(defmethod constant-term :dense [l] (last-term l))
+(defmethod constant-term :dense [l]
+  (let [coefficient (last-term l)]
+    (if (nil? coefficient)
+        0
+      coefficient)))
 
-(defmethod term-list= :dense [l m] (= l m))
+(defmethod term-list= :dense [l m] (= l m)
+  (loop [terms1 l
+         terms2 m]
+    (cond (empty? terms2) (empty? terms1)
+          (empty? terms1) false
+          (equ? (first-term terms1) (first-term terms1)) (recur (rest-terms terms1) (rest-terms terms2))
+          :else false)))
+
 
 (defn add-equal-length-term-lists [l m]
   (apply make-dense-termlist (reverse (map add (reverse l)  (reverse m)))))
@@ -178,7 +197,7 @@
   (cond (= (variable p1) (variable p2)) (variable p1)
         (= (polynomial-order p2) 0) (variable p1)
         (= (polynomial-order p1) 0) (variable p2)
-        :else (throw (Exception. (str "polys not same variable: " (variable p1) (variable p2))))))
+        :else (throw (Exception. (str "polys not same variable: " (variable p1) " " (variable p2) " polynomials are:\n" p1 "\n and \n" p2)))))
 
 (defn add-poly [p1 p2]
   (make-poly (shared-variable p1 p2)
@@ -191,7 +210,9 @@
                         (term-list p2))))
 
 (defn equ?-poly[a b]
-  (and (= (variable a) (variable b))
+  (and (or (= (variable a) (variable b))
+           (= 0 (polynomial-order a))
+           (= 0 (polynomial-order b)))
        (term-list= (term-list a) (term-list b))))
 
 (defmethod add-pair ::polynomial [a b] (add-poly a b))

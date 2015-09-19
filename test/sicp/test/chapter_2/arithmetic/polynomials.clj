@@ -2,6 +2,7 @@
   (:use sicp.chapter-2.arithmetic.elements.polynomials)
   (:require sicp.chapter-2.arithmetic.universal-arithmetic)
   (:use sicp.chapter-2.arithmetic.elements.rational-numbers)
+  (:use sicp.chapter-2.arithmetic.elements.complex-numbers)
   (:use sicp.chapter-2.arithmetic.arithmetic-operations)
   (:use sicp.chapter-2.arithmetic.numerical-type-system)
   (:use clojure.test))
@@ -120,6 +121,28 @@
 
 (deftest can-project-to-last-coefficient
   (is (= (number-project multivariate-1) (make-poly 'y (make-sparse-termlist (make-term 1 1) (make-term 0 -1))))))
+
+(deftest can-subtract-to-zero
+  (is (= (sub linear-1 linear-1) 0)))
+
+(deftest can-compare-to-constant
+  (is (equ? (make-poly 'x (make-sparse-termlist (make-term 0 2))) 2)))
+
+(deftest can-compare-to-zero
+  (is (equ? (make-poly 'x (make-sparse-termlist)) 0)))
+
+(deftest can-compare-to-constant-when-non-x-polynomial
+  (is (equ? (make-poly 'e (make-sparse-termlist (make-term 0 2))) 2)))
+
+(deftest can-simplify-to-zero
+  (is (= (simplify (make-poly 'x (make-sparse-termlist))) 0)))
+
+(deftest can-simplify-to-constant-integer
+  (is (= (simplify (make-poly 'x (make-sparse-termlist (make-term 0 4)))) 4)))
+
+(deftest can-simplify-to-constant-complex
+  (is (= (simplify (make-poly 'x (make-sparse-termlist (make-term 0 (make-from-real-imag 2 3))))) (make-from-real-imag 2 3))))
+
 ;dense tests
 (def quadratic-1-dense
   (make-poly
@@ -208,6 +231,28 @@
 
 (deftest can-project-to-last-coefficient-dense
   (is (= (number-project multivariate-1-dense) (make-poly 'y (make-sparse-termlist (make-term 1 1) (make-term 0 -1))))))
+
+(deftest can-compare-to-constant-dense
+  (is (equ? (make-poly 'x (make-dense-termlist 4)) 4)))
+
+(deftest can-compare-to-zero-dense
+  (is (equ? (make-poly 'x (make-dense-termlist)) 0)))
+
+(deftest can-simplify-to-constant-integer-dense
+  (is (= (simplify (make-poly 'x (make-dense-termlist 4))) 4)))
+
+(deftest can-simplify-to-zero-dense
+  (is (= (simplify (make-poly 'x (make-dense-termlist))) 0)))
+
+(deftest can-simplify-to-constant-complex-dense
+  (is (= (simplify (make-poly 'x (make-dense-termlist (make-from-real-imag 2 3)))) (make-from-real-imag 2 3))))
+
+(deftest can-subtract-to-zero-dense
+  (is (= (sub linear-1-dense linear-1-dense) 0)))
+
+(deftest can-compare-dense
+  (is (equ? (make-poly 'x (make-dense-termlist 2 3))
+            (make-poly 'x (make-dense-termlist 2 3)))))
 
 ;conversion tests
 (defn convert-polynomial-to-sparse[poly]
