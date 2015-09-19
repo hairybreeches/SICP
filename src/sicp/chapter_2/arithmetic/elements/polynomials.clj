@@ -59,7 +59,13 @@
 (defmethod get-leading-coefficient :sparse [l]
   (coeff (first-term l)))
 
-(defmethod constant-term :sparse [l] (coeff (last-term l)))
+(defmethod constant-term :sparse [l]
+  (let [term (last-term l)]
+    (if (and
+           (not (nil? term))
+           (= 0 (order term)))
+        (coeff term)
+        0)))
 
 (defn term= [a b]
   (and (equ? (coeff a)
@@ -126,7 +132,11 @@
 (defmethod get-leading-coefficient :dense [termlist]
   (first termlist))
 
-(defmethod constant-term :dense [l] (last-term l))
+(defmethod constant-term :dense [l]
+  (let [coefficient (last-term l)]
+    (if (nil? coefficient)
+        0
+      coefficient)))
 
 (defmethod term-list= :dense [l m] (= l m)
   (loop [terms1 (drop-while #(= % 0) l)
