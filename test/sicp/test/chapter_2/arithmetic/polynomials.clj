@@ -248,9 +248,6 @@
 (deftest can-divide-rat-polynomials-with-no-remainder
   (is (= linear-rat (div-poly cubic-rat quadratic-rat))))
 
-(deftest can-divide-multivariate-with-no-remainder
-  (is (= multivariate-1 (div-poly multivariate-3 multivariate-2))))
-
 
 
 
