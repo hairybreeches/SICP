@@ -201,12 +201,13 @@
                 new-term (make-term new-term-order new-term-coefficient)
                 result (make-sparse-termlist new-term)
                 to-poly (partial make-poly 'e)]
-            (adjoin-term
-               new-term
-               (div-terms
-                  (term-list
-                     (sub (to-poly l1) (mul (to-poly result) (to-poly l2))))
-                  l2)))))))
+            (let [rest-result (div-terms
+                                 (term-list
+                                    (sub (to-poly l1)
+                                         (mul (to-poly result) (to-poly l2))))
+                                 l2)]
+              [(adjoin-term new-term (first rest-result)) (second rest-result)]
+            ))))))
 
 (defn polynomial-order[poly]
   (term-list-order (term-list poly)))

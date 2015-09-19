@@ -288,10 +288,10 @@
 
 ;division tests
 (deftest can-divide-polynomials-with-no-remainder
-  (is (= linear-1 (div-poly quadratic-1 linear-2))))
+  (is (= [linear-1 (make-poly 'x (make-dense-termlist))] (div-poly quadratic-1 linear-2) )))
 
 (deftest can-divide-rat-polynomials-with-no-remainder
-  (is (= linear-rat (div-poly cubic-rat quadratic-rat))))
+  (is (= [linear-rat (make-poly 'x (make-dense-termlist))] (div-poly cubic-rat quadratic-rat))))
 
 
 
