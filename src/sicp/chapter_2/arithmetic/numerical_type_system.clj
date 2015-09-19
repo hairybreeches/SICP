@@ -18,3 +18,6 @@
   (if (apply = (map get-type-tag args))
       (get-type-tag (first args))
       ::mixed))
+
+(defn get-format[object]
+  (:format (meta object)))

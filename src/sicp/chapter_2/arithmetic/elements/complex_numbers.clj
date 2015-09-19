@@ -6,9 +6,6 @@
 
 (def real (partial convert-to-type :sicp.chapter-2.arithmetic.elements.real-numbers/real))
 
-(defn get-format[object]
-  (:format (meta object)))
-
 (defmulti real-part get-format)
 (defmulti imag-part get-format)
 (defmulti magnitude get-format)
