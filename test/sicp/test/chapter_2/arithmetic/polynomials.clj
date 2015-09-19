@@ -241,7 +241,15 @@
 (deftest can-mul-multivariate-mixed
   (is (= multivariate-3 (mul-poly multivariate-1 multivariate-2-dense))))
 
+;division tests
+(deftest can-divide-polynomials-with-no-remainder
+  (is (= linear-1 (div-poly quadratic-1 linear-2))))
 
+(deftest can-divide-rat-polynomials-with-no-remainder
+  (is (= linear-rat (div-poly cubic-rat quadratic-rat))))
+
+(deftest can-divide-multivariate-with-no-remainder
+  (is (= multivariate-1 (div-poly multivariate-3 multivariate-2))))
 
 
 
