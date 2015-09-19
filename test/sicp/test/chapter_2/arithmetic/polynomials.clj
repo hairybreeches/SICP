@@ -235,6 +235,10 @@
 (deftest can-subtract-to-zero-dense
   (is (= (sub linear-1-dense linear-1-dense) 0)))
 
+(deftest can-compare-dense
+  (is (equ? (make-poly 'x (make-dense-termlist 2 3))
+            (make-poly 'x (make-dense-termlist 2 3)))))
+
 ;conversion tests
 (defn convert-polynomial-to-sparse[poly]
   (make-poly (variable poly) (to-sparse-format (term-list poly))))
