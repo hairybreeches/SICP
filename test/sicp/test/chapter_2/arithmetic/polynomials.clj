@@ -340,6 +340,14 @@
 (deftest can-multiply-to-make-multivariate
   (is (= (mul polynomial-in-y polynomial-in-x) multivariate-polynomial)))
 
+(deftest can-subtract-last-term-from-multivariate
+  (is (= (sub multivariate-polynomial (make-poly 'y (make-dense-termlist (make-rat 8 5) 0 (make-rat 4 5) (make-rat 2 5)))) (make-poly 'x
+             (make-dense-termlist
+                (make-poly 'y (make-dense-termlist 3 0 (make-rat 3 2) (make-rat 3 4)))
+                (make-poly 'y (make-dense-termlist (make-rat 56 5) 0 (make-rat 28 5) (make-rat 14 5)))
+                (make-poly 'y (make-dense-termlist (make-rat 6 5) 0 (make-rat 3 5) (make-rat 3 10)))
+                0)))))
+
 
 
 
