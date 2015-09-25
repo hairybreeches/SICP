@@ -233,25 +233,31 @@
 (defn polynomial-order[poly]
   (term-list-order (term-list poly)))
 
-(defn shared-variable [p1 p2]
-  (cond (= (variable p1) (variable p2)) (variable p1)
-        (= (polynomial-order p2) 0) (variable p1)
-        (= (polynomial-order p1) 0) (variable p2)
-        :else (throw (Exception. (str "polys not same variable: " (variable p1) " " (variable p2) " polynomials are:\n" p1 "\n and \n" p2)))))
+(defn to-shared-variable [p1 p2]
+  (cond (= (variable p1) (variable p2)) (list p1 p2)
+        (= (polynomial-order p2) 0) (list p1 (make-poly (variable p1) (term-list p2)))
+        (= (polynomial-order p1) 0) (list p2 (make-poly (variable p2) (term-list p1)))
+        (variable-gt (variable p2)
+                     (variable p1)) (list p1 (make-poly (variable p1) (make-dense-termlist p2)))
+        (variable-gt (variable p1)
+                     (variable p2)) (list p2 (make-poly (variable p2) (make-dense-termlist p1)))
+        :else (throw (Exception. "WTF?"))))
 
-(defn add-poly [p1 p2]
-  (make-poly (shared-variable p1 p2)
-             (add-terms (term-list p1)
-                        (term-list p2))))
+(defn add-poly [q1 q2]
+  (let [[p1 p2] (to-shared-variable q1 q2)]
+    (make-poly (variable p1)
+               (add-terms (term-list p1)
+                          (term-list p2)))))
 
-(defn mul-poly [p1 p2]
-  (make-poly (shared-variable p1 p2)
-             (mul-terms (term-list p1)
-                        (term-list p2))))
+(defn mul-poly [q1 q2]
+  (let [[p1 p2] (to-shared-variable q1 q2)]
+    (make-poly (variable p1)
+               (mul-terms (term-list p1)
+                          (term-list p2)))))
 
-(defn div-poly[p1 p2]
-  (let [variable (shared-variable p1 p2)]
-    (map (partial make-poly variable) (div-terms (term-list p1) (term-list p2)))))
+(defn div-poly[q1 q2]
+  (let [[p1 p2] (to-shared-variable q1 q2)]
+    (map (partial make-poly (variable p1)) (div-terms (term-list p1) (term-list p2)))))
 
 
 (defn equ?-poly[a b]

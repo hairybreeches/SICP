@@ -319,6 +319,27 @@
 (deftest cannot-create-polynomials-in-y-with-coefficients-in-x
   (is (thrown-with-msg? Exception #"Cannot create a polynomial in y with coefficients polynomials in \(x\)" (make-poly 'y (make-dense-termlist linear-1-dense quadratic-2)))))
 
+(def polynomial-in-y (make-poly 'y (make-dense-termlist 4 0 2 1)))
+
+(def multivariate-polynomial
+  (make-poly 'x
+             (make-dense-termlist
+                (make-poly 'y (make-dense-termlist 3 0 (make-rat 3 2) (make-rat 3 4)))
+                (make-poly 'y (make-dense-termlist (make-rat 56 5) 0 (make-rat 28 5) (make-rat 14 5)))
+                (make-poly 'y (make-dense-termlist (make-rat 6 5) 0 (make-rat 3 5) (make-rat 3 10)))
+                (make-poly 'y (make-dense-termlist (make-rat 8 5) 0 (make-rat 4 5) (make-rat 2 5))))))
+
+(def polynomial-in-x
+  (make-poly
+     'x
+    (make-dense-termlist (make-rat 3 4)
+                    (make-rat 14 5)
+                    (make-rat 3 10)
+                    (make-rat 2 5))))
+
+(deftest can-multiply-to-make-multivariate
+  (is (= (mul polynomial-in-y polynomial-in-x) multivariate-polynomial)))
+
 
 
 
