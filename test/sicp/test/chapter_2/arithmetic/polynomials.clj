@@ -355,7 +355,7 @@
 (deftest can-calculate-gcd
   (is (= (greatest-common-divisor p1 p2) (make-poly 'x (make-sparse-termlist (make-term 2 -1) (make-term 1 1))))))
 
-(def P1 (make-poly 'x (make-dense-termlist 1 -2 1)))
+(def P1 (make-poly 'x (make-sparse-termlist (make-term 2 1) (make-term 1 -2) (make-term 0 1))))
 
 (def P2 (make-poly 'x (make-dense-termlist 11 0 7)))
 
@@ -366,7 +366,7 @@
 (def Q2 (mul P1 P3))
 
 (deftest can-avoid-quotients-when-computing-gcd
-  (is (equ? P1 (greatest-common-divisor Q1 Q2))))
+  (is (= P1 (greatest-common-divisor Q1 Q2))))
 
 
 
