@@ -315,6 +315,10 @@
 (deftest can-get-variables-from-dense-multivariate-polynomial
   (is (= '(x y) (get-variables multivariate-1-dense))))
 
+;multivariate tests
+(deftest cannot-create-polynomials-in-y-with-coefficients-in-x
+  (is (thrown? Exception (make-poly 'y (make-dense-termlist linear-1-dense quadratic-2)))))
+
 
 
 

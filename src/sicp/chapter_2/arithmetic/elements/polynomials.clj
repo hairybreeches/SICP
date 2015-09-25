@@ -190,15 +190,26 @@
   (apply term-list= (map to-sparse-format args)))
 
 ;polynomials
-(defn make-poly [var terms]
-   ^{:type ::polynomial}
-    {:variable var :terms terms})
-
 (defn term-list [poly]
   (:terms poly))
 
 (defn variable [poly]
   (:variable poly))
+
+(defn variable-gt[a b]
+  (> (compare a b) 0))
+
+(defn illegal-variables[variable terms]
+  (filter
+   #(variable-gt variable %)
+   (get-termlist-variables terms)))
+
+(defn make-poly [var terms]
+    (let [illegal (illegal-variables var terms)]
+      (if (not (empty? illegal))
+          (throw (Exception. (str "Cannot create a polynomial in " var " with coefficients polynomials in " (apply list illegal))))
+          ^{:type ::polynomial}
+          {:variable var :terms terms})))
 
 (defn div-terms [l1 l2]
   (if (empty-termlist? l1) [(make-sparse-termlist) (make-sparse-termlist)]
