@@ -317,7 +317,7 @@
 
 ;multivariate tests
 (deftest cannot-create-polynomials-in-y-with-coefficients-in-x
-  (is (thrown? Exception (make-poly 'y (make-dense-termlist linear-1-dense quadratic-2)))))
+  (is (thrown-with-msg? Exception #"Cannot create a polynomial in y with coefficients polynomials in \(x\)" (make-poly 'y (make-dense-termlist linear-1-dense quadratic-2)))))
 
 
 

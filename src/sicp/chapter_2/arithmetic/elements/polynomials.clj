@@ -44,7 +44,7 @@
       (add-terms (mul-term-by-all-terms l2 (term-list-order l1) (get-leading-coefficient l1))
                  (mul-terms (rest-terms l1) l2))))
 
-(defn get-termlist-variables[termlist]
+(defmethod variables ::termlist [termlist]
   (mapcat variables (coefficients termlist)))
 
 ;sparse termlist representation
@@ -88,7 +88,7 @@
 (defn make-sparse-termlist[& args]
   (with-meta
     (apply list (filter #(not (equ? 0 (coeff %))) args))
-    {:format :sparse}))
+    {:format :sparse :type ::termlist}))
 
 
 (defn adjoin-term [term term-list]
@@ -133,7 +133,7 @@
 (defn make-dense-termlist[& terms]
     (with-meta
       (apply list (drop-while #(equ? % 0) terms))
-      {:format :dense}))
+      {:format :dense :type ::termlist}))
 
 (defmethod term-list-order :dense [termlist]
   (max (dec (count termlist)) 0))
@@ -202,7 +202,7 @@
 (defn illegal-variables[variable terms]
   (filter
    #(variable-gt variable %)
-   (get-termlist-variables terms)))
+   (get-variables terms)))
 
 (defn make-poly [var terms]
     (let [illegal (illegal-variables var terms)]
@@ -263,7 +263,7 @@
 (defmethod add-pair ::polynomial [a b] (add-poly a b))
 (defmethod mul-pair ::polynomial [a b] (mul-poly a b))
 (defmethod equ? ::polynomial [a b] (equ?-poly a b))
-(defmethod variables ::polynomial [p] (cons (variable p) (get-termlist-variables (term-list p))))
+(defmethod variables ::polynomial [p] (cons (variable p) (variables (term-list p))))
 
 ;this isn't a great decision to just pick a variable, but I don't think it will matter yet.
 (defmethod raise :sicp.chapter-2.arithmetic.elements.complex-numbers/complex [a] (make-poly 'x (make-dense-termlist a)))
