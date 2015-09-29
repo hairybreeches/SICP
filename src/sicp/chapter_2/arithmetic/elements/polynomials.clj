@@ -248,14 +248,39 @@
   (let [multiplying-factor (java.lang.Math/pow (get-leading-coefficient t2) (inc (- (term-list-order t1) (term-list-order t2))))]
     (second (apply div-terms (map #(mul-term-by-all-terms % 0 multiplying-factor) [t1 t2])))))
 
-(defn reduce-coefficients[termlist]
-  (let [divisor (reduce gcd (coefficients termlist))]
-    (mul-term-by-all-terms termlist 0 (make-rat 1 divisor))))
+(defn reduce-coefficients[& termlists]
+  (let [divisor (reduce gcd (mapcat coefficients termlists))]
+    (map #(mul-term-by-all-terms % 0 (make-rat 1 divisor)) termlists)))
 
 (defn gcd-terms[t1 t2]
   (if (empty-termlist? t2)
-      (reduce-coefficients t1)
+      (first (reduce-coefficients t1))
     (gcd-terms t2 (pseudoremainder-terms t1 t2))))
+
+(defn get-integerising-factor[gcd n d]
+  (let [o1 (max (term-list-order n) (term-list-order d))
+        o2 (term-list-order gcd)]
+    (java.lang.Math/pow
+       (get-leading-coefficient gcd)
+       (inc (- o1 o2)))))
+
+(defn strict-divide[n d]
+  (let [[result remainder] (div-terms n d)]
+    (if (not (empty? remainder))
+        (throw (Exception. "Unexpected quotient"))
+        result)))
+
+(defn reduce-terms[numer denom]
+  (let [gcd (gcd-terms numer denom)
+        integerising-factor (get-integerising-factor gcd numer denom)]
+    (apply reduce-coefficients
+    (map #(strict-divide
+           (mul-term-by-all-terms % 0 integerising-factor)
+           gcd) [numer denom]))))
+
+(defn reduce-poly[q1 q2]
+  (let [[p1 p2] (to-shared-variable q1 q2)]
+    (map #(make-poly (variable p1) %) (apply reduce-terms (map term-list [p1 p2])))))
 
 (defn gcd-poly[q1 q2]
   (let [[p1 p2] (to-shared-variable q1 q2)]
@@ -290,6 +315,8 @@
 (defmethod equ? ::polynomial [a b] (equ?-poly a b))
 (defmethod variables ::polynomial [p] (cons (variable p) (variables (term-list p))))
 (defmethod greatest-common-divisor ::polynomial [a b] (gcd-poly a b))
+(defmethod reduce-quotient ::polynomial [a b] (reduce-poly a b))
+
 
 ;this isn't a great decision to just pick a variable, but I don't think it will matter yet.
 (defmethod raise :sicp.chapter-2.arithmetic.elements.complex-numbers/complex [a] (make-poly 'x (make-dense-termlist a)))

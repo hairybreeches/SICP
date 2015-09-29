@@ -16,4 +16,7 @@
       g)))
 
 (defmethod greatest-common-divisor Long [a b] (signed-gcd a b))
+(defmethod reduce-quotient Long [n d]
+  (let [g (greatest-common-divisor n d)]
+    [(/ n g) (/ d g)]))
 

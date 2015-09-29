@@ -4,9 +4,9 @@
 
 
 (defn make-rat [n d]
-  (let [g (greatest-common-divisor n d)]
+  (let [[nn dd] (reduce-quotient n d)]
     ^{:type ::rational}
-    {:numerator (/ n g) :denominator (/ d g)}))
+    {:numerator nn :denominator dd}))
 
 (defn numer [x]
   (:numerator x))
@@ -38,6 +38,7 @@
 (defmethod equ? ::rational [a b] (equ?-rat a b))
 (defmethod variables ::rational [a] (mapcat variables (list (numer a) (denom a))))
 (defmethod greatest-common-divisor ::rational [a b] (throw (Exception. "Cannot calculate gcd for rational numbers")))
+(defmethod reduce-quotient ::rational [a b] (throw (Exception. "Cannot reduce quotient for rational numbers")))
 (defmethod raise Long [a] (make-rat a 1))
 (defmethod number-project ::rational [a] (numer a))
 (derive Long ::rational)

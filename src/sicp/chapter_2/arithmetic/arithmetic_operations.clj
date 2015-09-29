@@ -15,6 +15,7 @@
 
 (defmulti equ? (fn [a b] (type-lookup a b)))
 (defmulti greatest-common-divisor (fn [a b] (type-lookup a b)))
+(defmulti reduce-quotient (fn [a b] (type-lookup a b)))
 
 (defn simplify [a]
   (if (= (type a) Long)

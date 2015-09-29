@@ -54,6 +54,7 @@
 (defmethod div-pair ::complex [a b] (div-complex a b))
 (defmethod equ? ::complex [a b] (equ?-complex a b))
 (defmethod greatest-common-divisor ::complex [a b] (throw (Exception. "Cannot calculate gcd for complex numbers")))
+(defmethod reduce-quotient ::complex [a b] (throw (Exception. "Cannot reduce quotient for complex numbers")))
 
 (defmethod raise :sicp.chapter-2.arithmetic.elements.real-numbers/real [a] (make-from-real-imag a 0))
 (defmethod number-project ::complex [a] (real-part a))

@@ -374,6 +374,23 @@
 (deftest can-avoid-quotients-when-computing-gcd
   (is (= P1 (greatest-common-divisor Q1 Q2))))
 
+;rational polynomial tests
+(def numer-1 (make-poly 'z (make-dense-termlist 1 -1)))
+(def denom-1 (make-poly 'z (make-dense-termlist 1 0 0 -1)))
+
+(def numer-2 (make-poly 'z (make-dense-termlist 1 0)))
+(def denom-2 (make-poly 'z (make-dense-termlist 1 0 -1)))
+
+(deftest can-make-rational-polynomial-with-reducing
+  (let [quotient (make-rat numer-1 denom-1)]
+    (is (= (numer quotient) (make-poly 'z (make-sparse-termlist (make-term 0 1)))))
+    (is (= (denom quotient) (make-poly 'z (make-sparse-termlist (make-term 2 1) (make-term 1 1) (make-term 0 1)))))))
+
+(deftest can-make-rational-polynomial-where-no-reducing-necessary
+  (let [quotient (make-rat numer-2 denom-2)]
+    (is (= (numer quotient) (make-poly 'z (make-sparse-termlist (make-term 1 1)))))
+    (is (= (denom quotient) (make-poly 'z (make-sparse-termlist (make-term 2 1) (make-term 0 -1)))))))
+
 
 
 
