@@ -1,7 +1,8 @@
 (ns sicp.chapter-2.arithmetic.elements.polynomials
   (:use clojure.math.numeric-tower)
   (:use sicp.chapter-2.arithmetic.arithmetic-operations)
-  (:use sicp.chapter-2.arithmetic.numerical-type-system))
+  (:use sicp.chapter-2.arithmetic.numerical-type-system)
+  (:use sicp.chapter-2.arithmetic.elements.rational-numbers))
 
 ;termlist
 (def empty-termlist?
@@ -247,9 +248,13 @@
   (let [multiplying-factor (java.lang.Math/pow (get-leading-coefficient t2) (inc (- (term-list-order t1) (term-list-order t2))))]
     (second (apply div-terms (map #(mul-term-by-all-terms % 0 multiplying-factor) [t1 t2])))))
 
+(defn reduce-coefficients[termlist]
+  (let [divisor (reduce gcd (coefficients termlist))]
+    (mul-term-by-all-terms termlist 0 (make-rat 1 divisor))))
+
 (defn gcd-terms[t1 t2]
   (if (empty-termlist? t2)
-      t1
+      (reduce-coefficients t1)
     (gcd-terms t2 (pseudoremainder-terms t1 t2))))
 
 (defn gcd-poly[q1 q2]
