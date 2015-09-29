@@ -243,13 +243,14 @@
               [(adjoin-term new-term (first rest-result)) (second rest-result)]
             ))))))
 
-(defn remainder-terms[t1 t2]
-  (second (div-terms t1 t2)))
+(defn pseudoremainder-terms[t1 t2]
+  (let [multiplying-factor (java.lang.Math/pow (get-leading-coefficient t2) (inc (- (term-list-order t1) (term-list-order t2))))]
+    (second (apply div-terms (map #(mul-term-by-all-terms % 0 multiplying-factor) [t1 t2])))))
 
 (defn gcd-terms[t1 t2]
   (if (empty-termlist? t2)
       t1
-    (gcd-terms t2 (remainder-terms t1 t2))))
+    (gcd-terms t2 (pseudoremainder-terms t1 t2))))
 
 (defn gcd-poly[q1 q2]
   (let [[p1 p2] (to-shared-variable q1 q2)]
