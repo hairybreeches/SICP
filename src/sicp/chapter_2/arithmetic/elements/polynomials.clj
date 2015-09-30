@@ -48,6 +48,9 @@
 (defmethod variables ::termlist [termlist]
   (mapcat variables (coefficients termlist)))
 
+(defn sub-terms[t1 t2]
+  (add-terms t1 (mul-term-by-all-terms t2 0 -1)))
+
 ;sparse termlist representation
 (defn make-term[order coeff]
   (list order coeff))
@@ -234,12 +237,9 @@
           (let [new-term-coefficient (div (get-leading-coefficient l1) (get-leading-coefficient l2))
                 new-term-order (- l1-order l2-order)
                 new-term (make-term new-term-order new-term-coefficient)
-                result (make-sparse-termlist new-term)
-                to-poly (partial make-poly 'e)]
+                result (make-sparse-termlist new-term)]
             (let [rest-result (div-terms
-                                 (term-list
-                                    (sub (to-poly l1)
-                                         (mul (to-poly result) (to-poly l2))))
+                               (sub-terms l1 (mul-terms result l2))
                                  l2)]
               [(adjoin-term new-term (first rest-result)) (second rest-result)]
             ))))))

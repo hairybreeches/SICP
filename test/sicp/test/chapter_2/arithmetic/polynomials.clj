@@ -302,6 +302,12 @@
 (deftest can-divide-rat-polynomials-with-remainder
   (is (= [linear-rat linear-rat] (div-poly (add cubic-rat linear-rat) quadratic-rat))))
 
+(deftest can-divide-with-constant-remainder
+  (is (= [(make-poly 'a (make-sparse-termlist (make-term 0 1)))
+          (make-poly 'a (make-sparse-termlist (make-term 0 -1)))]
+         (div-poly (make-poly 'a (make-dense-termlist 1 -1))
+                   (make-poly 'a (make-dense-termlist 1 0))))))
+
 ;variable retrieval
 (deftest can-get-variable-from-dense-polynomial
   (is (= '(x) (get-variables linear-rat-dense))))
