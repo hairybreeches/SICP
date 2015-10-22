@@ -1,15 +1,39 @@
 (ns sicp.chapter-2.pairs
   (:use clojure.math.numeric-tower))
 
-(defn cons-pair [x y]
-  (ref #(% x y)))
+(defn- cons-pair-value
+  [p q]
+  #(% p q))
 
-(defn car [pair]
-  (@pair (fn [p q] p)))
+(defn cons-pair
+  [p q]
+  (ref (cons-pair-value p q)))
 
-(defn cdr [pair]
-  (@pair (fn [p q] q)))
+(defn- car-value
+  [pair-value]
+  (pair-value (fn [p q] p)))
 
+(defn car
+  [pair]
+  (car-value @pair))
+
+(defn- cdr-value
+  [pair-value]
+  (pair-value (fn [p q] q)))
+
+(defn cdr
+  [pair]
+  (cdr-value @pair))
+
+(defn set-cdr!
+  [pair new-cdr]
+  (dosync
+   (alter pair #(cons-pair (car-value %) new-cdr))))
+
+(defn set-car!
+  [pair new-car]
+  (dosync
+    (alter pair #(cons-pair new-car (cdr-value %)))))
 
 
 (defn num-cons[x y]
