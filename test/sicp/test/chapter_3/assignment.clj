@@ -81,6 +81,16 @@
                1))
 
 
+(deftest can-generate-not-very-random-numbers
+  (is (= (rand-seeded :generate) 1))
+  (is (= (rand-seeded :generate) 2))
+  (is (= (rand-seeded :generate) 3))
+  (is (= (rand-seeded :generate) 4))
+  (is (= ((rand-seeded :reset) 91) 91))
+  (is (= (rand-seeded :generate) 92))
+  (is (= (rand-seeded :generate) 93)))
+
+
 
 
 

@@ -102,6 +102,26 @@
         proportion-of-border-box (monte-carlo number-of-tests integration-test)]
       (* proportion-of-border-box (box-area border-box))))
 
+(def current-rand (ref 0))
+
+(defn iterate-rand
+  []
+  (dosync
+   ;this pseudorandom implementation is quite predictable.
+   (alter current-rand inc)
+   @current-rand))
+
+(defn reset-rand
+  [seed]
+  (dosync
+   (ref-set current-rand seed)
+   @current-rand))
+
+(defn rand-seeded
+  [dispatch-value]
+  (cond (= dispatch-value :generate) (iterate-rand)
+        (= dispatch-value :reset) reset-rand))
+
 
 
 
