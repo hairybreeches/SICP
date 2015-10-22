@@ -90,6 +90,21 @@
   (is (= (rand-seeded :generate) 92))
   (is (= (rand-seeded :generate) 93)))
 
+(deftest joint-account-shares-balance
+  (let [original (make-account 30 :original-password)
+        joint-account (make-joint original :original-password :joint-password)]
+
+    (is (= ((original :original-password :withdraw) 10) 20))
+    (is (= ((joint-account :joint-password :withdraw) 20) 0))))
+
+
+(deftest cannot-access-accounts-with-other-password
+  (let [original (make-account 1000 :original-password)
+        joint-account (make-joint original :joint-password :joint-password)]
+
+    (is (= ((original :joint-password :withdraw) 10) "Incorrect password"))
+    (is (= ((joint-account :original-password :withdraw) 10) "Incorrect password"))))
+
 
 
 

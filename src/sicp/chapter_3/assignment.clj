@@ -26,10 +26,9 @@
   []
   (fn[& _] "Police called"))
 
-(defn make-account
-  [initial-balance password]
-  (let [balance (ref initial-balance)
-        incorrect-attempts (ref 0)]
+(defn- make-account-access
+  [balance password]
+  (let [incorrect-attempts (ref 0)]
 
     (defn withdraw
         [amount]
@@ -49,6 +48,7 @@
       [m]
       (cond (= m :withdraw) withdraw
             (= m :deposit) deposit
+            (= m :get-ref) balance
             :else (throw (Exception. (str "Unknown Request " m " in make-account")))))
 
 
@@ -64,8 +64,21 @@
                  (fn [& _] "Incorrect password")
                  (call-the-police)))))
 
-
     password-dispatch))
+
+(defn make-account
+  [initial-balance password]
+  (make-account-access
+    (ref initial-balance)
+    password))
+
+(defn make-joint
+  [account existing-password joint-password]
+  (make-account-access
+     (account existing-password :get-ref)
+     joint-password))
+
+
 
 (defn monte-carlo
   [trials experiment]
