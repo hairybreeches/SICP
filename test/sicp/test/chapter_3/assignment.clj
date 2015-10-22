@@ -17,3 +17,11 @@
     (is (= (monitored-square :how-many-calls) 3))
     (monitored-square :reset-count)
     (is (= (monitored-square :how-many-calls) 0))))
+
+
+(deftest can-make-account
+  (let [account (make-account 250)]
+      (is (= ((account :deposit) 20) 270))
+      (is (= ((account :withdraw) 30) 240))
+      (is (= ((account :withdraw) 300) "Insufficient funds"))
+      (is (= ((account :deposit) 500) 740))))

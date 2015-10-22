@@ -22,3 +22,33 @@
                        (apply to-monitor args))))))
 
 
+(defn make-account
+  [initial-balance]
+  (let [balance (ref initial-balance)]
+
+    (defn withdraw
+        [amount]
+        (dosync
+          (if (>= @balance amount)
+              (do (alter balance - amount)
+                  @balance)
+              "Insufficient funds")))
+
+    (defn deposit
+      [amount]
+      (dosync
+       (alter balance + amount)
+       @balance))
+
+    (defn dispatch
+      [m]
+      (cond (= m :withdraw) withdraw
+            (= m :deposit) deposit
+            :else (throw (Exception. (str "Unknown Request " m " in make-account")))))
+
+    dispatch))
+
+
+
+
+
