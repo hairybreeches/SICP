@@ -1,4 +1,5 @@
-(ns sicp.chapter-3.assignment)
+(ns sicp.chapter-3.assignment
+  (:use sicp.chapter-2.plane-geometry))
 
 
 (defn make-accumulator
@@ -65,6 +66,67 @@
 
 
     password-dispatch))
+
+(defn monte-carlo
+  [trials experiment]
+   (loop [trials-remaining trials
+          trials-passed 0]
+     (cond (= trials-remaining 0) (/ trials-passed trials)
+           (experiment) (recur (dec trials-remaining) (inc trials-passed))
+           :else (recur (dec trials-remaining) trials-passed))))
+
+(defn random-in-range
+  [low high]
+  (let [diff (- high low)]
+    (+ low (rand diff))))
+
+(defn point-in-box
+  [{x-min :x-min x-max :x-max y-min :y-min y-max :y-max}]
+  (make-point
+    (random-in-range x-min x-max)
+    (random-in-range y-min y-max)))
+
+(defn box-area
+  [{x-min :x-min x-max :x-max y-min :y-min y-max :y-max}]
+  (*
+    (- x-max x-min)
+    (- y-max y-min )))
+
+
+(defn monte-carlo-integration
+  [border-box
+   predicate
+   number-of-tests]
+
+  (let [integration-test (fn [] (predicate (point-in-box border-box)))
+        proportion-of-border-box (monte-carlo number-of-tests integration-test)]
+      (* proportion-of-border-box (box-area border-box))))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

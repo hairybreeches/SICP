@@ -1,6 +1,9 @@
 (ns sicp.test.chapter-3.assignment
   (:use clojure.test)
-  (:use sicp.chapter-3.assignment))
+  (:use sicp.chapter-3.assignment)
+  (:use sicp.chapter-1.ex-16)
+  (:use sicp.chapter-2.plane-geometry)
+  (:use sicp.test.assertions))
 
 (deftest can-accumulate
   (let [accumulator (make-accumulator 12)]
@@ -55,3 +58,49 @@
       (is (= ((account :password2 :withdraw) 20) "Incorrect password"))
       (is (= ((account :password2 :withdraw) 20) "Incorrect password"))
       (is (= ((account :password2 :withdraw) 20) "Police called"))))
+
+(defn circle-of-radius-3-predicate
+  [point]
+  (<= (+
+        (square (- (x-point point) 5))
+        (square (- (y-point point) 7)))
+      9))
+
+(def box-containing-circle
+  {:x-min 2
+   :x-max 8
+   :y-min 4
+   :y-max 10})
+
+
+(deftest monte-carlo-integration-circle
+  (is-roughly= (monte-carlo-integration box-containing-circle
+                                        circle-of-radius-3-predicate
+                                        100000)
+               (* 9 java.lang.Math/PI)
+               1))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
