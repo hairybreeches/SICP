@@ -20,8 +20,9 @@
 
 
 (deftest can-make-account
-  (let [account (make-account 250)]
-      (is (= ((account :deposit) 20) 270))
-      (is (= ((account :withdraw) 30) 240))
-      (is (= ((account :withdraw) 300) "Insufficient funds"))
-      (is (= ((account :deposit) 500) 740))))
+  (let [account (make-account 250 :password1)]
+      (is (= ((account :password1 :deposit) 20) 270))
+      (is (= ((account :password1 :withdraw) 30) 240))
+      (is (= ((account :password1 :withdraw) 300) "Insufficient funds"))
+      (is (= ((account :password2 :withdraw) 12) "Incorrect password"))
+      (is (= ((account :password1 :deposit) 500) 740))))

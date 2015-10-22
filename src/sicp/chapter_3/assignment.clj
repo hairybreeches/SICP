@@ -23,7 +23,7 @@
 
 
 (defn make-account
-  [initial-balance]
+  [initial-balance password]
   (let [balance (ref initial-balance)]
 
     (defn withdraw
@@ -46,7 +46,15 @@
             (= m :deposit) deposit
             :else (throw (Exception. (str "Unknown Request " m " in make-account")))))
 
-    dispatch))
+
+    (defn password-dispatch
+      [password-attempt & args]
+      (if (= password password-attempt)
+          (apply dispatch args)
+          (fn [& _] "Incorrect password")))
+
+
+    password-dispatch))
 
 
 
