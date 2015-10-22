@@ -105,6 +105,27 @@
     (is (= ((original :joint-password :withdraw) 10) "Incorrect password"))
     (is (= ((joint-account :original-password :withdraw) 10) "Incorrect password"))))
 
+(def spooky-state (ref 0))
+
+(defn f
+  [n]
+  (dosync
+    (let [last-value @spooky-state]
+      (ref-set spooky-state n)
+      last-value)))
+
+(deftest evaluation-order-matters-left-to-right
+  (dosync (ref-set spooky-state 0))
+  (let [a (f 0)
+        b (f 1)]
+    (is (= (+ a b) 0))))
+
+(deftest evaluation-order-matters-right-to-left
+  (dosync (ref-set spooky-state 0))
+  (let [b (f 1)
+        a (f 0)]
+    (is (= (+ a b) 1))))
+
 
 
 
