@@ -1,14 +1,16 @@
 (ns sicp.chapter-2.pairs
   (:use clojure.math.numeric-tower))
 
-(defn func-cons [x y]
-  #(% x y))
+(defn cons-pair [x y]
+  (ref #(% x y)))
 
-(defn func-car [pair]
-  (pair (fn [p q] p)))
+(defn car [pair]
+  (@pair (fn [p q] p)))
 
-(defn func-cdr [pair]
-  (pair (fn [p q] q)))
+(defn cdr [pair]
+  (@pair (fn [p q] q)))
+
+
 
 (defn num-cons[x y]
   (* (expt 2 x)

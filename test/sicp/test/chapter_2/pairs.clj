@@ -9,7 +9,7 @@
     (is (= (cdr-impl pair) 7))))
 
 (deftest test-functional-pairs
-  (test-pairs func-cons func-car func-cdr))
+  (test-pairs cons-pair car cdr))
 
 (deftest test-numerical-pairs
   (test-pairs num-cons num-car num-cdr))

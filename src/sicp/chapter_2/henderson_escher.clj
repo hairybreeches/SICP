@@ -60,16 +60,16 @@
   (first (rest (rest frame))))
 
 (defn make-frame-pair[origin edge1 edge2]
-  (func-cons origin (func-cons edge1 edge2)))
+  (cons-pair origin (cons-pair edge1 edge2)))
 
 (defn origin-frame-pair[frame]
-  (func-car frame))
+  (car frame))
 
 (defn edge1-frame-pair[frame]
-  (func-car (func-cdr frame)))
+  (car (cdr frame)))
 
 (defn edge2-frame-pair[frame]
-  (func-cdr (func-cdr frame)))
+  (cdr (cdr frame)))
 
 (defn frame-coord-map[frame]
   (fn [v]

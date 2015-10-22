@@ -70,22 +70,22 @@
 ;only the selectors and constructors need to change if we change the representation of mobiles
 ;(weight? would need to be changed if we stopped representing weight structures as a simple integer.
 (defn make-mobile [left right]
-  (func-cons left right))
+  (cons-pair left right))
 
 (defn make-branch [length structure]
-  (func-cons length structure))
+  (cons-pair length structure))
 
 (defn left-branch[mobile]
-  (func-car mobile))
+  (car mobile))
 
 (defn right-branch[mobile]
-  (func-cdr mobile))
+  (cdr mobile))
 
 (defn branch-length[branch]
-  (func-car branch))
+  (car branch))
 
 (defn branch-structure[branch]
-  (func-cdr branch))
+  (cdr branch))
 
 (defn weight? [structure]
   (number? structure))
