@@ -26,3 +26,32 @@
       (is (= ((account :password1 :withdraw) 300) "Insufficient funds"))
       (is (= ((account :password2 :withdraw) 12) "Incorrect password"))
       (is (= ((account :password1 :deposit) 500) 740))))
+
+
+(deftest getting-password-wrong-seven-times-calls-police
+  (let [account (make-account 250 :password1)]
+      (is (= ((account :password2 :withdraw) 20) "Incorrect password"))
+      (is (= ((account :password2 :withdraw) 20) "Incorrect password"))
+      (is (= ((account :password2 :withdraw) 20) "Incorrect password"))
+      (is (= ((account :password2 :withdraw) 20) "Incorrect password"))
+      (is (= ((account :password2 :withdraw) 20) "Incorrect password"))
+      (is (= ((account :password2 :withdraw) 20) "Incorrect password"))
+      (is (= ((account :password2 :withdraw) 20) "Police called"))))
+
+
+(deftest correct-password-resets-count
+  (let [account (make-account 250 :password1)]
+      (is (= ((account :password2 :withdraw) 20) "Incorrect password"))
+      (is (= ((account :password2 :withdraw) 20) "Incorrect password"))
+      (is (= ((account :password2 :withdraw) 20) "Incorrect password"))
+      (is (= ((account :password2 :withdraw) 20) "Incorrect password"))
+      (is (= ((account :password2 :withdraw) 20) "Incorrect password"))
+      (is (= ((account :password2 :withdraw) 20) "Incorrect password"))
+      (is (= ((account :password1 :withdraw) 20) 230))
+      (is (= ((account :password2 :withdraw) 20) "Incorrect password"))
+      (is (= ((account :password2 :withdraw) 20) "Incorrect password"))
+      (is (= ((account :password2 :withdraw) 20) "Incorrect password"))
+      (is (= ((account :password2 :withdraw) 20) "Incorrect password"))
+      (is (= ((account :password2 :withdraw) 20) "Incorrect password"))
+      (is (= ((account :password2 :withdraw) 20) "Incorrect password"))
+      (is (= ((account :password2 :withdraw) 20) "Police called"))))
