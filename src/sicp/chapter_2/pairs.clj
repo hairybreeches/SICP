@@ -43,12 +43,12 @@
 (defn set-cdr!
   [pair new-cdr]
   (dosync
-   (alter pair #(cons-pair (car-value %) new-cdr))))
+   (alter pair #(cons-pair-value (car-value %) new-cdr))))
 
 (defn set-car!
   [pair new-car]
   (dosync
-    (alter pair #(cons-pair new-car (cdr-value %)))))
+    (alter pair #(cons-pair-value new-car (cdr-value %)))))
 
 
 (defn num-cons[x y]
