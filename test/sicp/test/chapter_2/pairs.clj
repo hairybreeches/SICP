@@ -9,6 +9,9 @@
     (is (= (cdr-impl pair) 7))))
 
 (deftest test-functional-pairs
+  (test-pairs func-cons func-car func-cdr))
+
+(deftest test-hash-pairs
   (test-pairs cons-pair car cdr))
 
 (deftest test-numerical-pairs
