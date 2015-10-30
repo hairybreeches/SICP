@@ -10,9 +10,14 @@
 (defn func-cdr [pair]
   (pair (fn [p q] q)))
 
+(defn pair? [obj]
+  (if (= (type obj) clojure.lang.Ref)
+      (= (type @obj) ::pair)
+      false))
 
 (defn- cons-pair-value
   [p q]
+  ^{:type ::pair}
   {:car p :cdr q})
 
 (defn cons-pair
