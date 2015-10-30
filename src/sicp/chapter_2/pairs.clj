@@ -50,33 +50,6 @@
   (dosync
     (alter pair #(cons-pair-value new-car (cdr-value %)))))
 
-(defn make-list
-  [length]
-    (if (= length 0)
-        nil
-        (cons-pair length (make-list (dec length)))))
-
-(defn find-tail
-  [pair-list]
-  (loop [pair-list pair-list]
-    (if (nil? (cdr pair-list))
-        pair-list
-        (recur (cdr pair-list)))))
-
-(defn make-cycle
-  [length]
-  (let [head (make-list length)
-        tail (find-tail head)]
-    (set-cdr! tail head)
-    head))
-
-(defn make-cycle-with-tail
-  [cycle-length tail-length]
-   (let [pair-cycle (make-cycle cycle-length)
-         head (make-list tail-length)]
-     (set-cdr! (find-tail head) pair-cycle)
-     head))
-
 (defn num-cons[x y]
   (* (expt 2 x)
      (expt 3 y)))
