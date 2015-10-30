@@ -21,6 +21,17 @@
               {:count (+ 1 left-count right-count) :counted all-counted})))
   (:count (count-pairs-inner x #{})))
 
+;there is a solution which doesn't butcher the structure, but not too bad!
+
+;the tortoise and the hare algorithm holds two pointers,
+;one "a" which moves along one per step and another "b" which moves along two per step.
+
+;obviously if at any stage we run out of elements, there is no cycle.
+
+;if at any stage "a" and "b" are equal then we clearly have a cycle ("b" has caught up with "a")
+
+;the clever part is that because "b" catches up on "a" one item every iteration once they enter a cycle,
+;no matter where "b" is when "a" first enters the cycle, sooner or later "b" will catch and land on "a"
 (defn contains-cycle?
   [x]
   (if (not (pair? x))
