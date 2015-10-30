@@ -20,3 +20,16 @@
               {right-count :count all-counted :counted} (count-pairs-inner (cdr object) left-counted)]
               {:count (+ 1 left-count right-count) :counted all-counted})))
   (:count (count-pairs-inner x #{})))
+
+(defn contains-cycle?
+  [x]
+  (if (not (pair? x))
+      false
+      (loop [pair x]
+        (let [nxt (cdr pair)]
+          (cond
+            (not (pair? nxt)) false
+            (= nxt pair) true
+            :else (do (set-cdr! pair (cdr nxt))
+                      (recur nxt)))))))
+
