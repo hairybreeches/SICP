@@ -4,54 +4,27 @@
 
 (defn- front-pointer
   [queue]
-  ((queue :get-front)))
+  (car queue))
 
 (defn- rear-pointer
   [queue]
-  ((queue :get-rear)))
+  (cdr queue))
 
 (defn- set-rear-pointer!
   [queue item]
-  ((queue :set-rear) item))
+  (set-cdr! queue item))
 
 (defn- set-front-pointer!
   [queue item]
-  ((queue :set-front) item))
-
-(defn make-queue
-  []
-  (let [front-pointer (ref nil)
-        rear-pointer (ref nil)]
-
-    (defn front-pointer-private
-      []
-      @front-pointer)
-
-    (defn rear-pointer-private
-      []
-      @rear-pointer)
-
-    (defn set-front-pointer-private!
-      [item]
-      (dosync
-       (ref-set front-pointer item)))
-
-    (defn set-rear-pointer-private!
-      [item]
-      (dosync
-       (ref-set rear-pointer item)))
-
-    (defn dispatch
-      [m]
-      (cond (= m :set-front) set-front-pointer-private!
-            (= m :set-rear) set-rear-pointer-private!
-            (= m :get-front) front-pointer-private
-            (= m :get-rear) rear-pointer-private))
-    dispatch))
+  (set-car! queue item))
 
 (defn empty-queue?
   [queue]
   (nil? (front-pointer queue)))
+
+(defn make-queue
+  []
+  (cons-pair nil nil))
 
 (defn front-queue
   [queue]
