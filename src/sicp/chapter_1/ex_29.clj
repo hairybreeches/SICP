@@ -23,6 +23,7 @@
 
 (defn simpson-integral [f from to n]
   (let [h (/ (- to from) n)]
+    ;here
     (defn term [x]
       (* (f (float x)) (non-y-coefficient x from to h)))
     (* (/ h 3) (sum term from #(+ % h) to))))
