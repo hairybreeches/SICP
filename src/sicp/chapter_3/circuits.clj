@@ -20,8 +20,8 @@
     (procedure)))
 
 (defn make-wire
-  []
-  (let [signal-value (ref 0)
+  ([initial-value]
+  (let [signal-value (ref initial-value)
         action-procedures (ref '())
 
         set-my-signal!
@@ -42,6 +42,7 @@
                   (= m :add-action!) accept-action-procedure!))]
 
     dispatch))
+  ([] (make-wire 0)))
 
 ;primitive gates
 (defn- update
