@@ -33,7 +33,7 @@
         accept-action-procedure!
         (fn [proc]
           (dosync
-            (alter action-procedures cons proc)
+            (alter action-procedures #(cons proc %))
             (proc)))
 
         dispatch
