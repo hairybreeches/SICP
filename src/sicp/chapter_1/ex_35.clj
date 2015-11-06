@@ -3,8 +3,9 @@
   (:use clojure.math.numeric-tower))
 
 (defn fixed-point [f first-guess tolerance]
-  ;here
-  (defn close-enough? [guess next-guess]
-    (< (abs (- guess next-guess)) tolerance))
-  ((iterative-improve close-enough? f) first-guess))
+
+  (let [close-enough? (fn [guess next-guess]
+                          (< (abs (- guess next-guess)) tolerance))]
+
+  ((iterative-improve close-enough? f) first-guess)))
 
