@@ -168,7 +168,7 @@
          ins2 bigendian-ins2
          outs bigendian-outs
          carry carry]
-      (if (every? empty? ins1 ins2 outs)
+      (if (every? empty? [ins1 ins2 outs])
           nil
           (let [new-carry (make-wire)]
                (full-adder (first ins1) (first ins2) new-carry (first outs) carry)

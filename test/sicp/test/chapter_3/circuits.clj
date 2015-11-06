@@ -87,3 +87,31 @@
   (test-composite-or 1 1 1))
 
 
+(defn run-ripple-adder
+  [digits-in1
+   digits-in2]
+  (let [wires-in1 (map make-wire digits-in1)
+        wires-in2 (map make-wire digits-in2)
+        wires-out (map (fn [_] (make-wire)) digits-in1)
+        carry-wire (make-wire)
+        adder (ripple-adder wires-in1 wires-in2 wires-out carry-wire)
+        wait-time (+ (* (count wires-in1) (+ (* 3 3) 2 5)) 2 3 5)]
+    (wait wait-time)
+    (map
+      get-signal
+      (cons carry-wire wires-out))))
+
+(deftest test-ripple-adder-7-and-5
+  (is
+    (=
+      (run-ripple-adder
+       [1 1 1]
+       [1 0 1])
+      [1 1 0 0])))
+
+
+
+
+
+
+
