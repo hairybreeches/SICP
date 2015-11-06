@@ -17,8 +17,8 @@
   (first (filter #(not (nil? %)) (map #(get-record % id) files))))
 
 (defn make-from-real-imag[x y]
-  ;here
-  (defn dispatch[op]
+
+  (fn dispatch[op]
     (cond (= op 'real-part) x
           (= op 'imag-part) y
           (= op 'magnitude) (sqrt (+ (expt x 2) (expt y 2)))
@@ -26,8 +26,8 @@
           :else (throw (Exception. (str "Unknown operator " op " make-from-real-imag"))))))
 
 (defn make-from-polar[magnitude angle]
-  ;here
-  (defn dispatch[op]
+
+  (fn dispatch[op]
     (cond (= op 'real-part) (* magnitude (java.lang.Math/cos angle))
           (= op 'imag-part) (* magnitude (java.lang.Math/sin angle))
           (= op 'magnitude) magnitude
