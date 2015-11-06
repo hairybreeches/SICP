@@ -52,3 +52,19 @@
   (test-and 1 1 1))
 
 
+(defn test-or
+  [in1 in2 out]
+  (let [wire1-in (make-wire in1)
+        wire2-in (make-wire in2)
+        wire-out (make-wire)
+        or-box (or-gate wire1-in wire2-in wire-out)]
+
+    (test-component wire-out 5 out)))
+
+(deftest test-or-box
+  (test-or 0 0 0)
+  (test-or 0 1 1)
+  (test-or 1 0 1)
+  (test-or 1 1 1))
+
+
