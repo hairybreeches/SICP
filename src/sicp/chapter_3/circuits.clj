@@ -22,7 +22,7 @@
 (defn make-wire
   ([initial-value]
   (let [signal-value (ref initial-value)
-        action-procedures (ref '())
+        action-procedures (ref [])
 
         set-my-signal!
         (fn [new-value]
