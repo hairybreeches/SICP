@@ -86,6 +86,21 @@
   (test-composite-or 1 0 1)
   (test-composite-or 1 1 1))
 
+(defn run-half-adder
+  [in1
+   in2]
+  (let [[wire1-in wire2-in] (map make-wire [in1 in2])
+        wire-out (make-wire)
+        wire-carry-out (make-wire)
+        adder (half-adder wire1-in wire2-in wire-out wire-carry-out)]
+    (wait 8)
+    (map get-signal [wire-carry-out wire-out])))
+
+(deftest test-half-adder
+  (is (= [0 0] (run-half-adder 0 0)))
+  (is (= [0 1] (run-half-adder 0 1)))
+  (is (= [0 1] (run-half-adder 1 0)))
+  (is (= [1 1] (run-half-adder 1 1))))
 
 (defn run-full-adder
   [in1
