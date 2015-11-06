@@ -28,32 +28,32 @@
 
 (defn- make-account-access
   [balance password]
-  (let [incorrect-attempts (ref 0)]
-;here
-    (defn withdraw
-        [amount]
+  (let [incorrect-attempts (ref 0)
+
+    withdraw
+    (fn [amount]
         (dosync
           (if (>= @balance amount)
               (do (alter balance - amount)
                   @balance)
               "Insufficient funds")))
 
-    (defn deposit
-      [amount]
+   deposit
+   (fn [amount]
       (dosync
        (alter balance + amount)
        @balance))
 
-    (defn dispatch
-      [m]
+    dispatch
+    (fn [m]
       (cond (= m :withdraw) withdraw
             (= m :deposit) deposit
             (= m :get-ref) balance
             :else (throw (Exception. (str "Unknown Request " m " in make-account")))))
 
 
-    (defn password-dispatch
-      [password-attempt & args]
+    password-dispatch
+    (fn [password-attempt & args]
       (if (= password password-attempt)
           (dosync
              (ref-set incorrect-attempts 0)
@@ -62,7 +62,7 @@
              (alter incorrect-attempts inc)
              (if (< @incorrect-attempts 7)
                  (fn [& _] "Incorrect password")
-                 (call-the-police)))))
+                 (call-the-police)))))]
 
     password-dispatch))
 
