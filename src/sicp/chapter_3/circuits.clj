@@ -160,19 +160,15 @@
 
 (defn ripple-adder
   [ins1 ins2 outs carry]
-  (let [bigendian-ins1 (reverse ins1)
-        bigendian-ins2 (reverse ins2)
-        bigendian-outs (reverse outs)]
-
-    (loop [ins1 bigendian-ins1
-         ins2 bigendian-ins2
-         outs bigendian-outs
-         carry carry]
+    (loop [ins1 (reverse ins1)
+         ins2 (reverse ins2)
+         outs (reverse outs)
+         carry-out carry]
       (if (every? empty? [ins1 ins2 outs])
           nil
-          (let [new-carry (make-wire)]
-               (full-adder (first ins1) (first ins2) new-carry (first outs) carry)
-               (recur (rest ins1) (rest ins2) (rest outs) new-carry))))))
+          (let [carry-in (make-wire)]
+               (full-adder (first ins1) (first ins2) carry-in (first outs) carry-out)
+               (recur (rest ins1) (rest ins2) (rest outs) carry-in)))))
 
 
 
