@@ -100,7 +100,7 @@
   (is (= [0 0] (run-half-adder 0 0)))
   (is (= [0 1] (run-half-adder 0 1)))
   (is (= [0 1] (run-half-adder 1 0)))
-  (is (= [1 1] (run-half-adder 1 1))))
+  (is (= [1 0] (run-half-adder 1 1))))
 
 (defn run-full-adder
   [in1
