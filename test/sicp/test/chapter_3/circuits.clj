@@ -87,6 +87,28 @@
   (test-composite-or 1 1 1))
 
 
+(defn run-full-adder
+  [in1
+   in2
+   carry-in]
+  (let [[wire1-in wire2-in wire-carry-in] (map make-wire [in1 in2 carry-in])
+        wire-out (make-wire)
+        wire-carry-out (make-wire)
+        adder (full-adder wire1-in wire2-in wire-carry-in wire-out wire-carry-out)]
+    (wait 14)
+    (map get-signal [wire-carry-out wire-out])))
+
+(deftest test-full-adder
+  (is (= [1 1] (run-full-adder 1 1 1)))
+  (is (= [1 0] (run-full-adder 1 1 0)))
+  (is (= [1 0] (run-full-adder 1 0 1)))
+  (is (= [1 0] (run-full-adder 0 1 1)))
+  (is (= [0 1] (run-full-adder 0 0 1)))
+  (is (= [0 1] (run-full-adder 0 1 0)))
+  (is (= [0 1] (run-full-adder 1 0 0)))
+  (is (= [0 0] (run-full-adder 0 0 0))))
+
+
 (defn run-ripple-adder
   [digits-in1
    digits-in2]
