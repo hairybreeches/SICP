@@ -62,6 +62,16 @@
   (make-box output logical-or or-gate-delay in1 in2))
 
 ;circuits
+(defn composite-or
+  [in1 in2 output]
+  (let [a (make-wire)
+        b (make-wire)
+        c (make-wire)]
+    (inverter in1 a)
+    (inverter in2 b)
+    (and-gate a b c)
+    (inverter c output)))
+
 (defn half-adder
   [a b s c]
   (let [d (make-wire)
