@@ -3,27 +3,52 @@
   (:use sicp.chapter-3.circuits))
 
 
+(defn check-value-for
+  [increments wire expected-value]
+  (doseq [i (range increments)]
+    (increment-time!)
+    (is (= (get-signal wire) expected-value))))
+
+
+(defn test-component
+  [wire-out update-delay eventual-value]
+
+  ;the base state of the wire is 0
+  (is (= (get-signal wire-out) 0))
+
+  ;for one less than the update delay, the wire doesn't update
+  (check-value-for (dec update-delay) wire-out 0)
+
+  ;after the update delay, the component has worked, and the signal should be updated
+  (increment-time!)
+  (is (= (get-signal wire-out) eventual-value)))
+
 (defn test-inverter
-  [input-value ultimate-output]
+  [input-value eventual-value]
   (let [wire-in (make-wire input-value)
         wire-out (make-wire)
         inverter (inverter wire-in wire-out)]
-
-    ;the base state of the wire is 0
-    (is (= (get-signal wire-out) 0))
-
-    (increment-time!)
-    ;after one time, the inverter has not worked yet (it has a delay of two)
-    (is (= (get-signal wire-out) 0))
-
-    (increment-time!)
-    ;after two time, the inverter has worked, and the signal should be the inverse of the input
-    (is (= (get-signal wire-out) ultimate-output))))
-
-
+    (test-component wire-out 2 eventual-value)))
 
 (deftest an-inverter-inverts-its-initial-current-when-its-zero
   (test-inverter 1 0))
 
 (deftest an-inverter-inverts-its-initial-current-when-its-one
   (test-inverter 0 1))
+
+(defn test-and
+  [in1 in2 out]
+  (let [wire1-in (make-wire in1)
+        wire2-in (make-wire in2)
+        wire-out (make-wire)
+        and-box (and-gate wire1-in wire2-in wire-out)]
+
+    (test-component wire-out 3 out)))
+
+(deftest test-and-box
+  (test-and 0 0 0)
+  (test-and 0 1 0)
+  (test-and 1 0 0)
+  (test-and 1 1 1))
+
+
