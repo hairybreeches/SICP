@@ -2,17 +2,46 @@
 
 ;wires
 (defn get-signal
-  [wire])
+  [wire]
+  (wire :get-signal))
 
 (defn set-signal!
-  [wire new-value])
+  [wire new-value]
+  ((wire :set-signal!) new-value))
 
 (defn add-action!
-  [wire action])
+  [wire action]
+  ((wire :add-action!) action))
+
+(defn- call-each
+  [procedures]
+  (doseq
+    [procedure procedures]
+    (procedure)))
 
 (defn make-wire
   []
-  )
+  (let [signal-value (ref 0)
+        action-procedures (ref '())
+
+        set-my-signal!
+        (fn [new-value]
+            (if (not (= new-value @signal-value))
+                (dosync (ref-set signal-value new-value)
+                        (call-each @action-procedures))))
+
+        accept-action-procedure!
+        (fn [proc]
+          (alter action-procedures cons proc)
+          (proc))
+
+        dispatch
+        (fn [m]
+            (cond (= m :get-signal) @signal-value
+                  (= m :set-signal!) set-my-signal!
+                  (= m :add-action!) accept-action-procedure!))]
+
+    dispatch))
 
 ;primitive gates
 (defn- update
