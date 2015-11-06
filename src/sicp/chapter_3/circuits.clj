@@ -98,14 +98,14 @@
   (cond (= signal 0) 1
         (= signal 1) 0))
 
-(defn inverter-delay 2)
+(def inverter-delay 2)
 
 (defn inverter
   [input output]
   (make-box output logical-not inverter-delay input))
 
 ;and
-(defn and-gate-delay 3)
+(def and-gate-delay 3)
 
 (defn- logical-and
   [a1 a2]
@@ -117,7 +117,7 @@
   (make-box output logical-and and-gate-delay in1 in2))
 
 ;or
-(defn or-gate-delay 5)
+(def or-gate-delay 5)
 
 (defn logical-or
   [o1 o2]
