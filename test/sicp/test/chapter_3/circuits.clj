@@ -138,6 +138,31 @@
       get-signal
       (cons carry-wire wires-out))))
 
+(deftest test-ripple-adder-one-digit-sums
+  (is (= (run-ripple-adder [0] [0]) [0 0]))
+  (is (= (run-ripple-adder [0] [1]) [0 1]))
+  (is (= (run-ripple-adder [1] [0]) [0 1]))
+  (is (= (run-ripple-adder [1] [1]) [1 0])))
+
+(deftest test-ripple-adder-two-digit-sums
+  (is (= (run-ripple-adder [0 0] [0 0]) [0 0 0]))
+  (is (= (run-ripple-adder [0 1] [0 0]) [0 0 1]))
+  (is (= (run-ripple-adder [1 0] [0 0]) [0 1 0]))
+  (is (= (run-ripple-adder [1 1] [0 0]) [0 1 1]))
+  (is (= (run-ripple-adder [0 0] [0 1]) [0 0 1]))
+  (is (= (run-ripple-adder [0 1] [0 1]) [0 1 0]))
+  (is (= (run-ripple-adder [1 0] [0 1]) [0 1 1]))
+  (is (= (run-ripple-adder [1 1] [0 1]) [1 0 0]))
+  (is (= (run-ripple-adder [0 0] [1 0]) [0 1 0]))
+  (is (= (run-ripple-adder [0 1] [1 0]) [0 1 1]))
+  (is (= (run-ripple-adder [1 0] [1 0]) [1 0 0]))
+  (is (= (run-ripple-adder [1 1] [1 0]) [1 0 1]))
+  (is (= (run-ripple-adder [0 0] [1 1]) [0 1 1]))
+  (is (= (run-ripple-adder [0 1] [1 1]) [1 0 0]))
+  (is (= (run-ripple-adder [1 0] [1 1]) [1 0 1]))
+  (is (= (run-ripple-adder [1 1] [1 1]) [1 1 0])))
+
+
 (deftest test-ripple-adder-7-and-5
   (is
     (=
