@@ -32,8 +32,9 @@
 
         accept-action-procedure!
         (fn [proc]
-          (alter action-procedures cons proc)
-          (proc))
+          (dosync
+            (alter action-procedures cons proc)
+            (proc)))
 
         dispatch
         (fn [m]
@@ -43,6 +44,38 @@
 
     dispatch))
   ([] (make-wire 0)))
+
+;the agenda
+(defn make-agenda
+  []
+  (let [now (ref 0)
+        actions (ref {})
+
+        increment-time!
+        (fn []
+          (dosync
+           (alter now inc)
+           (call-each (@actions @now))))
+
+        add-action!
+        (fn [wait action]
+          (dosync
+            (alter actions (partial merge-with concat) {(+ now wait) '(action)})))
+
+        dispatch
+        (fn [m]
+          (cond (= m :add-action!) add-action!
+                (= m :increment-time!) (increment-time!)))]
+    dispatch))
+
+(def agenda (make-agenda))
+
+(defn increment-time! []
+  (agenda :increment-time!))
+
+(defn after-delay
+  [wait action]
+  ((agenda :add-action!) wait action))
 
 ;primitive gates
 (defn- update
