@@ -11,6 +11,13 @@
   [wire action])
 
 ;primitive gates
+(defn- make-update
+  [output operation wait & inputs]
+  (let [new-value (apply operation (map get-signal inputs))]
+    (after-delay
+     wait
+     (partial set-signal! output new-value))))
+
 ;inverter
 (defn- logical-not
   [signal]
@@ -21,38 +28,53 @@
 
 
 (defn- invert-output
-  [input output]
-  (let [new-value (logical-not (get-signal input))]
-    (after-delay
-     inverter-delay
-     (partial set-signal! output new-value))))
+  [output input]
+  (make-update output logical-not inverter-delay input))
 
 
 (defn inverter
   [input output]
   (add-action!
    input
-   (partial invert-output input output)))
+   (partial invert-output output input)))
 
 ;and
-
 (defn and-gate-delay 3)
 
+(defn- logical-and
+  [a1 a2]
+  (cond (= 1 a1 a2) 1
+        :else 0))
+
 (defn- and-action
-  [a1 a2 output]
-  (let [new-value (logical-and
-                   (get-signal a1)
-                   (get-signal a2))]
-    (after-delay
-      and-gate-delay
-      (partial set-signal! output new-value))))
+  [output in1 in2]
+  (make-update output logical-and and-gate-delay in1 in2))
 
 
 (defn and-gate
-  [a1 a2 output]
-  (let [action (partial and-action a1 a2 ouput)]
-    (add-action! a1 action)
-    (add-action! a2 action)))
+  [in1 in2 output]
+  (let [action (partial and-action output in1 in2)]
+    (add-action! in1 action)
+    (add-action! in2 action)))
+
+;or
+(defn or-gate-delay 5)
+
+(defn logical-or
+  [o1 o2]
+  (cond (= 0 o1 o2) 0
+        :else 1))
+
+(defn- or-action
+  [output in1 in2]
+  (make-update output logical-or or-gate-delay in1 in2))
+
+(defn or-gate
+  [in1 in2 output]
+  (let [action (partial or-action output in1 in2)]
+    (add-action! in1 action)
+    (add-action! in2 action)))
+
 
 
 ;circuits
