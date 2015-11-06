@@ -110,7 +110,7 @@
         wire-out (make-wire)
         wire-carry-out (make-wire)
         adder (full-adder wire1-in wire2-in wire-carry-in wire-out wire-carry-out)]
-    (wait 14)
+    (wait 16)
     (map get-signal [wire-carry-out wire-out])))
 
 (deftest test-full-adder
