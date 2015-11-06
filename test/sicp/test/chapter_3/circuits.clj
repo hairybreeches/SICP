@@ -9,8 +9,12 @@
     (increment-time!)
     (is (= (get-signal wire) expected-value))))
 
+(defn wait
+  [wait]
+  (doseq [i (range wait)]
+    (increment-time!)))
 
-(defn test-component
+(defn test-primitive-component
   [wire-out update-delay eventual-value]
 
   ;the base state of the wire is 0
@@ -28,7 +32,7 @@
   (let [wire-in (make-wire input-value)
         wire-out (make-wire)
         inverter (inverter wire-in wire-out)]
-    (test-component wire-out 2 eventual-value)))
+    (test-primitive-component wire-out 2 eventual-value)))
 
 (deftest an-inverter-inverts-its-initial-current-when-its-zero
   (test-inverter 1 0))
@@ -43,7 +47,7 @@
         wire-out (make-wire)
         and-box (and-gate wire1-in wire2-in wire-out)]
 
-    (test-component wire-out 3 out)))
+    (test-primitive-component wire-out 3 out)))
 
 (deftest test-and-box
   (test-and 0 0 0)
@@ -59,12 +63,27 @@
         wire-out (make-wire)
         or-box (or-gate wire1-in wire2-in wire-out)]
 
-    (test-component wire-out 5 out)))
+    (test-primitive-component wire-out 5 out)))
 
 (deftest test-or-box
   (test-or 0 0 0)
   (test-or 0 1 1)
   (test-or 1 0 1)
   (test-or 1 1 1))
+
+(defn test-composite-or
+  [in1 in2 out]
+  (let [wire1-in (make-wire in1)
+        wire2-in (make-wire in2)
+        wire-out (make-wire)
+        composite-or-box (or-gate wire1-in wire2-in wire-out)]
+    (wait 7)
+    (is (= (get-signal wire-out) out))))
+
+(deftest test-composite-or-box
+  (test-composite-or 0 0 0)
+  (test-composite-or 0 1 1)
+  (test-composite-or 1 0 1)
+  (test-composite-or 1 1 1))
 
 
