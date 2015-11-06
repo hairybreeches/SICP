@@ -60,7 +60,7 @@
         add-action!
         (fn [wait action]
           (dosync
-            (alter actions (partial merge-with concat) {(+ @now wait) '(action)})))
+            (alter actions (partial merge-with concat) {(+ @now wait) [action]})))
 
         dispatch
         (fn [m]
