@@ -151,7 +151,8 @@
         wires-out (map (fn [_] (make-wire)) digits-in1)
         carry-wire (make-wire)
         adder (ripple-adder wires-in1 wires-in2 wires-out carry-wire)
-        wait-time (+ (* (count wires-in1) (+ (* 3 3) 2 5)) 2 3 5)]
+        digits (count wires-in1)
+        wait-time (* 16 digits)]
     (wait wait-time)
     (map
       get-signal

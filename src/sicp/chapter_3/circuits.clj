@@ -160,9 +160,9 @@
 
 (defn ripple-adder
   [ins1 ins2 outs carry]
-    (loop [ins1 (reverse ins1)
-         ins2 (reverse ins2)
-         outs (reverse outs)
+    (loop [ins1 ins1
+         ins2 ins2
+         outs outs
          carry-out carry]
       (if (every? empty? [ins1 ins2 outs])
           nil
