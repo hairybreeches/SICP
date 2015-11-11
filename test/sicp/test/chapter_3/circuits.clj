@@ -49,6 +49,25 @@
 
     (test-primitive-component wire-out 3 out)))
 
+
+(deftest updates-processed-in-correct-order
+  (let [wire1-in (make-wire 0)
+        wire2-in (make-wire 1)
+        wire-out (make-wire)
+        and-box (and-gate wire1-in wire2-in wire-out)]
+
+    ;wait for signals to update
+    (wait 3)
+
+    (set-signal! wire1-in 1)
+    (set-signal! wire2-in 0)
+    (wait 3)
+
+    (is (=
+         (get-signal wire-out)
+         0))))
+
+
 (deftest test-and-box
   (test-and 0 0 0)
   (test-and 0 1 0)
