@@ -1,4 +1,5 @@
-(ns sicp.chapter-3.propagation_of_constraints)
+(ns sicp.chapter-3.propagation_of_constraints
+  (:use clojure.math.numeric-tower))
 
 (defn has-value?
   [connector]
@@ -203,6 +204,36 @@
     (adder a b a-plus-b)
     (multiplier average two-connector a-plus-b)
     :ok))
+
+(defn squarer
+  [root square]
+  (let [me (ref false)
+
+        process-new-value
+        (fn []
+          (if (has-value? square)
+            (if (< (get-value square) 0)
+                (throw (Exception. (str "Square less than 0: " (get-value square))))
+                (set-value! root (sqrt (get-value square)) @me))
+            (set-value! square (* (get-value root) (get-value root)) @me)))
+
+        process-forget-value
+          (fn []
+            (forget-value! root @me)
+            (forget-value! square @me))]
+
+    (dosync
+     (ref-set me (fn [request]
+       (cond
+        (= request :i-have-a-value) (process-new-value)
+        (= request :i-lost-my-value) (process-forget-value))))
+
+      (connect root @me)
+      (connect square @me)
+      @me)))
+
+
+
 
 
 
