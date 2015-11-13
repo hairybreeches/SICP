@@ -5,8 +5,7 @@
 (deftest celsius-to-fahrenheit-conversion
   (let
     [C (make-connector)
-     F (make-connector)
-     converter (celsius-to-fahrenheit-converter C F)]
+     F (celsius-to-fahrenheit-converter C)]
 
     (set-value! C 25 :user)
     (is (= (get-value F) 77))

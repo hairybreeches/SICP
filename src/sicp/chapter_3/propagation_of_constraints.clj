@@ -209,17 +209,8 @@
     conn))
 
 (defn celsius-to-fahrenheit-converter
-  [c f]
-  (let
-    [u (make-connector)
-     v (make-connector)
-     w (cv 9)
-     x (cv 5)
-     y (cv 32)]
-    (multiplier c w u)
-    (multiplier v x u)
-    (adder v y f)
-    :ok))
+  [c]
+  (c+ (c-div (c* c (cv 9)) (cv 5)) (cv 32)))
 
 (defn averager
   [a b average]
