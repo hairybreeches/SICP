@@ -178,20 +178,47 @@
         (= request :connect) connect)))
      @me)))
 
+(defn c+
+  [a1 a2]
+  (let [sum (make-connector)]
+    (adder a1 a2 sum)
+    sum))
+
+(defn c*
+  [m1 m2]
+  (let [product (make-connector)]
+    (multiplier m1 m2 product)
+    product))
+
+(defn c-
+  [sum a1]
+  (let [a2 (make-connector)]
+    (adder a1 a2 sum)
+    a2))
+
+(defn c-div
+  [product m1]
+  (let [m2 (make-connector)]
+    (multiplier m1 m2 product)
+    m2))
+
+(defn cv
+  [value]
+  (let [conn (make-connector)]
+    (constant value conn)
+    conn))
+
 (defn celsius-to-fahrenheit-converter
   [c f]
   (let
     [u (make-connector)
      v (make-connector)
-     w (make-connector)
-     x (make-connector)
-     y (make-connector)]
+     w (cv 9)
+     x (cv 5)
+     y (cv 32)]
     (multiplier c w u)
     (multiplier v x u)
     (adder v y f)
-    (constant 9 w)
-    (constant 5 x)
-    (constant 32 y)
     :ok))
 
 (defn averager
@@ -231,6 +258,7 @@
       (connect root @me)
       (connect square @me)
       @me)))
+
 
 
 
