@@ -213,15 +213,8 @@
   (c+ (c-div (c* c (cv 9)) (cv 5)) (cv 32)))
 
 (defn averager
-  [a b average]
-  (let
-    [a-plus-b (make-connector)
-     two-connector (make-connector)
-     two (constant 2 two-connector)]
-
-    (adder a b a-plus-b)
-    (multiplier average two-connector a-plus-b)
-    :ok))
+  [a b]
+  (c-div (c+ a b) (cv 2)))
 
 (defn squarer
   [root square]

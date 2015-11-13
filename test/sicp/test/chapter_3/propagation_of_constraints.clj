@@ -18,8 +18,7 @@
 (deftest averager-test
   (let [a (make-connector)
         b (make-connector)
-        average (make-connector)]
-    (averager a b average)
+        average (averager a b)]
 
     (set-value! a 2 :user)
     (set-value! b 4 :user)
