@@ -102,7 +102,8 @@
           (not ((first mutexes) :release))
           (recur (rest mutexes)))))
 
-
+;interestingly, everyone else viewed this problem as "use a mutex to block access to the count of locks taken"
+;this kinda makes more sense, but still.
 (defn make-semaphore-mutex
   [max-n on-failure]
   (let [mutexes (->>(iterate (fn [_] (make-mutex (fn[mutex]))) 0)
