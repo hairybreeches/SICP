@@ -1,12 +1,25 @@
 (ns sicp.chapter-3.streams)
 
+(defn memo-proc
+  [proc]
+  (let [run (ref false)
+        value (ref false)]
+    (fn []
+      (if (not @run)
+          (dosync
+            (ref-set value (proc))
+            (ref-set run true)))
+      @value)))
+
+
+
 (defn force-stream
   [value]
   (value))
 
 (defmacro delay-stream
   [form]
-  `(fn [] ~form))
+  `(memo-proc (fn [] ~form)))
 
 (defmacro cons-stream
   [car-form cdr-form]
