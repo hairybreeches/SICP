@@ -38,3 +38,40 @@
     (mutex :release)
     (mutex :acquire)
     (is (= @failure-count 0))))
+
+(deftest unacquired-semaphore-can-be-acquired-n-times
+  (let [failure-count (ref 0)
+        on-failure (release-after failure-count 3)
+        semaphore (make-semaphore-count 4 on-failure)]
+
+    (semaphore :acquire)
+    (semaphore :acquire)
+    (semaphore :acquire)
+    (semaphore :acquire)
+    (is (= @failure-count 0))))
+
+(deftest fully-acquired-semaphore-blocks
+  (let [failure-count (ref 0)
+        on-failure (release-after failure-count 3)
+        semaphore (make-semaphore-count 4 on-failure)]
+
+    (semaphore :acquire)
+    (semaphore :acquire)
+    (semaphore :acquire)
+    (semaphore :acquire)
+    (semaphore :acquire)
+    (is (= @failure-count 3))))
+
+(deftest restored-semaphore-doesnt-block
+  (let [failure-count (ref 0)
+        on-failure (release-after failure-count 3)
+        semaphore (make-semaphore-count 4 on-failure)]
+
+    (semaphore :acquire)
+    (semaphore :acquire)
+    (semaphore :acquire)
+    (semaphore :acquire)
+    (semaphore :release)
+    (semaphore :acquire)
+    (is (= @failure-count 0))))
+
