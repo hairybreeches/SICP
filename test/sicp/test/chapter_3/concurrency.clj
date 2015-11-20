@@ -96,6 +96,20 @@
 (deftest restored-mutex-semaphore-doesnt-block
   (restored-semaphore-doesnt-block make-semaphore-mutex))
 
+(deftest can-swap-balances-with-serialized-exchange
+  (let [account1 (make-account 40)
+        account2 (make-account 20)]
+    (serialized-exchange account1 account2)
+    (is (= (account1 :balance) 20))
+    (is (= (account2 :balance) 40))))
+
+(deftest can-swap-balances-with-serialized-exchange-accounts-reversed
+  (let [account1 (make-account 10)
+        account2 (make-account 25)]
+    (serialized-exchange account2 account1)
+    (is (= (account1 :balance) 25))
+    (is (= (account2 :balance) 10))))
+
 
 
 

@@ -127,6 +127,71 @@
     the-semaphore)))
 
 
+(defn make-serializer
+  []
+  (let [mutex (make-mutex (fn [_] ))]
+    (fn [p]
+       (fn [& args]
+          (mutex :acquire)
+          (let [value (apply p args)]
+                   (mutex :release)
+                   value)))))
+
+(defn exchange
+  [account1 account2]
+  (let [difference (- (account1 :balance)
+                      (account2 :balance))]
+    ((account1 :withdraw) difference)
+    ((account2 :deposit) difference)))
+
+(def account-index (ref 0))
+
+(defn generate-account-index
+  []
+  (dosync
+    (alter account-index inc)))
+
+
+(defn make-account
+  [initial-balance]
+  (let [balance (ref initial-balance)
+        account-index (generate-account-index)
+        withdraw
+        (fn [amount]
+          (if (>= @balance amount)
+              (dosync
+               (alter balance #(- % amount)))
+              (throw (Exception. "insufficient funds"))))
+
+        deposit
+        (fn [amount]
+          (dosync
+               (alter balance #(+ % amount))))
+
+        serializer (make-serializer)]
+
+
+        (fn [m]
+          (cond
+           (= m :withdraw) withdraw
+           (= m :deposit) deposit
+           (= m :serializer) serializer
+           (= m :index) account-index
+           (= m :balance) @balance))))
+
+ (defn serialized-exchange
+  [account1 account2]
+  (if (> (account2 :index)
+         (account1 :index))
+      (serialized-exchange account2 account1)
+      (let [serializer1 (account1 :serializer)
+            serializer2 (account2 :serializer)]
+        ((serializer1 (serializer2 exchange))
+         account1
+         account2))))
+
+
+
 
 
 
