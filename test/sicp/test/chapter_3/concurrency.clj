@@ -4,11 +4,15 @@
 
 
 (defn release-after [failure-count release-after]
-  (fn [mutex]
-    (dosync
-     (alter failure-count inc)
-     (if (>= @failure-count release-after)
-          (mutex :release)))))
+  (let [failures-since-last-release (ref 0)]
+    (fn [mutex]
+      (dosync
+       (alter failure-count inc)
+       (alter failures-since-last-release inc)
+       (if (>= @failures-since-last-release release-after)
+           (do
+             (ref-set failures-since-last-release 0)
+             (mutex :release)))))))
 
 
 (deftest unacquired-mutex-acquired-straight-away
