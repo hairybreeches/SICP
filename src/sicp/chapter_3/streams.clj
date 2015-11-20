@@ -21,7 +21,7 @@
   [form]
   `(memo-proc (fn [] ~form)))
 
-(defmacro cons-stream
+(defmacro stream-cons
   [car-form cdr-form]
   `(let [cdr# (delay-stream ~cdr-form)
          car# ~car-form]
@@ -32,33 +32,33 @@
                (= m# :cdr)
                cdr#))))
 
-(defn car-stream
+(defn stream-car
   [stream]
   (stream :car))
 
-(defn cdr-stream
+(defn stream-cdr
   [stream]
   (force-stream (stream :cdr)))
 
 (defn empty-stream?
   [stream]
-  (= (car-stream stream) :empty-stream))
+  (= (stream-car stream) :empty-stream))
 
 (def empty-stream
-  (cons-stream :empty-stream (throw (Exception. "Cannot find the cdr of the empty stream"))))
+  (stream-cons :empty-stream (throw (Exception. "Cannot find the cdr of the empty stream"))))
 
 (defn stream->list
   [stream]
   (if (empty-stream? stream)
       `()
-       (cons (car-stream stream)
-             (stream->list (cdr-stream stream)))))
+       (cons (stream-car stream)
+             (stream->list (stream-cdr stream)))))
 
 (defn stream-enumerate-interval
   [low high]
   (if (> low high)
       empty-stream
-      (cons-stream
+      (stream-cons
        low
        (stream-enumerate-interval (inc low) high))))
 
@@ -66,9 +66,9 @@
   [proc & argstreams]
     (if (empty-stream? (first argstreams))
         empty-stream
-        (cons-stream
-           (apply proc (map car-stream argstreams))
-           (apply stream-map proc (map cdr-stream argstreams)))))
+        (stream-cons
+           (apply proc (map stream-car argstreams))
+           (apply stream-map proc (map stream-cdr argstreams)))))
 
 (defn stream-ref
   [s n]
@@ -76,8 +76,8 @@
     [s s
      n n]
   (if (= n 0)
-      (car-stream s)
-      (recur (cdr-stream s)
+      (stream-car s)
+      (recur (stream-cdr s)
              (dec n)))))
 
 (defn stream-filter
@@ -89,13 +89,13 @@
    (empty-stream? stream)
    empty-stream
 
-   (pred (car-stream stream))
-   (cons-stream (car-stream stream)
+   (pred (stream-car stream))
+   (stream-cons (stream-car stream)
                 (stream-filter pred
-                               (cdr-stream stream)))
+                               (stream-cdr stream)))
 
    :else
-   (recur (cdr-stream stream)))))
+   (recur (stream-cdr stream)))))
 
 
 
