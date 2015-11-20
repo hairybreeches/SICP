@@ -26,3 +26,35 @@
 (defn cdr-stream
   [stream]
   (force-stream (stream :cdr)))
+
+(defn empty-stream?
+  [stream]
+  (= (car-stream stream) :empty-stream))
+
+(def empty-stream
+  (cons-stream :empty-stream (throw (Exception. "Cannot find the cdr of the empty stream"))))
+
+(defn stream->list
+  [stream]
+  (if (empty-stream? stream)
+      `()
+       (cons (car-stream stream)
+             (stream->list (cdr-stream stream)))))
+
+(defn stream-enumerate-interval
+  [low high]
+  (if (> low high)
+      empty-stream
+      (cons-stream
+       low
+       (stream-enumerate-interval (inc low) high))))
+
+(defn stream-map
+  [proc & argstreams]
+    (if (empty-stream? (first argstreams))
+        empty-stream
+        (cons-stream
+           (apply proc (map car-stream argstreams))
+           (apply stream-map proc (map cdr-stream argstreams)))))
+
+
