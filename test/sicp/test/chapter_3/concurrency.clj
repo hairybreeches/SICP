@@ -39,10 +39,11 @@
     (mutex :acquire)
     (is (= @failure-count 0))))
 
-(deftest unacquired-semaphore-can-be-acquired-n-times
+(defn unacquired-semaphore-can-be-acquired-n-times
+  [make-semaphore]
   (let [failure-count (ref 0)
         on-failure (release-after failure-count 3)
-        semaphore (make-semaphore-count 4 on-failure)]
+        semaphore (make-semaphore 4 on-failure)]
 
     (semaphore :acquire)
     (semaphore :acquire)
@@ -50,10 +51,11 @@
     (semaphore :acquire)
     (is (= @failure-count 0))))
 
-(deftest fully-acquired-semaphore-blocks
+(defn fully-acquired-semaphore-blocks
+  [make-semaphore]
   (let [failure-count (ref 0)
         on-failure (release-after failure-count 3)
-        semaphore (make-semaphore-count 4 on-failure)]
+        semaphore (make-semaphore 4 on-failure)]
 
     (semaphore :acquire)
     (semaphore :acquire)
@@ -62,10 +64,11 @@
     (semaphore :acquire)
     (is (= @failure-count 3))))
 
-(deftest restored-semaphore-doesnt-block
+(defn restored-semaphore-doesnt-block
+  [make-semaphore]
   (let [failure-count (ref 0)
         on-failure (release-after failure-count 3)
-        semaphore (make-semaphore-count 4 on-failure)]
+        semaphore (make-semaphore 4 on-failure)]
 
     (semaphore :acquire)
     (semaphore :acquire)
@@ -74,4 +77,31 @@
     (semaphore :release)
     (semaphore :acquire)
     (is (= @failure-count 0))))
+
+(deftest unacquired-count-semaphore-can-be-acquired-n-times
+  (unacquired-semaphore-can-be-acquired-n-times make-semaphore-count))
+
+(deftest fully-acquired-count-semaphore-blocks
+  (fully-acquired-semaphore-blocks make-semaphore-count))
+
+(deftest restored-count-semaphore-doesnt-block
+  (restored-semaphore-doesnt-block make-semaphore-count))
+
+(deftest unacquired-mutex-semaphore-can-be-acquired-n-times
+  (unacquired-semaphore-can-be-acquired-n-times make-semaphore-mutex))
+
+(deftest fully-acquired-mutex-semaphore-blocks
+  (fully-acquired-semaphore-blocks make-semaphore-mutex))
+
+(deftest restored-mutex-semaphore-doesnt-block
+  (restored-semaphore-doesnt-block make-semaphore-mutex))
+
+
+
+
+
+
+
+
+
 

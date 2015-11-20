@@ -2,7 +2,14 @@
 
 (defn- clear!
   [cell]
-  (dosync (ref-set cell false)))
+  (dosync
+   (if @cell
+
+      (do
+        (ref-set cell false)
+        true)
+
+      false)))
 
 (defn- test-and-set!
   [cell]
@@ -29,7 +36,10 @@
                       (the-mutex :acquire)))
 
                 (= m :release)
-                (clear! cell)))]
+                (clear! cell)
+
+                (= m :try-acquire)
+                (not (test-and-set! cell))))]
     (dosync
      (ref-set the-mutex dispatch)
     the-mutex)))
@@ -69,3 +79,71 @@
     (dosync
      (ref-set the-semaphore dispatch)
     the-semaphore)))
+
+
+(defn- acquire-a-mutex
+  [mutexes]
+  (loop [mutexes mutexes]
+    (cond (empty? mutexes)
+          true
+
+          ((first mutexes) :try-acquire)
+          false
+
+          :else
+          (recur (rest mutexes)))))
+
+(defn- release-a-mutex
+  [mutexes]
+  (loop [mutexes mutexes]
+    (cond (empty? mutexes)
+          (throw (Exception. "No acquired mutexes!"))
+
+          (not ((first mutexes) :release))
+          (recur (rest mutexes)))))
+
+
+(defn make-semaphore-mutex
+  [max-n on-failure]
+  (let [mutexes (->>(iterate (fn [_] (make-mutex (fn[mutex]))) 0)
+                    (drop 1)
+                    (take max-n))
+
+
+        the-semaphore (ref false)
+
+        dispatch (fn [m]
+          (cond (= m :acquire)
+                (if (acquire-a-mutex mutexes)
+                    (do
+                      (on-failure the-semaphore)
+                      (the-semaphore :acquire)))
+
+                (= m :release)
+                (release-a-mutex mutexes)))]
+    (dosync
+     (ref-set the-semaphore dispatch)
+    the-semaphore)))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
