@@ -70,4 +70,32 @@
            (apply proc (map car-stream argstreams))
            (apply stream-map proc (map cdr-stream argstreams)))))
 
+(defn stream-ref
+  [s n]
+  (loop
+    [s s
+     n n]
+  (if (= n 0)
+      (car-stream s)
+      (recur (cdr-stream s)
+             (dec n)))))
+
+(defn stream-filter
+  [pred stream]
+  (loop
+    [stream stream]
+  (cond
+
+   (empty-stream? stream)
+   empty-stream
+
+   (pred (car-stream stream))
+   (cons-stream (car-stream stream)
+                (stream-filter pred
+                               (cdr-stream stream)))
+
+   :else
+   (recur (cdr-stream stream)))))
+
+
 
