@@ -133,5 +133,18 @@
 (def factorials
   (stream-cons 1 (mul-streams factorials (stream-cdr integers))))
 
+(defn partial-sums
+  [stream]
+  (let [partial-sum (ref false)]
+    (dosync
+      (ref-set partial-sum
+               (stream-cons
+                      (stream-car stream)
+                      (add-streams
+                        (stream-cdr stream)
+                        @partial-sum))))
+    @partial-sum))
+
+
 
 

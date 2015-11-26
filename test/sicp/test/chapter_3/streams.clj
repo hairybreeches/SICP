@@ -88,6 +88,9 @@
 (deftest stream-factorials
   (is (= '(1 2 6 24 120 720) (stream-take 6 factorials))))
 
+(deftest can-find-partial-sums
+  (is (= '(1 3 6 10 15 21) (stream-take 6 (partial-sums integers)))))
+
 
 
 
