@@ -98,6 +98,14 @@
   (is (= '(1 4 2 8 5 7 1 4) (stream-take 8 (expand 1 7 10))))
   (is (= '(3 7 5 0 0 0 0 0) (stream-take 8 (expand 3 8 10)))))
 
+(deftest cos-squared-plus-sin-squared
+  (is (= '(1 0 0 0 0 0 0 0) (stream-take 8
+                                         (add-streams (mul-series cosine-series cosine-series)
+                                                      (mul-series sine-series sine-series))))))
+
+(deftest sinx-roughly-x-for-smallx
+  (is (= '(0 1) (stream-take 2 sine-series))))
+
 
 
 

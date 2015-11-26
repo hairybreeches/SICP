@@ -176,6 +176,35 @@
    (quot (* numer radix) denom)
    (expand (rem (* numer radix) denom) denom radix)))
 
+(defn div-streams
+  [numer denom]
+  (mul-streams numer
+               (stream-map #(/ 1 %) denom)))
+
+(defn integrate-series
+  [series]
+  (div-streams series
+               integers))
+
+(def cosine-series)
+
+(def sine-series
+  (stream-cons 0 (integrate-series cosine-series)))
+
+(def cosine-series
+  (stream-cons 1 (scale-stream -1 (integrate-series sine-series))))
+
+(defn mul-series
+  [s1 s2]
+  (stream-cons
+    (* (stream-car s1)
+       (stream-car s2))
+    (mul-series
+     (scale-stream (stream-car s1) (stream-cdr s2))
+     (scale-stream (stream-car s2) (stream-cdr s1)))))
+
+
+
 
 
 
