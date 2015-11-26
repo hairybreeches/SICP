@@ -145,16 +145,20 @@
                         @partial-sum))))
     @partial-sum))
 
-(defn stream-merge
+(defn stream-merge-pair
   [stream1 stream2]
   (cond
     (empty-stream? stream1) stream2
     (empty-stream? stream2) stream1
     :else (let [s1car (stream-car stream1)
                 s2car (stream-car stream2)]
-            (cond (< s1car s2car) (stream-cons s1car (stream-merge (stream-cdr stream1) stream2))
-                  (> s1car s2car) (stream-cons s2car (stream-merge (stream-cdr stream2) stream1))
-                  :else (stream-cons s1car (stream-merge (stream-cdr stream1) (stream-cdr stream2)))))))
+            (cond (< s1car s2car) (stream-cons s1car (stream-merge-pair (stream-cdr stream1) stream2))
+                  (> s1car s2car) (stream-cons s2car (stream-merge-pair (stream-cdr stream2) stream1))
+                  :else (stream-cons s1car (stream-merge-pair (stream-cdr stream1) (stream-cdr stream2)))))))
+
+(defn stream-merge
+  [& streams]
+  (reduce stream-merge-pair streams))
 
 (defn scale-stream
   [n stream]
@@ -163,9 +167,8 @@
 (def hamming
   (stream-cons 1 (stream-merge
                    (scale-stream 2 hamming)
-                   (stream-merge
-                      (scale-stream 3 hamming)
-                      (scale-stream 5 hamming)))))
+                   (scale-stream 3 hamming)
+                   (scale-stream 5 hamming))))
 
 
 
