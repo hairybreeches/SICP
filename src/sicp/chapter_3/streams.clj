@@ -112,8 +112,26 @@
                   result)
            (stream-cdr stream))))))
 
+(defn add-streams
+  [& args]
+  (apply stream-map + args))
+
+(def ones
+  (stream-cons 1 ones))
+
+(def integers
+  (stream-cons 1 (add-streams ones integers)))
+
+
 (def powers-of-two
-  (stream-cons 1 (stream-map + powers-of-two powers-of-two)))
+  (stream-cons 1 (add-streams powers-of-two powers-of-two)))
+
+(defn mul-streams
+  [& args]
+  (apply stream-map * args))
+
+(def factorials
+  (stream-cons 1 (mul-streams factorials (stream-cdr integers))))
 
 
 
