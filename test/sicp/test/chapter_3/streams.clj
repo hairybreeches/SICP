@@ -107,6 +107,13 @@
   (is (= '(0 1) (stream-take 2 sine-series))))
 
 
+(deftest can-generate-tan-series
+  (is (= '() (stream-take 12 tan-series))))
+
+(deftest can-generate-inverse
+  (is (= '() (stream-take 5 (invert-series-with-constant-term-one (list->series '(-1 1)))))))
+
+
 
 
 

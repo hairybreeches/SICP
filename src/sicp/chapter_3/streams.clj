@@ -203,6 +203,54 @@
      (scale-stream (stream-car s1) (stream-cdr s2))
      (scale-stream (stream-car s2) (stream-cdr s1)))))
 
+(defn invert-series-with-constant-term-one
+  [series]
+  (let [inverse (ref false)]
+    (dosync
+      (ref-set inverse
+        (stream-cons
+         1
+         (scale-stream
+              -1
+              (mul-series
+                   (stream-cdr series)
+                    @inverse)))))
+      @inverse))
+
+(defn invert-series
+  [series]
+  (if (= (stream-car series) 0)
+      (throw (Exception. "Cannot divide by a stream with zero constant term"))
+      (scale-stream
+         (/ 1 (stream-car series))
+         (invert-series-with-constant-term-one series))))
+
+(defn div-series
+  [numer denom]
+  (mul-series numer (invert-series denom)))
+
+(def tan-series
+  (div-series sine-series cosine-series))
+
+(defn list->stream
+  [l]
+  (if
+    (empty? l)
+    empty-stream
+    (stream-cons (first l) (list->stream (rest l)))))
+
+(def zeroes
+  (stream-cons 0 zeroes))
+
+(defn list->series
+  [l]
+  (if (empty? l)
+      zeroes
+      (stream-cons (first l)
+                   (list->series (rest l)))))
+
+
+
 
 
 
