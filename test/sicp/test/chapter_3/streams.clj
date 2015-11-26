@@ -94,6 +94,10 @@
 (deftest hamming-numbers
   (is (= '(1 2 3 4 5 6 8 9 10 12 15 16 18 20) (stream-take 14 hamming))))
 
+(deftest division-expansions
+  (is (= '(1 4 2 8 5 7 1 4) (stream-take 8 (expand 1 7 10))))
+  (is (= '(3 7 5 0 0 0 0 0) (stream-take 8 (expand 3 8 10)))))
+
 
 
 

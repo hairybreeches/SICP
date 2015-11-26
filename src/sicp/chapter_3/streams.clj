@@ -170,6 +170,12 @@
                    (scale-stream 3 hamming)
                    (scale-stream 5 hamming))))
 
+(defn expand
+  [numer denom radix]
+  (stream-cons
+   (quot (* numer radix) denom)
+   (expand (rem (* numer radix) denom) denom radix)))
+
 
 
 
