@@ -97,5 +97,23 @@
    :else
    (recur (stream-cdr stream)))))
 
+(defn stream-take
+  [n stream]
+  (reverse
+    (loop [n n
+           result '()
+           stream stream]
+
+      (if (= n 0)
+          result
+          (recur
+            (dec n)
+            (cons (stream-car stream)
+                  result)
+           (stream-cdr stream))))))
+
+(def powers-of-two
+  (stream-cons 1 (stream-map + powers-of-two powers-of-two)))
+
 
 
