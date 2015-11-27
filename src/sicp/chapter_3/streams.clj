@@ -219,7 +219,8 @@
 
 (defn invert-series
   [series]
-  (if (= (stream-car series) 0)
+  (let [scaling-factor (stream-car series)]
+  (if (= scaling-factor 0)
       (throw (Exception. "Cannot divide by a stream with zero constant term"))
       (scale-stream
          (/ 1 scaling-factor)
