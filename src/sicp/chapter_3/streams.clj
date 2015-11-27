@@ -317,8 +317,23 @@
   [tolerance]
   (stream-limit super-accelerated-log2-approximations tolerance))
 
+(defn stream-interleave-pair
+  [s t]
+  (if (empty-stream? s)
+      t
+      (stream-cons (stream-car s)
+                   (stream-interleave-pair t (stream-cdr s)))))
 
+(defn stream-interleave
+  [& args]
+  (reduce stream-interleave-pair args))
 
+(defn pairs
+  [s t]
+  (stream-cons [(stream-car s) (stream-car t)]
+        (stream-interleave
+         (stream-map (fn [x] [(stream-car s) x]) (stream-cdr t))
+         (pairs (stream-cdr s) (stream-cdr t)))))
 
 
 

@@ -137,7 +137,11 @@
 (deftest can-get-log2-reasonably-accurately
   (is-roughly= (get-log2 0.00000001) (java.lang.Math/log 2) 7))
 
+(def integer-pairs
+  (pairs integers integers))
 
+(deftest pair-ordering
+  (is (= [1 100] (stream-ref integer-pairs 197))))
 
 
 
