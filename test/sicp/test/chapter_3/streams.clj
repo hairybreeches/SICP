@@ -98,10 +98,8 @@
   (is (= '(1 4 2 8 5 7 1 4) (stream-take 8 (expand 1 7 10))))
   (is (= '(3 7 5 0 0 0 0 0) (stream-take 8 (expand 3 8 10)))))
 
-(deftest cos-squared-plus-sin-squared
-  (is (= '(1 0 0 0 0 0 0 0) (stream-take 8
-                                         (add-streams (mul-series cosine-series cosine-series)
-                                                      (mul-series sine-series sine-series))))))
+(deftest adding-multiple-streams
+  (is (= '(3 3 3 3) (stream-take 4 (add-streams ones ones ones)))))
 
 (deftest sinx-roughly-x-for-smallx
   (is (= '(0 1 0 -1/6 0 1/120) (stream-take 6 sine-series))))
@@ -109,7 +107,13 @@
 (deftest cosx-expansion
   (is (= '(1 0 -1/2 0 1/24 0) (stream-take 6 cosine-series))))
 
+(deftest cos-squared
+  (is (= '(1 0 0 0 0 0 0 0) (stream-take 8 (mul-series cosine-series cosine-series)))))
 
+(deftest cos-squared-plus-sin-squared
+  (is (= '(1 0 0 0 0 0 0 0) (stream-take 8
+                                         (add-streams (mul-series cosine-series cosine-series)
+                                                      (mul-series sine-series sine-series))))))
 (deftest can-generate-tan-series
   (is (= '() (stream-take 12 tan-series))))
 
