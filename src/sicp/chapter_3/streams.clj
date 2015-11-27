@@ -199,9 +199,10 @@
   (stream-cons
     (* (stream-car s1)
        (stream-car s2))
-    (mul-series
-     (scale-stream (stream-car s1) (stream-cdr s2))
-     (scale-stream (stream-car s2) (stream-cdr s1)))))
+    (add-streams
+       (scale-stream (stream-car s1) (stream-cdr s2))
+       (scale-stream (stream-car s2) (stream-cdr s1))
+       (stream-cons 0 (mul-series (stream-cdr s1) (stream-cdr s2))))))
 
 (defn- invert-series-with-constant-term-one
   [series]
