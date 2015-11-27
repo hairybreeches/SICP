@@ -114,7 +114,7 @@
   (is (= '() (stream-take 12 tan-series))))
 
 (deftest can-generate-inverse
-  (is (= '() (stream-take 5 (invert-series-with-constant-term-one (list->series '(-1 1)))))))
+  (is (= '(1 1 1 1 1) (stream-take 5 (invert-series (list->series '(1 -1)))))))
 
 
 
