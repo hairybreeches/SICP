@@ -222,8 +222,8 @@
   (if (= (stream-car series) 0)
       (throw (Exception. "Cannot divide by a stream with zero constant term"))
       (scale-stream
-         (/ 1 (stream-car series))
-         (invert-series-with-constant-term-one series))))
+         (/ 1 scaling-factor)
+         (invert-series-with-constant-term-one series)))))
 
 (defn div-series
   [numer denom]
