@@ -143,6 +143,11 @@
 (deftest pair-ordering
   (is (= [1 100] (stream-ref integer-pairs 197))))
 
+(deftest finding-all-pairs
+  (is (= (stream-take 10 (all-pairs integers integers)) '([1 1] [2 1] [1 2] [2 2] [3 1] [1 3] [3 2] [4 1] [2 3] [1 4]))))
+
+
+
 
 
 

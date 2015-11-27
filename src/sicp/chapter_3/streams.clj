@@ -159,9 +159,26 @@
                   (> s1car s2car) (stream-cons s2car (stream-merge-pair (stream-cdr stream2) stream1))
                   :else (stream-cons s1car (stream-merge-pair (stream-cdr stream1) (stream-cdr stream2)))))))
 
+
 (defn stream-merge
   [& streams]
   (reduce stream-merge-pair streams))
+
+(defn stream-merge-weighted-pair
+  [weight stream1 stream2]
+  (cond
+    (empty-stream? stream1) stream2
+    (empty-stream? stream2) stream1
+    :else (let [s1car (stream-car stream1)
+                s2car (stream-car stream2)]
+            (cond (< (weight s1car) (weight s2car)) (stream-cons s1car (stream-merge-weighted-pair weight (stream-cdr stream1) stream2))
+                  :else (stream-cons s2car (stream-merge-weighted-pair weight (stream-cdr stream2) stream1))))))
+
+(defn stream-merge-weighted
+  [weight & streams]
+  (reduce (partial stream-merge-weighted-pair weight) streams))
+
+
 
 (defn scale-stream
   [n stream]
@@ -334,6 +351,19 @@
         (stream-interleave
          (stream-map (fn [x] [(stream-car s) x]) (stream-cdr t))
          (pairs (stream-cdr s) (stream-cdr t)))))
+
+(defn all-pairs
+  [s t]
+  (stream-cons [(stream-car s) (stream-car t)]
+        (stream-merge-weighted
+         (fn [[a b]] (+ a b))
+         (stream-map (fn [x] [(stream-car s) x]) (stream-cdr t))
+         (stream-map (fn [x] [x (stream-car t)]) (stream-cdr s))
+         (all-pairs (stream-cdr s) (stream-cdr t)))))
+
+
+
+
 
 
 
