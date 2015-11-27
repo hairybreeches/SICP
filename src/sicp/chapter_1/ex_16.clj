@@ -14,7 +14,7 @@
         (is-even? n) (recur a (square b) (/ n 2))
         :else (recur (* a b) b (- n 1)))))
 
-(defn expt [b n]
+(defn expt-new [b n]
   (expt-iter 1 b n))
 
-(expt 2 3)
+(expt-new 2 3)
