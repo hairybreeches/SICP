@@ -1,7 +1,8 @@
 (ns sicp.test.chapter-3.streams
   (:use sicp.chapter-3.streams)
   (:use clojure.test)
-  (:use sicp.test.assertions))
+  (:use sicp.test.assertions)
+  (:use clojure.math.numeric-tower))
 
 (deftest can-evaluate-car-of-cons
   (is
@@ -122,7 +123,10 @@
   (is (= '(1 1 1 1 1) (stream-take 5 (invert-series (list->series '(1 -1)))))))
 
 (deftest can-find-sqrt-2
-  (is-roughly= (sqrt-tolerance 2 0.0001) 1.414 3))
+  (is-roughly= (sqrt-tolerance 2 0.0001) (sqrt 2) 3))
+
+(deftest can-get-log2-reasonably-accurately
+  (is-roughly= (get-log2 0.00000001) (java.lang.Math/log 2) 7))
 
 
 

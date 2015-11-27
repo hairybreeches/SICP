@@ -1,6 +1,7 @@
 (ns sicp.chapter-3.streams
   (:use sicp.average)
-  (:use clojure.math.numeric-tower))
+  (:use clojure.math.numeric-tower)
+  (:use sicp.chapter-1.ex-16))
 
 (defn memo-proc
   [proc]
@@ -278,6 +279,40 @@
 (defn sqrt-tolerance
   [x tolerance]
   (stream-limit (sqrt-stream x) tolerance))
+
+(defn euler-transform
+  [s]
+  (let [s0 (stream-ref s 0)
+        s1 (stream-ref s 1)
+        s2 (stream-ref s 2)]
+    (stream-cons (- s2 (/ (square (- s2 s1))
+                          (+ s0 (* -2 s1) s2)))
+                 (euler-transform (stream-cdr s)))))
+
+(defn make-tableau
+  [transform s]
+  (stream-cons s (make-tableau transform (transform s))))
+
+(defn accelerated-sequence
+  [transform s]
+  (stream-map stream-car (make-tableau transform s)))
+
+(defn get-log2-term
+  [n]
+  (let [absolute (/ 1 n)]
+    (if (is-even? n)
+        (* -1 absolute)
+        absolute)))
+
+(def log2-approximations
+  (partial-sums (stream-map get-log2-term integers)))
+
+(def accelerated-log2-approximations
+  (accelerated-sequence euler-transform log2-approximations))
+
+(defn get-log2
+  [tolerance]
+  (stream-limit accelerated-log2-approximations tolerance))
 
 
 
