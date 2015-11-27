@@ -104,7 +104,10 @@
                                                       (mul-series sine-series sine-series))))))
 
 (deftest sinx-roughly-x-for-smallx
-  (is (= '(0 1) (stream-take 2 sine-series))))
+  (is (= '(0 1 0 -1/6 0 1/120) (stream-take 6 sine-series))))
+
+(deftest cosx-expansion
+  (is (= '(1 0 -1/2 0 1/24 0) (stream-take 6 cosine-series))))
 
 
 (deftest can-generate-tan-series
