@@ -125,6 +125,15 @@
 (deftest can-find-sqrt-2
   (is-roughly= (sqrt-tolerance 2 0.0001) (sqrt 2) 3))
 
+(deftest log-converges-slowly
+  (is-roughly= (stream-ref log2-approximations 4) 0.78333336 8))
+
+(deftest euler-transform-log-converges-faster
+  (is-roughly= (stream-ref accelerated-log2-approximations 4) 0.69358975 8))
+
+(deftest tableau-log-converges-fastest
+  (is-roughly= (stream-ref super-accelerated-log2-approximations 4) 0.6931472 8))
+
 (deftest can-get-log2-reasonably-accurately
   (is-roughly= (get-log2 0.00000001) (java.lang.Math/log 2) 7))
 

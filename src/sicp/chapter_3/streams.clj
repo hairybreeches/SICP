@@ -308,11 +308,14 @@
   (partial-sums (stream-map get-log2-term integers)))
 
 (def accelerated-log2-approximations
+  (euler-transform log2-approximations))
+
+(def super-accelerated-log2-approximations
   (accelerated-sequence euler-transform log2-approximations))
 
 (defn get-log2
   [tolerance]
-  (stream-limit accelerated-log2-approximations tolerance))
+  (stream-limit super-accelerated-log2-approximations tolerance))
 
 
 
