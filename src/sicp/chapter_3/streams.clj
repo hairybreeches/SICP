@@ -203,7 +203,7 @@
      (scale-stream (stream-car s1) (stream-cdr s2))
      (scale-stream (stream-car s2) (stream-cdr s1)))))
 
-(defn invert-series-with-constant-term-one
+(defn- invert-series-with-constant-term-one
   [series]
   (let [inverse (ref false)]
     (dosync
