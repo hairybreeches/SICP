@@ -108,14 +108,14 @@
   (is (= '(1 0 -1/2 0 1/24 0) (stream-take 6 cosine-series))))
 
 (deftest cos-squared
-  (is (= '(1 0 0 0 0 0 0 0) (stream-take 8 (mul-series cosine-series cosine-series)))))
+  (is (= '(1 0 -1 0 1/3) (stream-take 5 (mul-series cosine-series cosine-series)))))
 
 (deftest cos-squared-plus-sin-squared
   (is (= '(1 0 0 0 0 0 0 0) (stream-take 8
                                          (add-streams (mul-series cosine-series cosine-series)
                                                       (mul-series sine-series sine-series))))))
 (deftest can-generate-tan-series
-  (is (= '() (stream-take 12 tan-series))))
+  (is (= '(0 1 0 1/3 0 2/15 0 17/315 0 62/2835) (stream-take 10 tan-series))))
 
 (deftest can-generate-inverse
   (is (= '(1 1 1 1 1) (stream-take 5 (invert-series (list->series '(1 -1)))))))
