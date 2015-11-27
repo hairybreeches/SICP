@@ -1,6 +1,7 @@
 (ns sicp.test.chapter-3.streams
   (:use sicp.chapter-3.streams)
-  (:use clojure.test))
+  (:use clojure.test)
+  (:use sicp.test.assertions))
 
 (deftest can-evaluate-car-of-cons
   (is
@@ -119,6 +120,9 @@
 
 (deftest can-generate-inverse
   (is (= '(1 1 1 1 1) (stream-take 5 (invert-series (list->series '(1 -1)))))))
+
+(deftest can-find-sqrt-2
+  (is-roughly= (sqrt-tolerance 2 0.0001) 1.414 3))
 
 
 

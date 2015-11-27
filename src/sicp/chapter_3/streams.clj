@@ -1,4 +1,6 @@
-(ns sicp.chapter-3.streams)
+(ns sicp.chapter-3.streams
+  (:use sicp.average)
+  (:use clojure.math.numeric-tower))
 
 (defn memo-proc
   [proc]
@@ -250,6 +252,32 @@
       zeroes
       (stream-cons (first l)
                    (list->series (rest l)))))
+
+(defn stream-limit
+  [stream tolerance]
+  (loop [last-value (stream-car stream)
+         stream (stream-cdr stream)]
+    (if (< (abs (- last-value (stream-car stream)))
+           tolerance)
+        (stream-car stream)
+        (recur (stream-car stream)
+               (stream-cdr stream)))))
+
+(defn sqrt-improve
+  [guess x]
+  (average guess (/ x guess)))
+
+(defn sqrt-stream
+  [x]
+  (let [guesses (ref false)]
+    (dosync
+     (ref-set guesses
+              (stream-cons 1.0
+                           (stream-map #(sqrt-improve % x) guesses))))))
+
+(defn sqrt-tolerance
+  [x tolerance]
+  (stream-limit (sqrt-stream x) tolerance))
 
 
 
