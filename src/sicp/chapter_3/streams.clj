@@ -348,7 +348,8 @@
 (defn pairs
   [s t]
   (stream-cons [(stream-car s) (stream-car t)]
-        (stream-interleave
+        (stream-merge-weighted
+         second
          (stream-map (fn [x] [(stream-car s) x]) (stream-cdr t))
          (pairs (stream-cdr s) (stream-cdr t)))))
 
@@ -360,6 +361,35 @@
          (stream-map (fn [x] [(stream-car s) x]) (stream-cdr t))
          (stream-map (fn [x] [x (stream-car t)]) (stream-cdr s))
          (all-pairs (stream-cdr s) (stream-cdr t)))))
+
+(defn stream-take-while
+  [predicate stream]
+  (if (predicate (stream-car stream))
+      (stream-cons (stream-car stream) (stream-take-while predicate (stream-cdr stream)))
+      empty-stream))
+
+(defn stream-concat
+  [streams]
+  (cond
+   (empty-stream? streams) empty-stream
+   (empty-stream? (stream-car streams)) (stream-concat (stream-cdr streams))
+   :else (stream-cons (stream-car (stream-car streams)) (stream-concat (stream-cons (stream-cdr (stream-car streams)) (stream-cdr streams))))))
+
+
+(def integer-pairs
+  (pairs integers integers))
+
+(defn all-triples-with-highest-term
+  [n]
+  (stream-map (fn [[i j]] [i j n]) (stream-take-while #(<= (second %) n) integer-pairs)))
+
+(defn triples
+  [s t u]
+  (stream-concat (stream-map all-triples-with-highest-term integers)))
+
+
+
+
 
 
 

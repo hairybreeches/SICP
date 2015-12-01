@@ -1,6 +1,7 @@
 (ns sicp.test.chapter-3.streams
   (:use sicp.chapter-3.streams)
   (:use clojure.test)
+  (:use sicp.chapter-1.ex-16)
   (:use sicp.test.assertions)
   (:use clojure.math.numeric-tower))
 
@@ -139,6 +140,38 @@
 
 (deftest finding-all-pairs
   (is (= (stream-take 10 (all-pairs integers integers)) '([1 1] [2 1] [1 2] [2 2] [3 1] [1 3] [3 2] [4 1] [2 3] [1 4]))))
+
+(deftest can-get-integer-pairs
+  (is (= '([1 1] [2 2] [1 2] [3 3] [1 3] [2 3] [1 4] [4 4] [2 4] [3 4] [1 5] [2 5]) (stream-take 12 integer-pairs))))
+
+(deftest can-concat-streams
+  (is (= (stream->list (stream-concat (list->stream (map list->stream ['(1 2 3) '(4 5 6 7) '(8)])))) '(1 2 3 4 5 6 7 8))))
+
+(deftest can-combine-numbers-with-triples
+  (is (= (stream->list (all-triples-with-highest-term 4)) '([1 1 4] [2 2 4] [1 2 4] [3 3 4] [1 3 4] [2 3 4] [1 4 4] [4 4 4] [2 4 4] [3 4 4]))))
+
+(defn pythagorean?
+  [[a b c]]
+  (= (square c) (+ (square a) (square b))))
+
+
+(deftest can-find-pythagorean-triples
+  (is (= (stream-take 15 (stream-filter pythagorean? (triples integers integers integers)))
+         '([3 4 5]
+           [6 8 10]
+           [5 12 13]
+           [9 12 15]
+           [8 15 17]
+           [12 16 20]
+           [15 20 25]
+           [7 24 25]
+           [10 24 26]
+           [20 21 29]
+           [18 24 30]
+           [16 30 34]
+           [21 28 35]
+           [12 35 37]
+           [15 36 39]))))
 
 
 
