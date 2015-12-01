@@ -199,6 +199,22 @@
   (is (= '([1 1] [1 7] [1 11] [1 13] [1 17] [1 19] [1 23] [1 29] [1 31] [7 7] [1 37] [1 41])
           (stream-take 12 (stream-filter both-coprime235? (pairs integers integers weird-ordering))))))
 
+(defn cube
+  [n]
+  (* n (square n)))
+
+(defn sum-of-cubes
+  [[i j]]
+  (+ (cube i)
+     (cube j)))
+
+(deftest can-find-ramanujan-numbers
+  (is (= '({:output 1729, :inputs ([1 12] [9 10])}
+           {:output 4104, :inputs ([2 16] [9 15])}
+           {:output 13832, :inputs ([2 24] [18 20])}
+           {:output 20683, :inputs ([10 27] [19 24])})
+          (stream-take 4 (find-consecutives 2 sum-of-cubes (pairs integers integers sum-of-cubes))))))
+
 
 
 

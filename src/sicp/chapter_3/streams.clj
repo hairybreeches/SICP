@@ -368,6 +368,13 @@
       (stream-cons (stream-car stream) (stream-take-while predicate (stream-cdr stream)))
       empty-stream))
 
+(defn stream-drop-while
+  [predicate stream]
+  (loop [stream stream]
+    (if (not (predicate (stream-car stream)))
+        stream
+        (recur (stream-cdr stream)))))
+
 (defn stream-concat
   [streams]
   (cond
@@ -386,6 +393,18 @@
 (defn triples
   [s t u]
   (stream-concat (stream-map all-triples-with-highest-term integers)))
+
+
+(defn find-consecutives
+  [n function stream]
+  (loop [stream stream]
+    (let [first-value (function (stream-car stream))
+          equal-to-current? (fn [n] (= (function n) first-value))
+          same-values (stream->list (stream-take-while equal-to-current? stream))
+          number-same (count same-values)]
+      (if (>= number-same n)
+          (stream-cons {:output first-value :inputs same-values} (find-consecutives n function (stream-drop-while equal-to-current? stream)))
+          (recur (stream-drop-while equal-to-current? stream))))))
 
 
 
