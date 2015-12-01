@@ -346,12 +346,12 @@
   (reduce stream-interleave-pair args))
 
 (defn pairs
-  [s t]
+  [s t weight]
   (stream-cons [(stream-car s) (stream-car t)]
         (stream-merge-weighted
-         second
+         weight
          (stream-map (fn [x] [(stream-car s) x]) (stream-cdr t))
-         (pairs (stream-cdr s) (stream-cdr t)))))
+         (pairs (stream-cdr s) (stream-cdr t) weight))))
 
 (defn all-pairs
   [s t]
@@ -377,7 +377,7 @@
 
 
 (def integer-pairs
-  (pairs integers integers))
+  (pairs integers integers second))
 
 (defn all-triples-with-highest-term
   [n]
