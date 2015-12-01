@@ -3,7 +3,8 @@
   (:use clojure.test)
   (:use sicp.chapter-1.ex-16)
   (:use sicp.test.assertions)
-  (:use clojure.math.numeric-tower))
+  (:use clojure.math.numeric-tower)
+  (:use sicp.chapter-1.primes))
 
 (deftest can-evaluate-car-of-cons
   (is
@@ -172,6 +173,47 @@
            [21 28 35]
            [12 35 37]
            [15 36 39]))))
+
+(deftest can-find-pairs-ordered-by-sum
+  (is (= (stream-take 10 (pairs integers integers (fn[[a b]] (+ a b)))) '([1 1] [1 2] [2 2] [1 3] [2 3] [1 4] [3 3] [1 5] [2 4] [1 6]))))
+
+(defn coprime235?
+  [n]
+  (not (or (divides? 2 n)
+           (divides? 3 n)
+           (divides? 5 n))))
+
+(defn both-coprime235?
+  [[i j]]
+  (and (coprime235? i)
+       (coprime235? j)))
+
+
+(defn weird-ordering
+  [[i j]]
+  (+ (* 2 i)
+     (* 3 j)
+     (* 5 i j)))
+
+(deftest silly-ordering-filtering-example
+  (is (= '([1 1] [1 7] [1 11] [1 13] [1 17] [1 19] [1 23] [1 29] [1 31] [7 7] [1 37] [1 41])
+          (stream-take 12 (stream-filter both-coprime235? (pairs integers integers weird-ordering))))))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
