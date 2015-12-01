@@ -215,6 +215,18 @@
            {:output 20683, :inputs ([10 27] [19 24])})
           (stream-take 4 (find-consecutives 2 sum-of-cubes (pairs integers integers sum-of-cubes))))))
 
+(defn sum-of-squares
+  [[i j]]
+  (+ (square i)
+     (square j)))
+
+(deftest sums-of-squares-three-ways
+  (is (= '({:output 325, :inputs ([1 18] [6 17] [10 15])}
+           {:output 425, :inputs ([5 20] [8 19] [13 16])}
+           {:output 650, :inputs ([5 25] [11 23] [17 19])}
+           {:output 725, :inputs ([7 26] [10 25] [14 23])})
+          (stream-take 4 (find-consecutives 3 sum-of-squares (pairs integers integers sum-of-squares))))))
+
 
 
 
