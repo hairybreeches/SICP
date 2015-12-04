@@ -461,6 +461,23 @@
        (stream-map f y))
      y)))
 
+(defn solve-2nd
+  [y0 dy0 dt f]
+  (let [dy2 (ref false)
+        dy (integral (delay-stream @dy2) dy0 dt)
+        y (integral (delay-stream dy) y0 dt)]
+    (dosync
+      (ref-set
+       dy2
+       (stream-map f y dy))
+     y)))
+
+(defn solve-2nd-linear
+  [a b y0 dy0 dt]
+  (->>
+   (fn [y dy] (+ (* a dy) (* b y)))
+   (solve-2nd y0 dy0 dt)))
+
 
 
 

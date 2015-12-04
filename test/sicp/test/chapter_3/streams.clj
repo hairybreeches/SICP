@@ -255,6 +255,14 @@
    (stream-ref (solve identity 1 0.001) 1000)
    2))
 
+(deftest can-solve-second-linear
+  (is-roughly=
+       (->
+        (solve-2nd-linear 5 -6 2 5 0.0001)
+        (stream-ref 10000))
+       (+ (expt (java.lang.Math/E) 3) (expt (java.lang.Math/E) 2))
+       1))
+
 
 
 
