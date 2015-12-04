@@ -152,17 +152,6 @@
   [s]
   (reductions + s))
 
-(defn stream-merge-pair
-  [stream1 stream2]
-  (cond
-    (empty-stream? stream1) stream2
-    (empty-stream? stream2) stream1
-    :else (let [s1car (stream-car stream1)
-                s2car (stream-car stream2)]
-            (cond (< s1car s2car) (stream-cons s1car (stream-merge-pair (stream-cdr stream1) stream2))
-                  (> s1car s2car) (stream-cons s2car (stream-merge-pair (stream-cdr stream2) stream1))
-                  :else (stream-cons s1car (stream-merge-pair (stream-cdr stream1) (stream-cdr stream2)))))))
-
 
 (defn partial-sums-stream
   [stream]
@@ -175,6 +164,17 @@
                         (stream-cdr stream)
                         @partial-sum))))
     @partial-sum))
+
+(defn stream-merge-pair
+  [stream1 stream2]
+  (cond
+    (empty-stream? stream1) stream2
+    (empty-stream? stream2) stream1
+    :else (let [s1car (stream-car stream1)
+                s2car (stream-car stream2)]
+            (cond (< s1car s2car) (stream-cons s1car (stream-merge-pair (stream-cdr stream1) stream2))
+                  (> s1car s2car) (stream-cons s2car (stream-merge-pair (stream-cdr stream2) stream1))
+                  :else (stream-cons s1car (stream-merge-pair (stream-cdr stream1) (stream-cdr stream2)))))))
 
 
 (defn stream-merge
@@ -201,11 +201,38 @@
   [n stream]
   (stream-map #(* n %) stream))
 
-(def hamming
-  (stream-cons 1 (stream-merge
-                   (scale-stream 2 hamming)
-                   (scale-stream 3 hamming)
-                   (scale-stream 5 hamming))))
+(defn scale
+  [n sequ]
+  (map #(* n %) sequ))
+
+(defn seq-merge-pair
+  [seq1 seq2]
+  (cond
+    (empty? seq1) seq2
+    (empty? seq2) seq1
+    :else (lazy-seq
+           (let [s1head (first seq1)
+                 s2head (first seq2)]
+            (cond (< s1head s2head) (cons s1head (seq-merge-pair (rest seq1) seq2))
+                  (> s1head s2head) (cons s2head (seq-merge-pair (rest seq2) seq1))
+                  :else (cons s1head (seq-merge-pair (rest seq1) (rest seq2))))))))
+
+(defn seq-merge
+  [& seqs]
+  (reduce seq-merge-pair seqs))
+
+(defn hamming
+  ([] (hamming [1]))
+  ([waiting]
+   (lazy-seq
+      (cons
+         (first waiting)
+         (hamming
+          (seq-merge
+           (rest waiting)
+           (map #(* % (first waiting)) [2 3 5])))))))
+
+(def hamming-numbers (hamming))
 
 (defn expand
   [numer denom radix]

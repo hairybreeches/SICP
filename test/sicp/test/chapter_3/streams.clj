@@ -95,8 +95,8 @@
 (deftest can-find-partial-sums
   (is (= '(1 3 6 10 15 21) (take 6 (partial-sums integers-seq)))))
 
-(deftest hamming-numbers
-  (is (= '(1 2 3 4 5 6 8 9 10 12 15 16 18 20) (stream-take 14 hamming))))
+(deftest hamming-numbers-test
+  (is (= '(1 2 3 4 5 6 8 9 10 12 15 16 18 20) (take 14 hamming-numbers))))
 
 (deftest division-expansions
   (is (= '(1 4 2 8 5 7 1 4) (stream-take 8 (expand 1 7 10))))
