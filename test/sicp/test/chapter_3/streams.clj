@@ -90,7 +90,7 @@
   (is (= '(1 2 4 8 16 32) (take 6 powers-of-two))))
 
 (deftest stream-factorials
-  (is (= '(1 2 6 24 120 720) (stream-take 6 factorials))))
+  (is (= '(1 2 6 24 120 720) (take 6 factorials))))
 
 (deftest can-find-partial-sums
   (is (= '(1 3 6 10 15 21) (stream-take 6 (partial-sums integers)))))

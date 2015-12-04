@@ -134,8 +134,17 @@
   [& args]
   (apply stream-map * args))
 
+(def factorials-inner
+  (iterate
+   (fn [[fac n]]
+     (let
+       [new (inc n)]
+          [(* fac new) new]))
+   [1 1]
+   ))
+
 (def factorials
-  (stream-cons 1 (mul-streams factorials (stream-cdr integers))))
+  (map first factorials-inner))
 
 (defn partial-sums
   [stream]
