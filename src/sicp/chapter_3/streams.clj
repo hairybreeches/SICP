@@ -126,6 +126,8 @@
 (def integers
   (stream-cons 1 (add-streams ones integers)))
 
+(def integers-seq
+  (drop 1 (range)))
 
 (def powers-of-two
   (iterate #(* % 2) 1))
@@ -147,16 +149,8 @@
   (map first factorials-inner))
 
 (defn partial-sums
-  [stream]
-  (let [partial-sum (ref false)]
-    (dosync
-      (ref-set partial-sum
-               (stream-cons
-                      (stream-car stream)
-                      (add-streams
-                        (stream-cdr stream)
-                        @partial-sum))))
-    @partial-sum))
+  [s]
+  (reductions + s))
 
 (defn stream-merge-pair
   [stream1 stream2]
@@ -168,6 +162,19 @@
             (cond (< s1car s2car) (stream-cons s1car (stream-merge-pair (stream-cdr stream1) stream2))
                   (> s1car s2car) (stream-cons s2car (stream-merge-pair (stream-cdr stream2) stream1))
                   :else (stream-cons s1car (stream-merge-pair (stream-cdr stream1) (stream-cdr stream2)))))))
+
+
+(defn partial-sums-stream
+  [stream]
+  (let [partial-sum (ref false)]
+    (dosync
+      (ref-set partial-sum
+               (stream-cons
+                      (stream-car stream)
+                      (add-streams
+                        (stream-cdr stream)
+                        @partial-sum))))
+    @partial-sum))
 
 
 (defn stream-merge
@@ -332,7 +339,7 @@
         absolute)))
 
 (def log2-approximations
-  (partial-sums (stream-map get-log2-term integers)))
+  (partial-sums-stream (stream-map get-log2-term integers)))
 
 (def accelerated-log2-approximations
   (euler-transform log2-approximations))

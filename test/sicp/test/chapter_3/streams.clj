@@ -93,7 +93,7 @@
   (is (= '(1 2 6 24 120 720) (take 6 factorials))))
 
 (deftest can-find-partial-sums
-  (is (= '(1 3 6 10 15 21) (stream-take 6 (partial-sums integers)))))
+  (is (= '(1 3 6 10 15 21) (take 6 (partial-sums integers-seq)))))
 
 (deftest hamming-numbers
   (is (= '(1 2 3 4 5 6 8 9 10 12 15 16 18 20) (stream-take 14 hamming))))
