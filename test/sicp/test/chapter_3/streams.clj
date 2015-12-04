@@ -87,7 +87,7 @@
           (is (= @sum 210)))))))
 
 (deftest stream-powers-of-two
-  (is (= '(1 2 4 8 16 32) (stream-take 6 powers-of-two))))
+  (is (= '(1 2 4 8 16 32) (take 6 powers-of-two))))
 
 (deftest stream-factorials
   (is (= '(1 2 6 24 120 720) (stream-take 6 factorials))))

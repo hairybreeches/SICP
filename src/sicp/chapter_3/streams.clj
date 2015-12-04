@@ -128,7 +128,7 @@
 
 
 (def powers-of-two
-  (stream-cons 1 (add-streams powers-of-two powers-of-two)))
+  (iterate #(* % 2) 1))
 
 (defn mul-streams
   [& args]
