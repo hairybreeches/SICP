@@ -408,14 +408,16 @@
           (recur (stream-drop-while equal-to-current? stream))))))
 
 (defn integral
-  [integrand initial-value dt]
-  (let [result (ref false)]
-    (dosync
-     (ref-set result (stream-cons
-                      initial-value
-                      (add-streams (scale-stream dt (force-stream integrand))
-                                   @result)))
-     @result)))
+  [delayed-integrand initial-value dt]
+  (stream-cons
+   initial-value
+   (let [integrand (force-stream delayed-integrand)]
+     (if (empty-stream? integrand)
+         empty-stream
+         (integral (delay-stream (stream-cdr integrand))
+                   (+ (* dt (stream-car integrand))
+                      initial-value)
+                   dt)))))
 
 (defn RC
   [R C dt]
