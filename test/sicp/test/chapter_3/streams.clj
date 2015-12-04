@@ -227,6 +227,12 @@
            {:output 725, :inputs ([7 26] [10 25] [14 23])})
           (stream-take 4 (find-consecutives 3 sum-of-squares (pairs integers integers sum-of-squares))))))
 
+(def RC1
+  (RC 5 1 0.5))
+
+(deftest can-calculate-output-voltages
+  (is (= '(7 12.5 8.5 19.0) (stream-take 4 (RC1 (list->stream '(1 2 1 3)) 2)))))
+
 
 
 

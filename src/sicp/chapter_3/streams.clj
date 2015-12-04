@@ -406,6 +406,29 @@
           (stream-cons {:output first-value :inputs same-values} (find-consecutives n function (stream-drop-while equal-to-current? stream)))
           (recur (stream-drop-while equal-to-current? stream))))))
 
+(defn integral
+  [integrand initial-value dt]
+  (let [result (ref false)]
+    (dosync
+     (ref-set result (stream-cons
+                      initial-value
+                      (add-streams (scale-stream dt integrand)
+                                   @result)))
+     @result)))
+
+(defn RC
+  [R C dt]
+  (fn [current v0]
+    (add-streams
+     (scale-stream R current)
+     (->
+      (scale-stream (/ 1 C) current)
+      (integral v0 dt)))))
+
+
+
+
+
 
 
 
