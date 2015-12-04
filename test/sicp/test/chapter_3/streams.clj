@@ -249,6 +249,12 @@
            (smoothed-zero-crossings)
            (stream->list)))))
 
+(deftest can-solve-for-e
+  (is-roughly=
+   (java.lang.Math/E)
+   (stream-ref (solve identity 1 0.001) 1000)
+   2))
+
 
 
 

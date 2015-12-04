@@ -449,6 +449,17 @@
        (smooth)
        (zero-crossings))))
 
+(defn solve
+  [f y0 dt]
+  (let [dy (ref false)
+        y (integral (delay-stream @dy) y0 dt)]
+    (dosync
+      (ref-set
+       dy
+       (stream-map f y))
+     y)))
+
+
 
 
 
