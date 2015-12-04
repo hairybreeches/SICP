@@ -436,17 +436,17 @@
   [sense-data]
   (stream-map sign-change-detector sense-data (stream-cdr sense-data)))
 
+(defn smooth
+  [stream]
+  (stream-cons
+    (stream-car stream)
+    (stream-map average stream (stream-cdr stream))))
+
 (defn smoothed-zero-crossings
-  ([input-stream last-value averaged-last-value]
-   (if (empty-stream? input-stream)
-       empty-stream
-      (let [avpoint (/ (+ (stream-car input-stream) last-value) 2)]
-          (stream-cons (sign-change-detector averaged-last-value avpoint)
-                       (smoothed-zero-crossings (stream-cdr input-stream)
-                                                (stream-car input-stream)
-                                                avpoint)))))
   ([input-stream]
-   (smoothed-zero-crossings (stream-cdr input-stream) (stream-car input-stream) (stream-car input-stream))))
+   (-> input-stream
+       (smooth)
+       (zero-crossings))))
 
 
 
