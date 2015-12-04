@@ -236,9 +236,10 @@
 
 (defn expand
   [numer denom radix]
-  (stream-cons
-   (quot (* numer radix) denom)
-   (expand (rem (* numer radix) denom) denom radix)))
+  (lazy-seq
+    (cons
+     (quot (* numer radix) denom)
+     (expand (rem (* numer radix) denom) denom radix))))
 
 (defn div-streams
   [numer denom]
