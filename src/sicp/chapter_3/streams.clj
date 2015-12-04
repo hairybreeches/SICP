@@ -1,7 +1,8 @@
 (ns sicp.chapter-3.streams
   (:use sicp.average)
   (:use clojure.math.numeric-tower)
-  (:use sicp.chapter-1.ex-16))
+  (:use sicp.chapter-1.ex-16)
+  (:use sicp.average))
 
 (defn memo-proc
   [proc]
@@ -434,6 +435,18 @@
 (defn zero-crossings
   [sense-data]
   (stream-map sign-change-detector sense-data (stream-cdr sense-data)))
+
+(defn smoothed-zero-crossings
+  ([input-stream last-value averaged-last-value]
+   (if (empty-stream? input-stream)
+       empty-stream
+      (let [avpoint (/ (+ (stream-car input-stream) last-value) 2)]
+          (stream-cons (sign-change-detector averaged-last-value avpoint)
+                       (smoothed-zero-crossings (stream-cdr input-stream)
+                                                (stream-car input-stream)
+                                                avpoint)))))
+  ([input-stream]
+   (smoothed-zero-crossings (stream-cdr input-stream) (stream-car input-stream) (stream-car input-stream))))
 
 
 
