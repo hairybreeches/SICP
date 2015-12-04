@@ -233,6 +233,14 @@
 (deftest can-calculate-output-voltages
   (is (= '(7 12.5 8.5 19.0) (stream-take 4 (RC1 (list->stream '(1 2 1 3)) 2)))))
 
+(deftest can-detect-sign-changes
+  (is (=
+       '(0 0 0 0 -1 0 0 0 0 1 0 0)
+       (-> '(1 2 1.5 1 0.5 -0.1 -2 -3 -2 -0.5 0.2 3 4)
+           (list->stream)
+           (zero-crossings)
+           (stream->list)))))
+
 
 
 

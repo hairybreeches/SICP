@@ -67,7 +67,7 @@
 
 (defn stream-map
   [proc & argstreams]
-    (if (empty-stream? (first argstreams))
+    (if (some empty-stream? argstreams)
         empty-stream
         (stream-cons
            (apply proc (map stream-car argstreams))
@@ -424,6 +424,16 @@
      (->
       (scale-stream (/ 1 C) current)
       (integral v0 dt)))))
+
+(defn sign-change-detector
+  [v0 v1]
+  (cond (< v0 0 v1) 1
+        (> v0 0 v1) -1
+        :else 0))
+
+(defn zero-crossings
+  [sense-data]
+  (stream-map sign-change-detector sense-data (stream-cdr sense-data)))
 
 
 
