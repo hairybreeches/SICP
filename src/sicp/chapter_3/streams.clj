@@ -413,7 +413,7 @@
     (dosync
      (ref-set result (stream-cons
                       initial-value
-                      (add-streams (scale-stream dt integrand)
+                      (add-streams (scale-stream dt (force-stream integrand))
                                    @result)))
      @result)))
 
@@ -424,6 +424,7 @@
      (scale-stream R current)
      (->
       (scale-stream (/ 1 C) current)
+      (delay-stream)
       (integral v0 dt)))))
 
 (defn sign-change-detector
@@ -447,6 +448,8 @@
    (-> input-stream
        (smooth)
        (zero-crossings))))
+
+
 
 
 
