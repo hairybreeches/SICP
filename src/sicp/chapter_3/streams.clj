@@ -120,6 +120,10 @@
   [& args]
   (apply stream-map + args))
 
+(defn add-seqs
+  [& args]
+  (apply map + args))
+
 (def ones
   (stream-cons 1 ones))
 
@@ -132,9 +136,9 @@
 (def powers-of-two
   (iterate #(* % 2) 1))
 
-(defn mul-streams
+(defn mul-seqs
   [& args]
-  (apply stream-map * args))
+  (apply map * args))
 
 (def factorials-inner
   (iterate
@@ -241,54 +245,54 @@
      (quot (* numer radix) denom)
      (expand (rem (* numer radix) denom) denom radix))))
 
-(defn div-streams
+(defn div-seqs
   [numer denom]
-  (mul-streams numer
-               (stream-map #(/ 1 %) denom)))
+  (mul-seqs numer
+            (map #(/ 1 %) denom)))
 
 (defn integrate-series
   [series]
-  (div-streams series
-               integers))
+  (div-seqs series
+            integers-seq))
 
 (def cosine-series)
 
 (def sine-series
-  (stream-cons 0 (integrate-series cosine-series)))
+  (lazy-seq
+    (cons 0 (integrate-series cosine-series))))
 
 (def cosine-series
-  (stream-cons 1 (scale-stream -1 (integrate-series sine-series))))
+  (lazy-seq
+    (cons 1 (scale -1 (integrate-series sine-series)))))
 
 (defn mul-series
   [s1 s2]
-  (stream-cons
-    (* (stream-car s1)
-       (stream-car s2))
-    (add-streams
-       (scale-stream (stream-car s1) (stream-cdr s2))
-       (scale-stream (stream-car s2) (stream-cdr s1))
-       (stream-cons 0 (mul-series (stream-cdr s1) (stream-cdr s2))))))
+  (lazy-seq
+  (cons
+    (* (first s1)
+       (first s2))
+    (add-seqs
+       (scale (first s1) (rest s2))
+       (scale (first s2) (rest s1))
+       (cons 0 (mul-series (rest s1) (rest s2)))))))
 
 (defn- invert-series-with-constant-term-one
-  [series]
-  (let [inverse (ref false)]
-    (dosync
-      (ref-set inverse
-        (stream-cons
-         1
-         (scale-stream
-              -1
-              (mul-series
-                   (stream-cdr series)
-                    @inverse)))))
-      @inverse))
+  ([series]
+    (lazy-seq
+      (cons
+       1
+      (scale
+          -1
+          (mul-series
+                (rest series)
+                (invert-series-with-constant-term-one series)))))))
 
 (defn invert-series
   [series]
-  (let [scaling-factor (stream-car series)]
+  (let [scaling-factor (first series)]
   (if (= scaling-factor 0)
       (throw (Exception. "Cannot divide by a stream with zero constant term"))
-      (scale-stream
+      (scale
          (/ 1 scaling-factor)
          (invert-series-with-constant-term-one series)))))
 
@@ -305,16 +309,6 @@
     (empty? l)
     empty-stream
     (stream-cons (first l) (list->stream (rest l)))))
-
-(def zeroes
-  (stream-cons 0 zeroes))
-
-(defn list->series
-  [l]
-  (if (empty? l)
-      zeroes
-      (stream-cons (first l)
-                   (list->series (rest l)))))
 
 (defn stream-limit
   [stream tolerance]

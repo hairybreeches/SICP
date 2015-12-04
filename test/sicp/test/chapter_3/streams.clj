@@ -26,23 +26,23 @@
   (is (= '(3 3 3 3) (stream-take 4 (add-streams ones ones ones)))))
 
 (deftest sinx-roughly-x-for-smallx
-  (is (= '(0 1 0 -1/6 0 1/120) (stream-take 6 sine-series))))
+  (is (= '(0 1 0 -1/6 0 1/120) (take 6 sine-series))))
 
 (deftest cosx-expansion
-  (is (= '(1 0 -1/2 0 1/24 0) (stream-take 6 cosine-series))))
+  (is (= '(1 0 -1/2 0 1/24 0) (take 6 cosine-series))))
 
 (deftest cos-squared
-  (is (= '(1 0 -1 0 1/3) (stream-take 5 (mul-series cosine-series cosine-series)))))
+  (is (= '(1 0 -1 0 1/3) (take 5 (mul-series cosine-series cosine-series)))))
 
 (deftest cos-squared-plus-sin-squared
-  (is (= '(1 0 0 0 0 0 0 0) (stream-take 8
-                                         (add-streams (mul-series cosine-series cosine-series)
+  (is (= '(1 0 0 0 0 0 0 0) (take 8
+                                         (add-seqs    (mul-series cosine-series cosine-series)
                                                       (mul-series sine-series sine-series))))))
 (deftest can-generate-tan-series
-  (is (= '(0 1 0 1/3 0 2/15 0 17/315 0 62/2835) (stream-take 10 tan-series))))
+  (is (= '(0 1 0 1/3 0 2/15 0 17/315 0 62/2835) (take 10 tan-series))))
 
 (deftest can-generate-inverse
-  (is (= '(1 1 1 1 1) (stream-take 5 (invert-series (list->series '(1 -1)))))))
+  (is (= '(1 1 1 1 1) (take 5 (invert-series '(1 -1))))))
 
 (deftest can-find-sqrt-2
   (is-roughly= (sqrt-tolerance 2 0.0001) (sqrt 2) 3))
