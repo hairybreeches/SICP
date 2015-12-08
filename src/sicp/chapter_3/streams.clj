@@ -315,13 +315,13 @@
 
 (defn stream-limit
   [stream tolerance]
-  (loop [last-value (stream-car stream)
-         stream (stream-cdr stream)]
-    (if (< (abs (- last-value (stream-car stream)))
+  (loop [last-value (first stream)
+         stream (rest stream)]
+    (if (< (abs (- last-value (first stream)))
            tolerance)
-        (stream-car stream)
-        (recur (stream-car stream)
-               (stream-cdr stream)))))
+        (first stream)
+        (recur (first stream)
+               (rest stream)))))
 
 (defn sqrt-improve
   [guess x]
@@ -329,11 +329,7 @@
 
 (defn sqrt-stream
   [x]
-  (let [guesses (ref false)]
-    (dosync
-     (ref-set guesses
-              (stream-cons 1.0
-                           (stream-map #(sqrt-improve % x) guesses))))))
+  (iterate #(sqrt-improve % x) 1.0))
 
 (defn sqrt-tolerance
   [x tolerance]
@@ -341,20 +337,21 @@
 
 (defn euler-transform
   [s]
-  (let [s0 (stream-ref s 0)
-        s1 (stream-ref s 1)
-        s2 (stream-ref s 2)]
-    (stream-cons (- s2 (/ (square (- s2 s1))
-                          (+ s0 (* -2 s1) s2)))
-                 (euler-transform (stream-cdr s)))))
+  (let [s0 (first s)
+        s1 (second s)
+        s2 (nth s 2)]
+    (lazy-seq
+      (cons (- s2 (/ (square (- s2 s1))
+                     (+ s0 (* -2 s1) s2)))
+            (euler-transform (rest s))))))
 
 (defn make-tableau
   [transform s]
-  (stream-cons s (make-tableau transform (transform s))))
+  (iterate transform s))
 
 (defn accelerated-sequence
   [transform s]
-  (stream-map stream-car (make-tableau transform s)))
+  (map first (make-tableau transform s)))
 
 (defn get-log2-term
   [n]
@@ -364,7 +361,7 @@
         absolute)))
 
 (def log2-approximations
-  (partial-sums-stream (stream-map get-log2-term integers)))
+  (partial-sums (map get-log2-term integers-seq)))
 
 (def accelerated-log2-approximations
   (euler-transform log2-approximations))
