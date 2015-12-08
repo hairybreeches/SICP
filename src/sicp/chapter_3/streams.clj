@@ -420,24 +420,25 @@
 
 (defn integral
   [delayed-integrand initial-value dt]
-  (stream-cons
-   initial-value
-   (let [integrand (force-stream delayed-integrand)]
-     (if (empty-stream? integrand)
-         empty-stream
-         (integral (delay-stream (stream-cdr integrand))
-                   (+ (* dt (stream-car integrand))
-                      initial-value)
-                   dt)))))
+  (lazy-seq
+    (cons
+     initial-value
+     (let [integrand (force delayed-integrand)]
+       (if (empty? integrand)
+           '()
+           (integral (delay (rest integrand))
+                     (+ (* dt (first integrand))
+                        initial-value)
+                     dt))))))
 
 (defn RC
   [R C dt]
   (fn [current v0]
-    (add-streams
-     (scale-stream R current)
+    (add-seqs
+     (scale R current)
      (->
-      (scale-stream (/ 1 C) current)
-      (delay-stream)
+      (scale (/ 1 C) current)
+      (delay)
       (integral v0 dt)))))
 
 (defn sign-change-detector
@@ -448,13 +449,14 @@
 
 (defn zero-crossings
   [sense-data]
-  (stream-map sign-change-detector sense-data (stream-cdr sense-data)))
+  (map sign-change-detector sense-data (rest sense-data)))
 
 (defn smooth
   [stream]
-  (stream-cons
-    (stream-car stream)
-    (stream-map average stream (stream-cdr stream))))
+  (lazy-seq
+  (cons
+    (first stream)
+    (map average stream (rest stream)))))
 
 (defn smoothed-zero-crossings
   ([input-stream]
@@ -465,22 +467,22 @@
 (defn solve
   [f y0 dt]
   (let [dy (ref false)
-        y (integral (delay-stream @dy) y0 dt)]
+        y (integral (delay @dy) y0 dt)]
     (dosync
       (ref-set
        dy
-       (stream-map f y))
+       (lazy-seq (map f y)))
      y)))
 
 (defn solve-2nd
   [y0 dy0 dt f]
   (let [dy2 (ref false)
-        dy (integral (delay-stream @dy2) dy0 dt)
-        y (integral (delay-stream dy) y0 dt)]
+        dy (integral (delay @dy2) dy0 dt)
+        y (integral (delay dy) y0 dt)]
     (dosync
       (ref-set
        dy2
-       (stream-map f y dy))
+       (lazy-seq (map f y dy)))
      y)))
 
 (defn solve-2nd-linear

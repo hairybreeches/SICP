@@ -149,35 +149,29 @@
   (RC 5 1 0.5))
 
 (deftest can-calculate-output-voltages
-  (is (= '(7 12.5 8.5 19.0) (stream-take 4 (RC1 (list->stream '(1 2 1 3)) 2)))))
+  (is (= '(7 12.5 8.5 19.0) (take 4 (RC1 '(1 2 1 3) 2)))))
 
 (deftest can-detect-sign-changes
   (is (=
        '(0 0 0 0 -1 0 0 0 0 1 0 0)
-       (-> '(1 2 1.5 1 0.5 -0.1 -2 -3 -2 -0.5 0.2 3 4)
-           (list->stream)
-           (zero-crossings)
-           (stream->list)))))
+       (zero-crossings '(1 2 1.5 1 0.5 -0.1 -2 -3 -2 -0.5 0.2 3 4)))))
 
 (deftest can-detect-smoothed-sign-changes
   (is (=
        '(0 0 0 0 0 -1 0 0 0 0 1 0)
-       (-> '(1 2 1.5 1 0.5 -0.1 -2 -3 -2 -0.5 0.2 3 4)
-           (list->stream)
-           (smoothed-zero-crossings)
-           (stream->list)))))
+       (smoothed-zero-crossings '(1 2 1.5 1 0.5 -0.1 -2 -3 -2 -0.5 0.2 3 4)))))
 
 (deftest can-solve-for-e
   (is-roughly=
    (java.lang.Math/E)
-   (stream-ref (solve identity 1 0.001) 1000)
+   (nth (solve identity 1 0.001) 1000)
    2))
 
 (deftest can-solve-second-linear
   (is-roughly=
        (->
         (solve-2nd-linear 5 -6 2 5 0.0001)
-        (stream-ref 10000))
+        (nth 10000))
        (+ (expt (java.lang.Math/E) 3) (expt (java.lang.Math/E) 2))
        1))
 
