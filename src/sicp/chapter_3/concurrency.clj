@@ -24,11 +24,10 @@
 
 (defn make-mutex
   [on-failure]
-  (let [cell (ref false)
-
-        the-mutex (ref false)
-
-        dispatch (fn [m]
+  (let [cell (ref false)]
+    (letfn [
+      (the-mutex
+        [m]
           (cond (= m :acquire)
                 (if (test-and-set! cell)
                     (do
@@ -40,8 +39,6 @@
 
                 (= m :try-acquire)
                 (not (test-and-set! cell))))]
-    (dosync
-     (ref-set the-mutex dispatch)
     the-mutex)))
 
 
@@ -63,11 +60,10 @@
 
 (defn make-semaphore-count
   [max-n on-failure]
-  (let [cell (ref 0)
-
-        the-semaphore (ref false)
-
-        dispatch (fn [m]
+  (let [cell (ref 0)]
+    (letfn
+      [(the-semaphore
+        [m]
           (cond (= m :acquire)
                 (if (test-and-set-number! cell max-n)
                     (do
@@ -76,8 +72,6 @@
 
                 (= m :release)
                 (release! cell)))]
-    (dosync
-     (ref-set the-semaphore dispatch)
     the-semaphore)))
 
 
@@ -108,12 +102,10 @@
   [max-n on-failure]
   (let [mutexes (->>(iterate (fn [_] (make-mutex (fn[mutex]))) 0)
                     (drop 1)
-                    (take max-n))
-
-
-        the-semaphore (ref false)
-
-        dispatch (fn [m]
+                    (take max-n))]
+    (letfn[
+       (the-semaphore
+        [m]
           (cond (= m :acquire)
                 (if (acquire-a-mutex mutexes)
                     (do
@@ -122,8 +114,6 @@
 
                 (= m :release)
                 (release-a-mutex mutexes)))]
-    (dosync
-     (ref-set the-semaphore dispatch)
     the-semaphore)))
 
 
