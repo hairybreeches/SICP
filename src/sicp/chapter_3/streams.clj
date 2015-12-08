@@ -4,131 +4,9 @@
   (:use sicp.chapter-1.ex-16)
   (:use sicp.average))
 
-(defn memo-proc
-  [proc]
-  (let [run (ref false)
-        value (ref false)]
-    (fn []
-      (if (not @run)
-          (dosync
-            (ref-set value (proc))
-            (ref-set run true)))
-      @value)))
-
-
-
-(defn force-stream
-  [value]
-  (value))
-
-(defmacro delay-stream
-  [form]
-  `(memo-proc (fn [] ~form)))
-
-(defmacro stream-cons
-  [car-form cdr-form]
-  `(let [cdr# (delay-stream ~cdr-form)
-         car# ~car-form]
-     (fn [m#]
-         (cond (= m# :car)
-               car#
-
-               (= m# :cdr)
-               cdr#))))
-
-(defn stream-car
-  [stream]
-  (stream :car))
-
-(defn stream-cdr
-  [stream]
-  (force-stream (stream :cdr)))
-
-(defn empty-stream?
-  [stream]
-  (= (stream-car stream) :empty-stream))
-
-(def empty-stream
-  (stream-cons :empty-stream (throw (Exception. "Cannot find the cdr of the empty stream"))))
-
-(defn stream->list
-  [stream]
-  (if (empty-stream? stream)
-      `()
-       (cons (stream-car stream)
-             (stream->list (stream-cdr stream)))))
-
-(defn stream-enumerate-interval
-  [low high]
-  (if (> low high)
-      empty-stream
-      (stream-cons
-       low
-       (stream-enumerate-interval (inc low) high))))
-
-(defn stream-map
-  [proc & argstreams]
-    (if (some empty-stream? argstreams)
-        empty-stream
-        (stream-cons
-           (apply proc (map stream-car argstreams))
-           (apply stream-map proc (map stream-cdr argstreams)))))
-
-(defn stream-ref
-  [s n]
-  (loop
-    [s s
-     n n]
-  (if (= n 0)
-      (stream-car s)
-      (recur (stream-cdr s)
-             (dec n)))))
-
-(defn stream-filter
-  [pred stream]
-  (loop
-    [stream stream]
-  (cond
-
-   (empty-stream? stream)
-   empty-stream
-
-   (pred (stream-car stream))
-   (stream-cons (stream-car stream)
-                (stream-filter pred
-                               (stream-cdr stream)))
-
-   :else
-   (recur (stream-cdr stream)))))
-
-(defn stream-take
-  [n stream]
-  (reverse
-    (loop [n n
-           result '()
-           stream stream]
-
-      (if (= n 0)
-          result
-          (recur
-            (dec n)
-            (cons (stream-car stream)
-                  result)
-           (stream-cdr stream))))))
-
-(defn add-streams
-  [& args]
-  (apply stream-map + args))
-
 (defn add-seqs
   [& args]
   (apply map + args))
-
-(def ones
-  (stream-cons 1 ones))
-
-(def integers
-  (stream-cons 1 (add-streams ones integers)))
 
 (def integers-seq
   (drop 1 (range)))
@@ -157,34 +35,6 @@
   (reductions + s))
 
 
-(defn partial-sums-stream
-  [stream]
-  (let [partial-sum (ref false)]
-    (dosync
-      (ref-set partial-sum
-               (stream-cons
-                      (stream-car stream)
-                      (add-streams
-                        (stream-cdr stream)
-                        @partial-sum))))
-    @partial-sum))
-
-(defn stream-merge-pair
-  [stream1 stream2]
-  (cond
-    (empty-stream? stream1) stream2
-    (empty-stream? stream2) stream1
-    :else (let [s1car (stream-car stream1)
-                s2car (stream-car stream2)]
-            (cond (< s1car s2car) (stream-cons s1car (stream-merge-pair (stream-cdr stream1) stream2))
-                  (> s1car s2car) (stream-cons s2car (stream-merge-pair (stream-cdr stream2) stream1))
-                  :else (stream-cons s1car (stream-merge-pair (stream-cdr stream1) (stream-cdr stream2)))))))
-
-
-(defn stream-merge
-  [& streams]
-  (reduce stream-merge-pair streams))
-
 (defn sq-merge-weighted-pair
   [weight stream1 stream2]
   (lazy-seq
@@ -199,12 +49,6 @@
 (defn sq-merge-weighted
   [weight & streams]
   (reduce (partial sq-merge-weighted-pair weight) streams))
-
-
-
-(defn scale-stream
-  [n stream]
-  (stream-map #(* n %) stream))
 
 (defn scale
   [n sequ]
@@ -306,13 +150,6 @@
 
 (def tan-series
   (div-series sine-series cosine-series))
-
-(defn list->stream
-  [l]
-  (if
-    (empty? l)
-    empty-stream
-    (stream-cons (first l) (list->stream (rest l)))))
 
 (defn stream-limit
   [stream tolerance]

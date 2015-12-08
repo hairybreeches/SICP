@@ -22,9 +22,6 @@
   (is (= '(1 4 2 8 5 7 1 4) (take 8 (expand 1 7 10))))
   (is (= '(3 7 5 0 0 0 0 0) (take 8 (expand 3 8 10)))))
 
-(deftest adding-multiple-streams
-  (is (= '(3 3 3 3) (stream-take 4 (add-streams ones ones ones)))))
-
 (deftest sinx-roughly-x-for-smallx
   (is (= '(0 1 0 -1/6 0 1/120) (take 6 sine-series))))
 
