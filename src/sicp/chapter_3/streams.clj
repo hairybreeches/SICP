@@ -277,7 +277,9 @@
        (cons 0 (mul-series (rest s1) (rest s2)))))))
 
 (defn- invert-series-with-constant-term-one
-  ([series]
+  [series]
+  (let [result (ref false)]
+    (dosync (ref-set result
     (lazy-seq
       (cons
        1
@@ -285,7 +287,8 @@
           -1
           (mul-series
                 (rest series)
-                (invert-series-with-constant-term-one series)))))))
+                @result)))))
+            @result)))
 
 (defn invert-series
   [series]

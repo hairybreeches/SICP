@@ -42,7 +42,7 @@
   (is (= '(0 1 0 1/3 0 2/15 0 17/315 0 62/2835) (take 10 tan-series))))
 
 (deftest can-generate-inverse
-  (is (= '(1 1 1 1 1) (take 5 (invert-series '(1 -1))))))
+  (is (= '(1 1 1 1 1) (take 5 (invert-series (concat '(1 -1) (repeat 0)))))))
 
 (deftest can-find-sqrt-2
   (is-roughly= (sqrt-tolerance 2 0.0001) (sqrt 2) 3))
