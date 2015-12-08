@@ -185,19 +185,20 @@
   [& streams]
   (reduce stream-merge-pair streams))
 
-(defn stream-merge-weighted-pair
+(defn sq-merge-weighted-pair
   [weight stream1 stream2]
+  (lazy-seq
   (cond
-    (empty-stream? stream1) stream2
-    (empty-stream? stream2) stream1
-    :else (let [s1car (stream-car stream1)
-                s2car (stream-car stream2)]
-            (cond (< (weight s1car) (weight s2car)) (stream-cons s1car (stream-merge-weighted-pair weight (stream-cdr stream1) stream2))
-                  :else (stream-cons s2car (stream-merge-weighted-pair weight (stream-cdr stream2) stream1))))))
+    (empty? stream1) stream2
+    (empty? stream2) stream1
+    :else (let [s1car (first stream1)
+                s2car (first stream2)]
+            (cond (< (weight s1car) (weight s2car)) (cons s1car (sq-merge-weighted-pair weight (rest stream1) stream2))
+                  :else (cons s2car (sq-merge-weighted-pair weight (rest stream2) stream1)))))))
 
-(defn stream-merge-weighted
+(defn sq-merge-weighted
   [weight & streams]
-  (reduce (partial stream-merge-weighted-pair weight) streams))
+  (reduce (partial sq-merge-weighted-pair weight) streams))
 
 
 
@@ -373,77 +374,49 @@
   [tolerance]
   (stream-limit super-accelerated-log2-approximations tolerance))
 
-(defn stream-interleave-pair
-  [s t]
-  (if (empty-stream? s)
-      t
-      (stream-cons (stream-car s)
-                   (stream-interleave-pair t (stream-cdr s)))))
-
-(defn stream-interleave
-  [& args]
-  (reduce stream-interleave-pair args))
-
 (defn pairs
   [s t weight]
-  (stream-cons [(stream-car s) (stream-car t)]
-        (stream-merge-weighted
+  (lazy-seq (cons [(first s) (first t)]
+        (sq-merge-weighted
          weight
-         (stream-map (fn [x] [(stream-car s) x]) (stream-cdr t))
-         (pairs (stream-cdr s) (stream-cdr t) weight))))
+         (map (fn [x] [(first s) x]) (rest t))
+         (pairs (rest s) (rest t) weight)))))
 
 (defn all-pairs
   [s t]
-  (stream-cons [(stream-car s) (stream-car t)]
-        (stream-merge-weighted
+  (lazy-seq
+  (cons [(first s) (first t)]
+        (sq-merge-weighted
          (fn [[a b]] (+ a b))
-         (stream-map (fn [x] [(stream-car s) x]) (stream-cdr t))
-         (stream-map (fn [x] [x (stream-car t)]) (stream-cdr s))
-         (all-pairs (stream-cdr s) (stream-cdr t)))))
-
-(defn stream-take-while
-  [predicate stream]
-  (if (predicate (stream-car stream))
-      (stream-cons (stream-car stream) (stream-take-while predicate (stream-cdr stream)))
-      empty-stream))
-
-(defn stream-drop-while
-  [predicate stream]
-  (loop [stream stream]
-    (if (not (predicate (stream-car stream)))
-        stream
-        (recur (stream-cdr stream)))))
-
-(defn stream-concat
-  [streams]
-  (cond
-   (empty-stream? streams) empty-stream
-   (empty-stream? (stream-car streams)) (stream-concat (stream-cdr streams))
-   :else (stream-cons (stream-car (stream-car streams)) (stream-concat (stream-cons (stream-cdr (stream-car streams)) (stream-cdr streams))))))
+         (map (fn [x] [(first s) x]) (rest t))
+         (map (fn [x] [x (first t)]) (rest s))
+         (all-pairs (rest s) (rest t))))))
 
 
 (def integer-pairs
-  (pairs integers integers second))
+  (pairs integers-seq integers-seq second))
 
 (defn all-triples-with-highest-term
   [n]
-  (stream-map (fn [[i j]] [i j n]) (stream-take-while #(<= (second %) n) integer-pairs)))
+  (map (fn [[i j]] [i j n]) (take-while #(<= (second %) n) integer-pairs)))
 
 (defn triples
   [s t u]
-  (stream-concat (stream-map all-triples-with-highest-term integers)))
+  (mapcat all-triples-with-highest-term integers-seq))
 
 
 (defn find-consecutives
-  [n function stream]
-  (loop [stream stream]
-    (let [first-value (function (stream-car stream))
+  [n function sq]
+  (lazy-seq
+  (loop [sq sq]
+    (let [first-value (function (first sq))
           equal-to-current? (fn [n] (= (function n) first-value))
-          same-values (stream->list (stream-take-while equal-to-current? stream))
-          number-same (count same-values)]
+          same-values (take-while equal-to-current? sq)
+          number-same (count same-values)
+          remaining (drop-while equal-to-current? sq)]
       (if (>= number-same n)
-          (stream-cons {:output first-value :inputs same-values} (find-consecutives n function (stream-drop-while equal-to-current? stream)))
-          (recur (stream-drop-while equal-to-current? stream))))))
+          (cons {:output first-value :inputs same-values} (find-consecutives n function remaining))
+          (recur remaining))))))
 
 (defn integral
   [delayed-integrand initial-value dt]

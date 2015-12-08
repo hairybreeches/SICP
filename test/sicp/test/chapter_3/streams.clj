@@ -60,16 +60,14 @@
   (is-roughly= (get-log2 0.00000001) (java.lang.Math/log 2) 7))
 
 (deftest finding-all-pairs
-  (is (= (stream-take 10 (all-pairs integers integers)) '([1 1] [2 1] [1 2] [2 2] [3 1] [1 3] [3 2] [4 1] [2 3] [1 4]))))
+  (is (= (take 10 (all-pairs integers-seq integers-seq)) '([1 1] [2 1] [1 2] [2 2] [3 1] [1 3] [3 2] [4 1] [2 3] [1 4]))))
 
 (deftest can-get-integer-pairs
-  (is (= '([1 1] [2 2] [1 2] [3 3] [1 3] [2 3] [1 4] [4 4] [2 4] [3 4] [1 5] [2 5]) (stream-take 12 integer-pairs))))
+  (is (= '([1 1] [2 2] [1 2] [3 3] [1 3] [2 3] [1 4] [4 4] [2 4] [3 4] [1 5] [2 5]) (take 12 integer-pairs))))
 
-(deftest can-concat-streams
-  (is (= (stream->list (stream-concat (list->stream (map list->stream ['(1 2 3) '(4 5 6 7) '(8)])))) '(1 2 3 4 5 6 7 8))))
 
 (deftest can-combine-numbers-with-triples
-  (is (= (stream->list (all-triples-with-highest-term 4)) '([1 1 4] [2 2 4] [1 2 4] [3 3 4] [1 3 4] [2 3 4] [1 4 4] [4 4 4] [2 4 4] [3 4 4]))))
+  (is (= (all-triples-with-highest-term 4) '([1 1 4] [2 2 4] [1 2 4] [3 3 4] [1 3 4] [2 3 4] [1 4 4] [4 4 4] [2 4 4] [3 4 4]))))
 
 (defn pythagorean?
   [[a b c]]
@@ -77,7 +75,7 @@
 
 
 (deftest can-find-pythagorean-triples
-  (is (= (stream-take 15 (stream-filter pythagorean? (triples integers integers integers)))
+  (is (= (take 15 (filter pythagorean? (triples integers-seq integers-seq integers-seq)))
          '([3 4 5]
            [6 8 10]
            [5 12 13]
@@ -95,7 +93,7 @@
            [15 36 39]))))
 
 (deftest can-find-pairs-ordered-by-sum
-  (is (= (stream-take 10 (pairs integers integers (fn[[a b]] (+ a b)))) '([1 1] [1 2] [2 2] [1 3] [2 3] [1 4] [3 3] [1 5] [2 4] [1 6]))))
+  (is (= (take 10 (pairs integers-seq integers-seq (fn[[a b]] (+ a b)))) '([1 1] [1 2] [2 2] [1 3] [2 3] [1 4] [3 3] [1 5] [2 4] [1 6]))))
 
 (defn coprime235?
   [n]
@@ -117,7 +115,7 @@
 
 (deftest silly-ordering-filtering-example
   (is (= '([1 1] [1 7] [1 11] [1 13] [1 17] [1 19] [1 23] [1 29] [1 31] [7 7] [1 37] [1 41])
-          (stream-take 12 (stream-filter both-coprime235? (pairs integers integers weird-ordering))))))
+          (take 12 (filter both-coprime235? (pairs integers-seq integers-seq weird-ordering))))))
 
 (defn cube
   [n]
@@ -133,7 +131,7 @@
            {:output 4104, :inputs ([2 16] [9 15])}
            {:output 13832, :inputs ([2 24] [18 20])}
            {:output 20683, :inputs ([10 27] [19 24])})
-          (stream-take 4 (find-consecutives 2 sum-of-cubes (pairs integers integers sum-of-cubes))))))
+          (take 4 (find-consecutives 2 sum-of-cubes (pairs integers-seq integers-seq sum-of-cubes))))))
 
 (defn sum-of-squares
   [[i j]]
@@ -145,7 +143,7 @@
            {:output 425, :inputs ([5 20] [8 19] [13 16])}
            {:output 650, :inputs ([5 25] [11 23] [17 19])}
            {:output 725, :inputs ([7 26] [10 25] [14 23])})
-          (stream-take 4 (find-consecutives 3 sum-of-squares (pairs integers integers sum-of-squares))))))
+          (take 4 (find-consecutives 3 sum-of-squares (pairs integers-seq integers-seq sum-of-squares))))))
 
 (def RC1
   (RC 5 1 0.5))
