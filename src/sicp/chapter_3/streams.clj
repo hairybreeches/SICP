@@ -257,16 +257,16 @@
 
 (defn integral
   [delayed-integrand initial-value dt]
-  (lazy-seq
-    (cons
+  (cons
      initial-value
-     (let [integrand (force delayed-integrand)]
-       (if (empty? integrand)
-           '()
-           (integral (delay (rest integrand))
-                     (+ (* dt (first integrand))
-                        initial-value)
-                     dt))))))
+    (lazy-seq
+      (let [integrand (force delayed-integrand)]
+        (if (empty? integrand)
+            '()
+            (integral (delay (rest integrand))
+                      (+ (* dt (first integrand))
+                         initial-value)
+                      dt))))))
 
 (defn RC
   [R C dt]
