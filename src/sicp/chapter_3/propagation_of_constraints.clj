@@ -41,81 +41,79 @@
 
 (defn adder
   [a1 a2 sum]
-  (let
-    [me (ref false)
+  (letfn
+    [(me
+      [request]
+       (cond
+        (= request :i-have-a-value) (process-new-value)
+        (= request :i-lost-my-value) (process-forget-value)))
 
-     process-new-value
-     (fn []
+     (process-new-value
+     []
        (cond (and (has-value? a1) (has-value? a2))
              (set-value! sum
                          (+ (get-value a1) (get-value a2))
-                         @me)
+                         me)
              (and (has-value? a1) (has-value? sum))
              (set-value! a2
                          (- (get-value sum) (get-value a1))
-                         @me)
+                         me)
              (and (has-value? a2) (has-value? sum))
              (set-value! a1
                          (- (get-value sum) (get-value a2))
-                         @me)))
+                         me)))
 
-     process-forget-value
-     (fn []
-       (forget-value! sum @me)
-       (forget-value! a1 @me)
-       (forget-value! a2 @me))]
+     (process-forget-value
+     []
+       (forget-value! sum me)
+       (forget-value! a1 me)
+       (forget-value! a2 me))]
 
-    (dosync
-     (ref-set me (fn [request]
-       (cond
-        (= request :i-have-a-value) (process-new-value)
-        (= request :i-lost-my-value) (process-forget-value))))
 
-      (connect a1 @me)
-      (connect a2 @me)
-      (connect sum @me)
-      @me)))
+      (connect a1 me)
+      (connect a2 me)
+      (connect sum me)
+      me))
 
 (defn multiplier
   [m1 m2 product]
 
-  (let [me (ref false)
+  (letfn
+        [(me
+         [request]
+         (cond
+          (= request :i-have-a-value) (process-new-value)
+          (= request :i-lost-my-value) (process-forget-value)))
 
-        process-new-value
-        (fn []
+        (process-new-value
+        []
           (cond
            (or (and (has-value? m1) (= (get-value m1) 0))
                (and (has-value? m2) (= (get-value m2) 0)))
-           (set-value! product 0 @me)
+           (set-value! product 0 me)
 
            (and (has-value? m1)
                 (has-value? m2))
-           (set-value! product (* (get-value m1) (get-value m2)) @me)
+           (set-value! product (* (get-value m1) (get-value m2)) me)
 
            (and (has-value? m1)
                 (has-value? product))
-           (set-value! m2 (/ (get-value product) (get-value m1)) @me)
+           (set-value! m2 (/ (get-value product) (get-value m1)) me)
 
            (and (has-value? m2)
                 (has-value? product))
-           (set-value! m1 (/ (get-value product) (get-value m2)) @me)))
+           (set-value! m1 (/ (get-value product) (get-value m2)) me)))
 
-        process-forget-value
-        (fn []
-          (forget-value! product @me)
-          (forget-value! m1 @me)
-          (forget-value! m2 @me))]
+        (process-forget-value
+        []
+          (forget-value! product me)
+          (forget-value! m1 me)
+          (forget-value! m2 me))]
 
-    (dosync
-     (ref-set me (fn [request]
-       (cond
-        (= request :i-have-a-value) (process-new-value)
-        (= request :i-lost-my-value) (process-forget-value))))
-
-      (connect m1 @me)
-      (connect m2 @me)
-      (connect product @me)
-      @me)))
+      (connect m1 me)
+      (connect m2 me)
+      (connect product me)
+      me))
 
 (defn constant
   [value connector]
@@ -133,11 +131,10 @@
   (let
     [value (ref false)
      informant (ref false)
-     constraints (ref #{})
-     me (ref false)
+     constraints (ref #{})]
+    (letfn[
 
-     set-my-value
-     (fn
+     (set-my-value
        [newval setter]
        (cond (not (has-value? me))
              (dosync
@@ -151,32 +148,31 @@
              :else
              :ignored))
 
-     forget-my-value
-     (fn [retractor]
+     (forget-my-value
+     [retractor]
        (if (= retractor @informant)
          (dosync
           (ref-set informant false)
           (for-each-except retractor inform-about-no-value @constraints))))
 
-     connect
-     (fn
+     (connect
        [new-constraint]
        (if (not (@constraints new-constraint))
            (dosync
             (alter constraints conj new-constraint)))
 
-       (if (has-value? @me)
-         (inform-about-value new-constraint)))]
+       (if (has-value? me)
+         (inform-about-value new-constraint)))
 
-    (dosync
-     (ref-set me (fn [request]
+    (me
+     [request]
        (cond
         (= request :has-value?) (not (not @informant))
         (= request :value) @value
         (= request :set-value!) set-my-value
         (= request :forget) forget-my-value
-        (= request :connect) connect)))
-     @me)))
+        (= request :connect) connect))]
+     me)))
 
 (defn c+
   [a1 a2]
@@ -218,30 +214,29 @@
 
 (defn squarer
   [root square]
-  (let [me (ref false)
+  (letfn [
+        (me
+         [request]
+         (cond
+          (= request :i-have-a-value) (process-new-value)
+          (= request :i-lost-my-value) (process-forget-value)))
 
-        process-new-value
-        (fn []
+        (process-new-value
+        []
           (if (has-value? square)
             (if (< (get-value square) 0)
                 (throw (Exception. (str "Square less than 0: " (get-value square))))
-                (set-value! root (sqrt (get-value square)) @me))
-            (set-value! square (* (get-value root) (get-value root)) @me)))
+                (set-value! root (sqrt (get-value square)) me))
+            (set-value! square (* (get-value root) (get-value root)) me)))
 
-        process-forget-value
-          (fn []
-            (forget-value! root @me)
-            (forget-value! square @me))]
+        (process-forget-value
+          []
+            (forget-value! root me)
+            (forget-value! square me))]
 
-    (dosync
-     (ref-set me (fn [request]
-       (cond
-        (= request :i-have-a-value) (process-new-value)
-        (= request :i-lost-my-value) (process-forget-value))))
-
-      (connect root @me)
-      (connect square @me)
-      @me)))
+      (connect root me)
+      (connect square me)
+      me))
 
 
 
