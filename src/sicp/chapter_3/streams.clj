@@ -260,7 +260,7 @@
   (cons
      initial-value
     (lazy-seq
-      (let [integrand (force delayed-integrand)]
+      (let [integrand @delayed-integrand]
         (if (empty? integrand)
             '()
             (integral (delay (rest integrand))
@@ -304,7 +304,7 @@
 (defn solve
   [f y0 dt]
   (let [dy (ref false)
-        y (integral (delay @dy) y0 dt)]
+        y (integral dy y0 dt)]
     (dosync
       (ref-set
        dy
@@ -314,7 +314,7 @@
 (defn solve-2nd
   [y0 dy0 dt f]
   (let [dy2 (ref false)
-        dy (integral (delay @dy2) dy0 dt)
+        dy (integral dy2 dy0 dt)
         y (integral (delay dy) y0 dt)]
     (dosync
       (ref-set
