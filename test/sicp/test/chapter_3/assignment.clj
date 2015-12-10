@@ -141,6 +141,10 @@
   (is (= 1
          (evaluate-right-to-left (+ (f 0) (f 1))))))
 
+(deftest arguments-left-in-correct-order-by-evaluation-macros
+  (is (= 2 (evaluate-left-to-right (/ 4 2))))
+  (is (= 2 (evaluate-right-to-left (/ 4 2)))))
+
 
 
 
