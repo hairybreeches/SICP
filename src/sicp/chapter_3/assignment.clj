@@ -81,12 +81,18 @@
 
 
 (defn monte-carlo
-  [trials experiment]
-   (loop [trials-remaining trials
-          trials-passed 0]
-     (cond (= trials-remaining 0) (/ trials-passed trials)
-           (experiment) (recur (dec trials-remaining) (inc trials-passed))
-           :else (recur (dec trials-remaining) trials-passed))))
+  [experiment]
+  (map
+
+   (fn [[number-done number-passed]]
+          (double (/ number-passed number-done)))
+ (drop 1
+   (iterate (fn [[number-done number-passed]]
+                [(inc number-done)
+                 (if (experiment)
+                     (inc number-passed)
+                     number-passed)])
+           [0 0]))))
 
 (defn random-in-range
   [low high]
@@ -108,12 +114,13 @@
 
 (defn monte-carlo-integration
   [border-box
-   predicate
-   number-of-tests]
+   predicate]
 
   (let [integration-test (fn [] (predicate (point-in-box border-box)))
-        proportion-of-border-box (monte-carlo number-of-tests integration-test)]
-      (* proportion-of-border-box (box-area border-box))))
+        proportion-of-border-box (monte-carlo integration-test)
+        box-area (box-area border-box)]
+
+    (map (fn [proportion] (* proportion box-area)) proportion-of-border-box)))
 
 (defn get-randoms
   [initial-value]
