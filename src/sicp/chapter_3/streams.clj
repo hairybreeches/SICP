@@ -328,6 +328,25 @@
    (fn [y dy] (+ (* a dy) (* b y)))
    (solve-2nd y0 dy0 dt)))
 
+(defn- find-iL
+  [R L C vC0 iL0 dt]
+  (solve-2nd-linear
+   (/ (* -1 R) L)
+   (/ 1 L)
+   iL0
+   (- (/ vC0 L) (/ (* R iL0) L))
+   dt))
+
+(defn RLC
+  [R L C dt]
+  (fn [vC0 iL0]
+    (let [iL (find-iL R L C vC0 iL0 dt)
+          vC (integral (delay (scale (/ -1 C) iL))
+                       vC0
+                       dt)]
+      [iL vC])))
+
+
 
 
 

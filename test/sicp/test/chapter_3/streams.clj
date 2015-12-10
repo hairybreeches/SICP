@@ -172,6 +172,19 @@
        (+ (expt (java.lang.Math/E) 3) (expt (java.lang.Math/E) 2))
        1))
 
+(defn round-to-3dp
+  [a]
+  (-> a
+      (* 1000)
+      round
+      (/ 1000)
+      (double)))
+
+(deftest can-model-RLC-circuits
+  (let [[iL vC] ((RLC 1 1 0.2 0.1) 10 0)]
+    (is (= (map round-to-3dp (take 5 iL)) '(0.0 1.0 1.9 2.72 3.477)))
+    (is (= (map round-to-3dp (take 5 vC)) '(10.0 10.0 9.5 8.55 7.19)))))
+
 
 
 
