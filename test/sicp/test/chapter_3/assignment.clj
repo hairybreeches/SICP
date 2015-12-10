@@ -82,13 +82,15 @@
 
 
 (deftest can-generate-not-very-random-numbers
-  (is (= (rand-seeded :generate) 1))
-  (is (= (rand-seeded :generate) 2))
-  (is (= (rand-seeded :generate) 3))
-  (is (= (rand-seeded :generate) 4))
-  (is (= ((rand-seeded :reset) 91) 91))
-  (is (= (rand-seeded :generate) 92))
-  (is (= (rand-seeded :generate) 93)))
+  (is (=
+       (take 7 (give-randoms '({:action :generate}
+                               {:action :generate}
+                               {:action :generate}
+                               {:action :generate}
+                               {:action :reset :initial-value 91}
+                               {:action :generate}
+                               {:action :generate})))
+        '(1 2 3 4 91 92 93))))
 
 (deftest joint-account-shares-balance
   (let [original (make-account 30 :original-password)

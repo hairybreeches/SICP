@@ -115,25 +115,25 @@
         proportion-of-border-box (monte-carlo number-of-tests integration-test)]
       (* proportion-of-border-box (box-area border-box))))
 
-(def current-rand (ref 0))
+(defn get-randoms
+  [initial-value]
+  (iterate inc initial-value))
 
-(defn iterate-rand
-  []
-  (dosync
-   ;this pseudorandom implementation is quite predictable.
-   (alter current-rand inc)
-   @current-rand))
+(defn give-randoms
+  ([requests] (give-randoms requests (get-randoms 1)))
+  ([requests last-randoms]
+   (lazy-seq
+    (if
+      (empty? requests)
+      '()
+      (let [request (first requests)
+            action (:action request)
+            randoms (cond (= action :generate) last-randoms
+                              (= action :reset) (get-randoms (:initial-value request)))]
+        (cons (first randoms)
+              (give-randoms (rest requests)
+                            (rest randoms))))))))
 
-(defn reset-rand
-  [seed]
-  (dosync
-   (ref-set current-rand seed)
-   @current-rand))
-
-(defn rand-seeded
-  [dispatch-value]
-  (cond (= dispatch-value :generate) (iterate-rand)
-        (= dispatch-value :reset) reset-rand))
 
 
 
