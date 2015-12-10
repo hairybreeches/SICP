@@ -114,17 +114,32 @@
       (ref-set spooky-state n)
       last-value)))
 
+(defmacro evaluate-left-to-right
+  [form]
+  (let [func (first form)
+        args (rest form)
+        names (map (fn [_] (gensym)) args)
+        declaration (apply vector (interleave names args))]
+    `(let ~declaration (~func ~@names))))
+
+(defmacro evaluate-right-to-left
+  [form]
+  (let [func (first form)
+        args (rest form)
+        names (map (fn [_] (gensym)) args)
+        declaration (apply vector (interleave (reverse names) (reverse args)))]
+    `(let ~declaration (~func ~@names))))
+
+
 (deftest evaluation-order-matters-left-to-right
   (dosync (ref-set spooky-state 0))
-  (let [a (f 0)
-        b (f 1)]
-    (is (= (+ a b) 0))))
+    (is (= 0
+         (evaluate-left-to-right (+ (f 0) (f 1))))))
 
 (deftest evaluation-order-matters-right-to-left
   (dosync (ref-set spooky-state 0))
-  (let [b (f 1)
-        a (f 0)]
-    (is (= (+ a b) 1))))
+  (is (= 1
+         (evaluate-right-to-left (+ (f 0) (f 1))))))
 
 
 
