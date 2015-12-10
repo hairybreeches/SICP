@@ -76,7 +76,7 @@
 (deftest monte-carlo-integration-circle
   (let [estimates (monte-carlo-integration box-containing-circle circle-of-radius-3-predicate)
         correct-answer (* 9 java.lang.Math/PI)]
-    (is-roughly= (nth estimates 10000) correct-answer 1)))
+    (is-roughly= (nth estimates 100000) correct-answer 0)))
 
 
 (deftest can-generate-not-very-random-numbers
