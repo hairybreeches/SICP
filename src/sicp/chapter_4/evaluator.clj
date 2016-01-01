@@ -4,11 +4,12 @@
 (def my-apply)
 (def my-eval)
 
-(def no-operands?)
 (defn self-evaluating?
   [exp]
   (cond (number? exp) true
         (string? exp) true
+        (= true exp) true
+        (= false exp) true
         :else false))
 
 (defn variable?
@@ -97,14 +98,60 @@
 
 
 
-(def begin?)
-(def begin-actions)
+(defn begin?
+  [exp]
+  (tagged-list? exp 'begin))
 
-(def application?)
-(def operator)
-(def operands)
-(def first-operand)
-(def rest-operands)
+(defn begin-actions
+  [exp]
+  (rest exp))
+
+
+(defn first-exp
+  [exp]
+  (first exp))
+
+(defn rest-exps
+  [exp]
+  (rest exp))
+
+(defn last-exp?
+  [exp]
+  (empty? (rest-exps exp)))
+
+(defn make-begin
+  [actions]
+  (cons 'begin actions))
+
+(defn sequence->exp
+  [actions]
+  (cond (empty? actions) actions
+        (last-exp? actions) (first-exp actions)
+        :else (make-begin actions)))
+
+(defn application?
+  [exp]
+  (seq? exp))
+
+(defn operator
+  [exp]
+  (first exp))
+
+(defn operands
+  [exp]
+  (rest exp))
+
+(defn no-operands?
+  [ops]
+  (empty? ops))
+
+(defn first-operand
+  [ops]
+  (first ops))
+
+(defn rest-operands
+  [ops]
+  (rest ops))
 
 (def primitive-procedure?)
 (def apply-primitive-procedure)
@@ -115,25 +162,82 @@
 (def procedure-parameters)
 (def procedure-environment)
 
-(def cond?)
-(def cond->if)
+(defn if?
+  [exp]
+  (tagged-list? exp 'if))
 
-(def extend-environment)
+(defn if-predicate
+  [exp]
+  (second exp))
 
-(def if?)
-(def if-predicate)
-(def if-consequent)
-(def if-alternative)
+(defn if-consequent
+  [exp]
+  (nth exp 2))
+
+(defn if-alternative
+  [exp]
+  (if (empty? (drop 3 exp))
+      false
+      (nth exp 3)))
+
+(defn make-if
+  [predicate consequent alternative]
+  (list 'if predicate consequent alternative))
+
+(defn my-false?
+  [x]
+  (= x false))
+
+(defn my-true?
+  [x]
+  (not (my-false? x)))
 
 (defn eval-if
   [exp env]
-  (if (true? (my-eval (if-predicate exp) env))
+  (if (my-true? (my-eval (if-predicate exp) env))
     (my-eval (if-consequent exp) env)
     (my-eval (if-alternative exp) env)))
 
-(def first-exp)
-(def rest-exps)
-(def last-exp?)
+(defn cond?
+  [exp]
+  (tagged-list? exp 'cond))
+
+(defn cond-clauses
+  [exp]
+  (rest exp))
+
+(defn cond-predicate
+  [clause]
+  (first clause))
+
+(defn cond-actions
+  [clause]
+  (rest clause))
+
+(defn cond-else-clause?
+  [clause]
+  (= (cond-predicate clause) 'else))
+
+(defn expand-clauses
+  [clauses]
+  (if
+    (empty? clauses)
+    false
+    (let [first-clause (first clauses)
+          rest-clauses (rest clauses)]
+      (if (cond-else-clause? first-clause)
+          (if (empty? rest-clauses)
+              (sequence->exp (cond-actions first-clause))
+              (error "else clause not last: " clauses))
+          (make-if (cond-predicate first-clause)
+                   (sequence->exp (cond-actions first-clause))
+                   (expand-clauses rest-clauses))))))
+
+(defn cond->if
+  [exp]
+  (expand-clauses (cond-clauses exp)))
+
+(def extend-environment)
 
 (defn eval-sequence
   [exps env]
