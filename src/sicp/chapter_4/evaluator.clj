@@ -19,7 +19,7 @@
 
 (defn tagged-list?
   [exp tag]
-  (if (list? exp)
+  (if (seq? exp)
       (= (first exp) tag)
       false))
 
@@ -31,9 +31,18 @@
   [exp]
   (second exp))
 
-(def assignment?)
-(def assignment-value)
-(def assignment-variable)
+(defn assignment?
+  [exp]
+  (tagged-list? exp 'set!))
+
+(defn assignment-variable
+  [exp]
+  (second exp))
+
+(defn assignment-value
+  [exp]
+  (nth exp 2))
+
 (def set-variable-value!)
 (defn eval-assignment
   [exp env]
@@ -43,9 +52,24 @@
     env)
   :ok)
 
-(def definition?)
-(def definition-variable)
-(def definition-value)
+(defn definition?
+  [exp]
+  (tagged-list? exp 'define))
+
+(defn definition-variable
+  [exp]
+  (if (symbol? (second exp))
+      (second exp)
+      (first (second exp))))
+
+(defn definition-value
+  [exp]
+  (if (symbol? (second exp))
+      (nth exp 2)
+      (make-lambda
+        (rest (second exp))
+        (drop 2 exp))))
+
 (def define-variable!)
 (defn eval-definition
   [exp env]
