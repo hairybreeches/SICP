@@ -31,6 +31,22 @@
   [exp]
   (second exp))
 
+(defn lambda?
+  [exp]
+  (tagged-list? exp 'lambda))
+
+(defn lambda-parameters
+  [exp]
+  (second exp))
+
+(defn lambda-body
+  [exp]
+  (drop 2 exp))
+
+(defn make-lambda
+  [parameters body]
+  (cons 'lambda (cons parameters body)))
+
 (defn assignment?
   [exp]
   (tagged-list? exp 'set!))
@@ -98,10 +114,6 @@
 (def procedure-body)
 (def procedure-parameters)
 (def procedure-environment)
-
-(def lambda?)
-(def lambda-parameters)
-(def lambda-body)
 
 (def cond?)
 (def cond->if)
