@@ -5,13 +5,31 @@
 (def my-eval)
 
 (def no-operands?)
-(def self-evaluating?)
+(defn self-evaluating?
+  [exp]
+  (cond (number? exp) true
+        (string? exp) true
+        :else false))
 
-(def variable?)
+(defn variable?
+  [exp]
+  (symbol? exp))
+
 (def lookup-variable-value)
 
-(def quoted?)
-(def text-of-quotation)
+(defn tagged-list?
+  [exp tag]
+  (if (list? exp)
+      (= (first exp) tag)
+      false))
+
+(defn quoted?
+  [exp]
+  (tagged-list? exp 'quote))
+
+(defn text-of-quotation
+  [exp]
+  (second exp))
 
 (def assignment?)
 (def assignment-value)
