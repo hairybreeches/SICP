@@ -90,13 +90,21 @@
         (do (eval (first-exp exps) env)
             (recur (rest-exps exps) env)))))
 
-(defn list-of-values
+(defn list-of-values-l-r
   [exps env]
   (if (no-operands? exps)
       '()
-      (cons (my-eval (first-operand exps) env)
-            (list-of-values (rest-operands exps) env))))
+      (let [value (my-eval (first-operand exps) env)]
+      (cons value
+            (list-of-values-l-r (rest-operands exps) env)))))
 
+(defn list-of-values-r-l
+  [exps env]
+  (reverse (list-of-values-l-r (reverse exps) env)))
+
+(defn list-of-values
+  [exps env]
+  (list-of-values-l-r exps env))
 
 (defn my-eval
   [exp env]
