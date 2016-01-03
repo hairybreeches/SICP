@@ -4,6 +4,8 @@
 (def my-apply)
 (def my-eval)
 
+(defmulti eval-list-expression first)
+
 (defn self-evaluating?
   [exp]
   (cond (number? exp) true
@@ -264,6 +266,11 @@
   [exps env]
   (list-of-values-l-r exps env))
 
+(defmethod eval-list-expression :default [exp env]
+  (my-apply
+    (my-eval (operator exp) env)
+    (list-of-values (operands exp) env)))
+
 (defn my-eval
   [exp env]
   (cond (self-evaluating? exp) exp
@@ -278,8 +285,7 @@
         (begin? exp) (eval-sequence (begin-actions exp)
                                     env)
         (cond? exp) (my-eval (cond->if exp) env)
-        (application? exp) (my-apply (my-eval (operator exp) env)
-                                     (list-of-values (operands exp) env))
+        (seq? exp) (eval-list-expression exp env)
         :else (error "Unrecognised expression type: " exp)))
 
 (defn my-apply
