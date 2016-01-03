@@ -244,8 +244,8 @@
   (loop [exps exps
          env env]
     (if (last-exp? exps)
-        (eval (first-exp exps) env)
-        (do (eval (first-exp exps) env)
+        (my-eval (first-exp exps) env)
+        (do (my-eval (first-exp exps) env)
             (recur (rest-exps exps) env)))))
 
 (defn list-of-values-l-r
