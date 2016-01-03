@@ -1,6 +1,26 @@
 (ns sicp.chapter-4.application
   (:use sicp.chapter-4.evaluator))
 
+(defn- operator
+  [exp]
+  (first exp))
+
+(defn- operands
+  [exp]
+  (rest exp))
+
+(defn- no-operands?
+  [ops]
+  (empty? ops))
+
+(defn- first-operand
+  [ops]
+  (first ops))
+
+(defn- rest-operands
+  [ops]
+  (rest ops))
+
 (defn- list-of-values-l-r
   [exps env]
   (if (no-operands? exps)

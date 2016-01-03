@@ -134,26 +134,6 @@
         (last-exp? actions) (first-exp actions)
         :else (make-begin actions)))
 
-(defn operator
-  [exp]
-  (first exp))
-
-(defn operands
-  [exp]
-  (rest exp))
-
-(defn no-operands?
-  [ops]
-  (empty? ops))
-
-(defn first-operand
-  [ops]
-  (first ops))
-
-(defn rest-operands
-  [ops]
-  (rest ops))
-
 (def primitive-procedure?)
 (def apply-primitive-procedure)
 (def compound-procedure?)
