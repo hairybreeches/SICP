@@ -131,15 +131,15 @@
 
 (defn application?
   [exp]
-  (tagged-list? exp 'call))
+  (seq? exp))
 
 (defn operator
   [exp]
-  (second exp))
+  (first exp))
 
 (defn operands
   [exp]
-  (drop 2 exp))
+  (rest exp))
 
 (defn no-operands?
   [ops]
@@ -269,8 +269,6 @@
   (cond (self-evaluating? exp) exp
         (variable? exp) (lookup-variable-value exp env)
         (quoted? exp) (text-of-quotation exp)
-        (application? exp) (my-apply (my-eval (operator exp) env)
-                                     (list-of-values (operands exp) env))
         (assignment? exp) (eval-assignment exp env)
         (definition? exp) (eval-definition exp env)
         (if? exp) (eval-if exp env)
@@ -280,6 +278,8 @@
         (begin? exp) (eval-sequence (begin-actions exp)
                                     env)
         (cond? exp) (my-eval (cond->if exp) env)
+        (application? exp) (my-apply (my-eval (operator exp) env)
+                                     (list-of-values (operands exp) env))
         :else (error "Unrecognised expression type: " exp)))
 
 (defn my-apply
