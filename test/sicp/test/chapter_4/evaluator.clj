@@ -1,5 +1,6 @@
 (ns sicp.test.chapter-4.evaluator
   (:use sicp.chapter-4.evaluator)
+  (:use sicp.chapter-4.application)
   (:use clojure.test))
 
 (deftest can-evaluate-numbers
