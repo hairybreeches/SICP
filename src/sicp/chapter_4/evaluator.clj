@@ -29,14 +29,6 @@
       (= (first exp) tag)
       false))
 
-(defn quoted?
-  [exp]
-  (tagged-list? exp 'quote))
-
-(defn text-of-quotation
-  [exp]
-  (second exp))
-
 (defn lambda?
   [exp]
   (tagged-list? exp 'lambda))
@@ -137,7 +129,6 @@
   [exp env]
   (cond (self-evaluating? exp) exp
         (variable? exp) (lookup-variable-value exp env)
-        (quoted? exp) (text-of-quotation exp)
         (assignment? exp) (eval-assignment exp env)
         (definition? exp) (eval-definition exp env)
         (lambda? exp) (make-procedure (lambda-parameters exp)
