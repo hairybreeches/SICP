@@ -4,6 +4,7 @@
   (:use sicp.chapter-4.cond)
   (:use sicp.chapter-4.begin)
   (:use sicp.chapter-4.quote)
+  (:use sicp.chapter-4.definition)
   (:use sicp.chapter-4.application)
   (:use clojure.test))
 

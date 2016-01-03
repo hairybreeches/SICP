@@ -66,32 +66,6 @@
     env)
   :ok)
 
-(defn definition?
-  [exp]
-  (tagged-list? exp 'define))
-
-(defn definition-variable
-  [exp]
-  (if (symbol? (second exp))
-      (second exp)
-      (first (second exp))))
-
-(defn definition-value
-  [exp]
-  (if (symbol? (second exp))
-      (nth exp 2)
-      (make-lambda
-        (rest (second exp))
-        (drop 2 exp))))
-
-(def define-variable!)
-(defn eval-definition
-  [exp env]
-  (define-variable!
-    (definition-variable exp)
-    (my-eval (definition-value exp) env)
-    env)
-  :ok)
 
 (defn first-exp
   [exp]
@@ -130,7 +104,6 @@
   (cond (self-evaluating? exp) exp
         (variable? exp) (lookup-variable-value exp env)
         (assignment? exp) (eval-assignment exp env)
-        (definition? exp) (eval-definition exp env)
         (lambda? exp) (make-procedure (lambda-parameters exp)
                                       (lambda-body exp)
                                       env)
