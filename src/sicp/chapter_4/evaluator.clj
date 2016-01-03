@@ -22,6 +22,16 @@
   (symbol? exp))
 
 (def lookup-variable-value)
+(def primitive-procedure?)
+(def apply-primitive-procedure)
+(def compound-procedure?)
+
+(def make-procedure)
+(def procedure-body)
+(def procedure-parameters)
+(def procedure-environment)
+
+(def extend-environment)
 
 (defn first-exp
   [exp]
@@ -34,17 +44,6 @@
 (defn last-exp?
   [exp]
   (empty? (rest-exps exp)))
-
-(def primitive-procedure?)
-(def apply-primitive-procedure)
-(def compound-procedure?)
-
-(def make-procedure)
-(def procedure-body)
-(def procedure-parameters)
-(def procedure-environment)
-
-(def extend-environment)
 
 (defn eval-sequence
   [exps env]
