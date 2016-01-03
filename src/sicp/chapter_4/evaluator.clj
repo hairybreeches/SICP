@@ -23,34 +23,6 @@
 
 (def lookup-variable-value)
 
-(defn tagged-list?
-  [exp tag]
-  (if (seq? exp)
-      (= (first exp) tag)
-      false))
-
-(defn assignment?
-  [exp]
-  (tagged-list? exp 'set!))
-
-(defn assignment-variable
-  [exp]
-  (second exp))
-
-(defn assignment-value
-  [exp]
-  (nth exp 2))
-
-(def set-variable-value!)
-(defn eval-assignment
-  [exp env]
-  (set-variable-value!
-    (assignment-variable exp)
-    (my-eval (assignment-value exp) env)
-    env)
-  :ok)
-
-
 (defn first-exp
   [exp]
   (first exp))
@@ -87,7 +59,6 @@
   [exp env]
   (cond (self-evaluating? exp) exp
         (variable? exp) (lookup-variable-value exp env)
-        (assignment? exp) (eval-assignment exp env)
         (seq? exp) (eval-list-expression exp env)
         :else (error "Unrecognised expression type: " exp)))
 
