@@ -101,17 +101,6 @@
     env)
   :ok)
 
-
-
-(defn begin?
-  [exp]
-  (tagged-list? exp 'begin))
-
-(defn begin-actions
-  [exp]
-  (rest exp))
-
-
 (defn first-exp
   [exp]
   (first exp))
@@ -123,16 +112,6 @@
 (defn last-exp?
   [exp]
   (empty? (rest-exps exp)))
-
-(defn make-begin
-  [actions]
-  (cons 'begin actions))
-
-(defn sequence->exp
-  [actions]
-  (cond (empty? actions) actions
-        (last-exp? actions) (first-exp actions)
-        :else (make-begin actions)))
 
 (def primitive-procedure?)
 (def apply-primitive-procedure)
@@ -164,8 +143,6 @@
         (lambda? exp) (make-procedure (lambda-parameters exp)
                                       (lambda-body exp)
                                       env)
-        (begin? exp) (eval-sequence (begin-actions exp)
-                                    env)
         (seq? exp) (eval-list-expression exp env)
         :else (error "Unrecognised expression type: " exp)))
 
