@@ -1,5 +1,6 @@
 (ns sicp.chapter-4.definition
-  (:use sicp.chapter-4.evaluator))
+  (:use sicp.chapter-4.evaluator)
+  (:use sicp.chapter-4.lambda))
 
 (defn- definition-variable
   [exp]

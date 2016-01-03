@@ -29,22 +29,6 @@
       (= (first exp) tag)
       false))
 
-(defn lambda?
-  [exp]
-  (tagged-list? exp 'lambda))
-
-(defn lambda-parameters
-  [exp]
-  (second exp))
-
-(defn lambda-body
-  [exp]
-  (drop 2 exp))
-
-(defn make-lambda
-  [parameters body]
-  (cons 'lambda (cons parameters body)))
-
 (defn assignment?
   [exp]
   (tagged-list? exp 'set!))
@@ -104,9 +88,6 @@
   (cond (self-evaluating? exp) exp
         (variable? exp) (lookup-variable-value exp env)
         (assignment? exp) (eval-assignment exp env)
-        (lambda? exp) (make-procedure (lambda-parameters exp)
-                                      (lambda-body exp)
-                                      env)
         (seq? exp) (eval-list-expression exp env)
         :else (error "Unrecognised expression type: " exp)))
 
