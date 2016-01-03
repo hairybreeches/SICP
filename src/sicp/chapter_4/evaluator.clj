@@ -4,7 +4,10 @@
 (def my-apply)
 (def my-eval)
 
-(defmulti eval-list-expression first)
+(defn get-form [exp env]
+  (first exp))
+
+(defmulti eval-list-expression get-form)
 
 (defn self-evaluating?
   [exp]
@@ -160,81 +163,6 @@
 (def procedure-parameters)
 (def procedure-environment)
 
-(defn if?
-  [exp]
-  (tagged-list? exp 'if))
-
-(defn if-predicate
-  [exp]
-  (second exp))
-
-(defn if-consequent
-  [exp]
-  (nth exp 2))
-
-(defn if-alternative
-  [exp]
-  (if (empty? (drop 3 exp))
-      false
-      (nth exp 3)))
-
-(defn make-if
-  [predicate consequent alternative]
-  (list 'if predicate consequent alternative))
-
-(defn my-false?
-  [x]
-  (= x false))
-
-(defn my-true?
-  [x]
-  (not (my-false? x)))
-
-(defn eval-if
-  [exp env]
-  (if (my-true? (my-eval (if-predicate exp) env))
-    (my-eval (if-consequent exp) env)
-    (my-eval (if-alternative exp) env)))
-
-(defn cond?
-  [exp]
-  (tagged-list? exp 'cond))
-
-(defn cond-clauses
-  [exp]
-  (rest exp))
-
-(defn cond-predicate
-  [clause]
-  (first clause))
-
-(defn cond-actions
-  [clause]
-  (rest clause))
-
-(defn cond-else-clause?
-  [clause]
-  (= (cond-predicate clause) 'else))
-
-(defn expand-clauses
-  [clauses]
-  (if
-    (empty? clauses)
-    false
-    (let [first-clause (first clauses)
-          rest-clauses (rest clauses)]
-      (if (cond-else-clause? first-clause)
-          (if (empty? rest-clauses)
-              (sequence->exp (cond-actions first-clause))
-              (error "else clause not last: " clauses))
-          (make-if (cond-predicate first-clause)
-                   (sequence->exp (cond-actions first-clause))
-                   (expand-clauses rest-clauses))))))
-
-(defn cond->if
-  [exp]
-  (expand-clauses (cond-clauses exp)))
-
 (def extend-environment)
 
 (defn eval-sequence
@@ -253,13 +181,11 @@
         (quoted? exp) (text-of-quotation exp)
         (assignment? exp) (eval-assignment exp env)
         (definition? exp) (eval-definition exp env)
-        (if? exp) (eval-if exp env)
         (lambda? exp) (make-procedure (lambda-parameters exp)
                                       (lambda-body exp)
                                       env)
         (begin? exp) (eval-sequence (begin-actions exp)
                                     env)
-        (cond? exp) (my-eval (cond->if exp) env)
         (seq? exp) (eval-list-expression exp env)
         :else (error "Unrecognised expression type: " exp)))
 

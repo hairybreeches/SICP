@@ -1,5 +1,7 @@
 (ns sicp.test.chapter-4.evaluator
   (:use sicp.chapter-4.evaluator)
+  (:use sicp.chapter-4.if)
+  (:use sicp.chapter-4.cond)
   (:use sicp.chapter-4.application)
   (:use clojure.test))
 
