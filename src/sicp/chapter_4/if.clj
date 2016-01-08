@@ -1,5 +1,6 @@
 (ns sicp.chapter-4.if
-  (:use sicp.chapter-4.evaluator))
+  (:use sicp.chapter-4.evaluator)
+  (:use sicp.chapter-4.primitive-datatypes))
 
 (defn- if-predicate
   [exp]
@@ -14,14 +15,6 @@
   (if (empty? (drop 3 exp))
       false
       (nth exp 3)))
-
-(defn- my-false?
-  [x]
-  (= x false))
-
-(defn- my-true?
-  [x]
-  (not (my-false? x)))
 
 (defn- eval-if
   [exp env]
