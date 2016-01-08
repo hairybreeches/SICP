@@ -75,6 +75,15 @@
        (else 8))
                   ))
 
+
+(deftest can-use-functional-cond
+  (evals-to 7
+    '(cond
+       (false 1)
+       (7 => (lambda [x] x))
+       (else 8))
+                  ))
+
 (deftest can-evaluate-lambda
   (evals-to 4
     '((lambda () 4))
