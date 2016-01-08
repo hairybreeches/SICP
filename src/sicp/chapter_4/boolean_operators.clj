@@ -1,21 +1,30 @@
 (ns sicp.chapter-4.boolean-operators
-  (:use sicp.chapter-4.primitive-datatypes)
+  (:use sicp.chapter-4.if)
   (:use sicp.chapter-4.evaluator))
 
-(defn- eval-and [tests env]
-  (loop [tests tests]
-    (cond (empty? tests) true
-          (my-false? (my-eval (first tests) env)) false
-          :else (recur (rest tests)))))
+(defn- and->if [tests]
+  (if (empty? tests)
+      true
+      (make-if (first tests)
+               (and->if (rest tests))
+               false)))
+
+(defn- make-not [t]
+  (list 'not t))
+
+(defn make-and
+  [tests]
+  (cons 'and tests))
+
+(defmethod my-eval 'not [exp env]
+  (my-eval (make-if (second exp) false true) env))
 
 (defmethod my-eval 'and [exp env]
-  (eval-and (rest exp) env))
-
-(defn- eval-or [tests env]
-  (loop [tests tests]
-    (cond (empty? tests) false
-          (my-true? (my-eval (first tests) env)) true
-          :else (recur (rest tests)))))
+  (my-eval (and->if (rest exp)) env))
 
 (defmethod my-eval 'or [exp env]
-  (eval-or (rest exp) env))
+  (my-eval
+    (make-not
+      (make-and
+        (map make-not (rest exp))))
+    env))
