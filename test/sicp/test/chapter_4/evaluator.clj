@@ -10,6 +10,7 @@
   (:use sicp.chapter-4.application)
   (:use sicp.chapter-4.primitive-datatypes)
   (:use sicp.chapter-4.variables)
+  (:use sicp.chapter-4.let)
   (:use sicp.chapter-4.boolean-operators)
   (:use clojure.test))
 
@@ -148,6 +149,28 @@
               "4")
          4
          5)
+            ))
+
+(deftest let-defines-values
+  (evals-to 4
+            '(let ((x 3) (y 4))
+               y)))
+
+(deftest let-values-override
+  (evals-to 4
+            '(begin
+               (definition z 2)
+               (let ((z 4))
+                  z))
+            ))
+
+(deftest let-values-go-out-of-scope
+  (evals-to 2
+            '(begin
+               (definition z 2)
+               (let ((z 4))
+                  false)
+               z)
             ))
 
 
