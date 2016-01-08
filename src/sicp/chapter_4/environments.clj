@@ -1,4 +1,5 @@
-(ns sicp.chapter-4.environments)
+(ns sicp.chapter-4.environments
+  (:use sicp.error))
 
 (defn- make-frame-value
   [variables values]
@@ -27,7 +28,6 @@
   [var value frame]
   (alter frame (fn [fr] (append-to-frame fr var value))))
 
-
 (defn- enclosing-environment
   [env]
   (rest env))
@@ -40,10 +40,28 @@
   '())
 
 (defn lookup-variable-value
-  [var env])
+  [var env]
+  (letfn [(env-loop [env]
+                    (letfn [(scan [vars values]
+                                  (cond (empty? vars) (env-loop (enclosing-environment env))
+                                        (= var (first vars)) (first values)
+                                        :else (scan (rest vars) (rest values))))]
+
+                    (if (= env the-empty-environment)
+                        (error "Unbound variable" var)
+                      (let [frame (first-frame env)]
+                        (scan (frame-variables frame)
+                              (frame-values frame))))))]
+    (env-loop env)))
 
 (defn extend-environment
-  [variables values base-env])
+  [variables values base-env]
+  (if (= (count variables) (count values))
+      (cons (make-frame variables values) base-env)
+      (if (> (count variables) (count values))
+          (error "Too many arguments supplied " variables values)
+          (error "Too few arguments supplied " variables values))))
+
 
 (defn define-variable!
   [var value env])
