@@ -1,6 +1,7 @@
 (ns sicp.chapter-4.evaluator
   (:use sicp.chapter-4.compound-procedures)
-  (:use sicp.error))
+  (:use sicp.error)
+  (:use sicp.chapter-4.environments))
 
 (def my-apply)
 (def my-eval)
@@ -22,11 +23,8 @@
   [exp]
   (symbol? exp))
 
-(def lookup-variable-value)
 (def primitive-procedure?)
 (def apply-primitive-procedure)
-
-(def extend-environment)
 
 (defn first-exp
   [exp]

@@ -1,6 +1,7 @@
 (ns sicp.chapter-4.definition
   (:use sicp.chapter-4.evaluator)
-  (:use sicp.chapter-4.lambda))
+  (:use sicp.chapter-4.lambda)
+  (:use sicp.chapter-4.environments))
 
 (defn- definition-variable
   [exp]
@@ -15,8 +16,6 @@
       (make-lambda
         (rest (second exp))
         (drop 2 exp))))
-
-(def define-variable!)
 
 (defn- eval-definition
   [exp env]

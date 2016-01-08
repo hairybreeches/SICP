@@ -1,5 +1,6 @@
 (ns sicp.chapter-4.assignment
-  (:use sicp.chapter-4.evaluator))
+  (:use sicp.chapter-4.evaluator)
+  (:use sicp.chapter-4.environments))
 
 
 (defn- assignment-variable
@@ -9,8 +10,6 @@
 (defn- assignment-value
   [exp]
   (nth exp 2))
-
-(def set-variable-value!)
 
 (defn- eval-assignment
   [exp env]
