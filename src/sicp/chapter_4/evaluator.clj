@@ -48,11 +48,13 @@
             (recur (rest-exps exps) env)))))
 
 (defn my-eval
-  [exp env]
+  ([exp env]
   (cond (self-evaluating? exp) exp
         (variable? exp) (lookup-variable-value exp env)
         (seq? exp) (eval-list-expression exp env)
         :else (error "Unrecognised expression type: " exp)))
+  ([exp] (my-eval exp the-empty-environment)))
+
 
 (defn my-apply
   [procedure arguments]
