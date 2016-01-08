@@ -56,7 +56,7 @@
         (variable? exp) (lookup-variable-value exp env)
         (seq? exp) (eval-list-expression exp env)
         :else (error "Unrecognised expression type: " exp)))
-  ([exp] (my-eval exp the-empty-environment)))
+  ([exp] (my-eval exp (extend-environment '() '() the-empty-environment))))
 
 
 (defn my-apply

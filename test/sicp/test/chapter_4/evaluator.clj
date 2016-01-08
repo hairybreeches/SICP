@@ -81,3 +81,18 @@
   (evals-to 12
     '((lambda (x) x) 12)
             ))
+
+(deftest can-define-values
+  (evals-to 8
+    '(begin
+       (definition x 8)
+       x)
+            ))
+
+(deftest can-set-values
+  (evals-to 12
+    '(begin
+       (definition x 8)
+       (set! x 12)
+       x)
+            ))
