@@ -22,3 +22,19 @@
   (let [env (extend-environment '() '() the-empty-environment)]
     (define-variable! 'x 5 env)
     (is (= (lookup-variable-value 'x env) 5))))
+
+(deftest definition-in-inner-scope
+  (let [outer (extend-environment '(y) '("outer value") the-empty-environment)
+        inner (extend-environment '() '() outer)]
+    (define-variable! 'y "inner value" inner)
+    (is (= (lookup-variable-value 'y outer) "outer value"))
+    (is (= (lookup-variable-value 'y inner) "inner value"))))
+
+(deftest extension-in-inner-scope
+  (let [outer (extend-environment '(y) '("outer value") the-empty-environment)
+        inner (extend-environment '(y) '("inner value") outer)]
+    (is (= (lookup-variable-value 'y outer) "outer value"))
+    (is (= (lookup-variable-value 'y inner) "inner value"))))
+
+
+
