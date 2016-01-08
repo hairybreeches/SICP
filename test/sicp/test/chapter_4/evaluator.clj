@@ -173,4 +173,10 @@
                z)
             ))
 
+(deftest let*-passes-values-through
+  (evals-to 3
+            '(let* ((x 3) (y x) (z y))
+                   z)
+            ))
+
 
