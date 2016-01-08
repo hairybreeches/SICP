@@ -4,8 +4,6 @@
   (:use sicp.error)
   (:use sicp.chapter-4.environments))
 
-(def my-apply)
-
 (defn get-exp-type
   [exp env]
   (if (seq? exp)
