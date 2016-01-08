@@ -8,11 +8,13 @@
   (:use sicp.chapter-4.quote)
   (:use sicp.chapter-4.definition)
   (:use sicp.chapter-4.application)
+  (:use sicp.chapter-4.primitive-datatypes)
+  (:use sicp.chapter-4.variables)
   (:use clojure.test))
 
 (defn evals-to
   [result code]
-  (is (= (my-eval code) result)))
+  (is (= (execute code) result)))
 
 (deftest can-evaluate-numbers
   (evals-to 4

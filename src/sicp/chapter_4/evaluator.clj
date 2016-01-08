@@ -11,17 +11,17 @@
 
 (defmulti eval-list-expression get-form)
 
-(defn self-evaluating?
-  [exp]
-  (cond (number? exp) true
-        (string? exp) true
-        (= true exp) true
-        (= false exp) true
-        :else false))
+(defn get-exp-type
+  [exp env]
+  (type exp))
 
-(defn variable?
-  [exp]
-  (symbol? exp))
+(defmulti my-eval get-exp-type)
+
+(defmethod my-eval :default [exp env]
+  (if
+    (seq? exp)
+    (eval-list-expression exp env)
+    (error "Unrecognised expression type: " exp)))
 
 (defn primitive-procedure?
   [procedure]
@@ -50,13 +50,8 @@
         (do (my-eval (first-exp exps) env)
             (recur (rest-exps exps) env)))))
 
-(defn my-eval
-  ([exp env]
-  (cond (self-evaluating? exp) exp
-        (variable? exp) (lookup-variable-value exp env)
-        (seq? exp) (eval-list-expression exp env)
-        :else (error "Unrecognised expression type: " exp)))
-  ([exp] (my-eval exp (extend-environment '() '() the-empty-environment))))
+(defn execute
+  [exp] (my-eval exp (extend-environment '() '() the-empty-environment)))
 
 
 (defn my-apply
