@@ -1,4 +1,5 @@
 (ns sicp.chapter-4.evaluator
+  (:use sicp.chapter-4.compound-procedures)
   (:use sicp.error))
 
 (def my-apply)
@@ -24,12 +25,6 @@
 (def lookup-variable-value)
 (def primitive-procedure?)
 (def apply-primitive-procedure)
-(def compound-procedure?)
-
-(def make-procedure)
-(def procedure-body)
-(def procedure-parameters)
-(def procedure-environment)
 
 (def extend-environment)
 
