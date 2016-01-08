@@ -5,5 +5,5 @@
   [exp]
   (second exp))
 
-(defmethod eval-list-expression 'quote [exp env]
+(defmethod my-eval 'quote [exp env]
   (text-of-quotation exp))

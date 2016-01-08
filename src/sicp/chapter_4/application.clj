@@ -37,7 +37,7 @@
   [exps env]
   (list-of-values-l-r exps env))
 
-(defmethod eval-list-expression :default [exp env]
+(defmethod my-eval :default [exp env]
   (my-apply
     (my-eval (operator exp) env)
     (list-of-values (operands exp) env)))

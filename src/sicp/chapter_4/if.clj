@@ -33,5 +33,5 @@
   [predicate consequent alternative]
   (list 'if predicate consequent alternative))
 
-(defmethod eval-list-expression 'if [exp env]
+(defmethod my-eval 'if [exp env]
   (eval-if exp env))

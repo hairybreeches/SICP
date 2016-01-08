@@ -14,7 +14,7 @@
   [parameters body]
   (cons 'lambda (cons parameters body)))
 
-(defmethod eval-list-expression 'lambda [exp env]
+(defmethod my-eval 'lambda [exp env]
   (make-procedure
     (lambda-parameters exp)
     (lambda-body exp)

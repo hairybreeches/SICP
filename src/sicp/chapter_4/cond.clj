@@ -39,5 +39,5 @@
   [exp]
   (expand-clauses (cond-clauses exp)))
 
-(defmethod eval-list-expression 'cond [exp env]
+(defmethod my-eval 'cond [exp env]
   (my-eval (cond->if exp) env))

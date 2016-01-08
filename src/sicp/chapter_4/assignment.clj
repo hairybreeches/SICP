@@ -19,5 +19,5 @@
     env)
   :ok)
 
-(defmethod eval-list-expression 'set! [exp env]
+(defmethod my-eval 'set! [exp env]
   (eval-assignment exp env))

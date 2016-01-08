@@ -4,24 +4,14 @@
   (:use sicp.chapter-4.environments))
 
 (def my-apply)
-(def my-eval)
-
-(defn get-form [exp env]
-  (first exp))
-
-(defmulti eval-list-expression get-form)
 
 (defn get-exp-type
   [exp env]
-  (type exp))
+  (if (seq? exp)
+      (first exp)
+      (type exp)))
 
 (defmulti my-eval get-exp-type)
-
-(defmethod my-eval :default [exp env]
-  (if
-    (seq? exp)
-    (eval-list-expression exp env)
-    (error "Unrecognised expression type: " exp)))
 
 (defn primitive-procedure?
   [procedure]

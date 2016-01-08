@@ -25,5 +25,5 @@
     env)
   :ok)
 
-(defmethod eval-list-expression 'definition [exp env]
+(defmethod my-eval 'definition [exp env]
   (eval-definition exp env))

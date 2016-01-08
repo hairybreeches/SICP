@@ -15,7 +15,7 @@
         (last-exp? actions) (first-exp actions)
         :else (make-begin actions)))
 
-(defmethod eval-list-expression 'begin [exp env]
+(defmethod my-eval 'begin [exp env]
   (eval-sequence
     (begin-actions exp)
     env))
