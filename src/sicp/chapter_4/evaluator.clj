@@ -23,7 +23,10 @@
   [exp]
   (symbol? exp))
 
-(def primitive-procedure?)
+(defn primitive-procedure?
+  [procedure]
+  false)
+
 (def apply-primitive-procedure)
 
 (defn first-exp

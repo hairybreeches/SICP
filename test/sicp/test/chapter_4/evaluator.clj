@@ -71,3 +71,13 @@
        (false 4)
        (else 8))
                   ))
+
+(deftest can-evaluate-lambda
+  (evals-to 4
+    '((lambda () 4))
+            ))
+
+(deftest can-receive-parameters-in-lambda
+  (evals-to 12
+    '((lambda (x) x) 12)
+            ))
