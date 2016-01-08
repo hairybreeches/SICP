@@ -10,6 +10,7 @@
   (:use sicp.chapter-4.application)
   (:use sicp.chapter-4.primitive-datatypes)
   (:use sicp.chapter-4.variables)
+  (:use sicp.chapter-4.boolean-operators)
   (:use clojure.test))
 
 (defn evals-to
@@ -98,3 +99,46 @@
        (set! x 12)
        x)
             ))
+
+(deftest and-evaluates-to-true
+  (evals-to 4
+    '(if (and true
+              true
+              4
+              "4")
+         4
+         5)
+            ))
+
+
+(deftest and-evaluates-to-false
+  (evals-to 5
+    '(if (and true
+              false
+              ("this will throw an exception if evaluated")
+              "4")
+         4
+         5)
+            ))
+
+(deftest or-evaluates-to-false
+  (evals-to 5
+    '(if (or false
+              false
+              false)
+         4
+         5)
+            ))
+
+
+(deftest or-evaluates-to-true
+  (evals-to 4
+    '(if (or false
+              true
+              ("this will throw an exception if evaluated")
+              "4")
+         4
+         5)
+            ))
+
+
