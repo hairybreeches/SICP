@@ -1,5 +1,6 @@
 (ns sicp.chapter-4.evaluator
   (:use sicp.chapter-4.compound-procedures)
+  (:use sicp.chapter-4.primitive-procedures)
   (:use sicp.error)
   (:use sicp.chapter-4.environments))
 
@@ -12,12 +13,6 @@
       (type exp)))
 
 (defmulti my-eval get-exp-type)
-
-(defn primitive-procedure?
-  [procedure]
-  false)
-
-(def apply-primitive-procedure)
 
 (defn first-exp
   [exp]
