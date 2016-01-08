@@ -12,3 +12,13 @@
   (let [env (extend-environment '(x) '(12) the-empty-environment)]
     (set-variable-value! 'x 5 env)
     (is (= (lookup-variable-value 'x env) 5))))
+
+(deftest can-define-existing-value
+  (let [env (extend-environment '(x) '(12) the-empty-environment)]
+    (define-variable! 'x 5 env)
+    (is (= (lookup-variable-value 'x env) 5))))
+
+(deftest can-define-non-existing-value
+  (let [env (extend-environment '() '() the-empty-environment)]
+    (define-variable! 'x 5 env)
+    (is (= (lookup-variable-value 'x env) 5))))
