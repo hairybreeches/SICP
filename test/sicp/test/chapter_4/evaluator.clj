@@ -10,46 +10,64 @@
   (:use sicp.chapter-4.application)
   (:use clojure.test))
 
+(defn evals-to
+  [result code]
+  (is (= (my-eval code) result)))
+
 (deftest can-evaluate-numbers
-  (is (= (my-eval '4) 4)))
+  (evals-to 4
+    '4
+    ))
 
 (deftest can-evaluate-strings
-  (is (= (my-eval '"steve") "steve")))
+  (evals-to "steve"
+    '"steve"
+    ))
 
 (deftest can-quote
-  (is (= (my-eval '(quote (+ 2 3))) '(+ 2 3))))
+  (evals-to '(+ 2 3)
+    '(quote (+ 2 3))
+    ))
 
 (deftest can-branch-true
-  (is (= (my-eval '(if true 4 3)) 4)))
+  (evals-to 4
+    '(if true 4 3)
+    ))
 
 (deftest numbers-are-true
-  (is (= (my-eval '(if 2 4 3)) 4)))
+  (evals-to 4
+    '(if 2 4 3)
+    ))
 
 (deftest can-branch-false
-  (is (= (my-eval '(if false 4 3)) 3)))
+  (evals-to 3
+    '(if false 4 3)
+   ))
 
 (deftest can-branch-false-with-no-alternative
-  (is (= (my-eval '(if false 4)) false)))
+  (evals-to false
+    '(if false 4)
+            ))
 
 (deftest can-cond-to-first
-  (is (= (my-eval
-           '(cond
-              (true 1)
-              (false 4 3))
-                  ) 1)))
+  (evals-to 1
+    '(cond
+       (true 1)
+       (false 4 3))
+                  ))
 
 (deftest can-cond-to-second
-  (is (= (my-eval
-           '(cond
-              (false 1)
-              (3 4)
-              (4 2))
-                  ) 4)))
+  (evals-to 4
+    '(cond
+       (false 1)
+       (3 4)
+       (4 2))
+                  ))
 
 (deftest can-cond-to-last
-  (is (= (my-eval
-           '(cond
-              (false 1)
-              (false 4)
-              (else 8))
-                  ) 8)))
+  (evals-to 8
+    '(cond
+       (false 1)
+       (false 4)
+       (else 8))
+                  ))
