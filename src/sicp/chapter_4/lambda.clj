@@ -4,15 +4,15 @@
 
 (defn- lambda-parameters
   [exp]
-  (second exp))
+  (first (operands exp)))
 
 (defn- lambda-body
   [exp]
-  (drop 2 exp))
+  (rest (operands exp)))
 
 (defn make-lambda
   [parameters body]
-  (cons 'lambda (cons parameters body)))
+  (create-expression 'lambda (cons parameters body)))
 
 (defmethod my-eval 'lambda [exp env]
   (make-procedure
