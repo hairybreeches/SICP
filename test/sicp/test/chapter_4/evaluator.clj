@@ -192,5 +192,12 @@
               (add-3-to-total 4 9))
             ))
 
+(deftest lambda-resolved-at-correct-time
+  (evals-to 7
+            '(begin
+               (define (add-steve a)
+                       (+ steve a))
+               (define steve 4)
+               (add-steve 3))))
 
 
