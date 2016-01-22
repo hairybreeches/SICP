@@ -224,7 +224,7 @@
             ))
 
 (deftest while-iterations
-  (evals-to 6
+  (evals-to 7
             '(begin
                (define a 3)
                (while (< a 7)
