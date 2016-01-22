@@ -4,17 +4,17 @@
 
 (defn- if-predicate
   [exp]
-  (second exp))
+  (first (operands exp)))
 
 (defn- if-consequent
   [exp]
-  (nth exp 2))
+  (second (operands exp)))
 
 (defn- if-alternative
   [exp]
-  (if (empty? (drop 3 exp))
+  (if (empty? (drop 2 (operands exp)))
       false
-      (nth exp 3)))
+      (nth (operands exp) 2)))
 
 (defn- eval-if
   [exp env]
@@ -24,7 +24,7 @@
 
 (defn make-if
   [predicate consequent alternative]
-  (list 'if predicate consequent alternative))
+  (create-expression 'if (list predicate consequent alternative)))
 
 (defmethod my-eval 'if [exp env]
   (eval-if exp env))

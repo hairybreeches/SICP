@@ -1,14 +1,6 @@
 (ns sicp.chapter-4.application
   (:use sicp.chapter-4.evaluator))
 
-(defn- operator
-  [exp]
-  (first exp))
-
-(defn- operands
-  [exp]
-  (rest exp))
-
 (defn- no-operands?
   [ops]
   (empty? ops))

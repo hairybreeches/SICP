@@ -3,11 +3,11 @@
 
 (defn- begin-actions
   [exp]
-  (rest exp))
+  (operands exp))
 
 (defn- make-begin
   [actions]
-  (cons 'begin actions))
+  (create-expression 'begin actions))
 
 (defn sequence->exp
   [actions]

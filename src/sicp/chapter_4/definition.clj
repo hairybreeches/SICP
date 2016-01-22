@@ -3,19 +3,24 @@
   (:use sicp.chapter-4.lambda)
   (:use sicp.chapter-4.environments))
 
+
+(defn- function-definition?
+  [exp]
+  (symbol? (first (operands exp))))
+
 (defn- definition-variable
   [exp]
-  (if (symbol? (second exp))
-      (second exp)
-      (first (second exp))))
+  (if (function-definition? exp)
+      (first (operands exp))
+      (first (first (operands exp)))))
 
 (defn- definition-value
   [exp]
-  (if (symbol? (second exp))
-      (nth exp 2)
+  (if (function-definition? exp)
+      (second (operands exp))
       (make-lambda
-        (rest (second exp))
-        (drop 2 exp))))
+        (rest (first (operands exp)))
+        (drop 1 (operands exp)))))
 
 (defn- eval-definition
   [exp env]

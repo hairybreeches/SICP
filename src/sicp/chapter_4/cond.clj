@@ -6,7 +6,7 @@
 
 (defn- cond-clauses
   [exp]
-  (rest exp))
+  (operands exp))
 
 (defn- cond-predicate
   [clause]
@@ -48,4 +48,4 @@
                    (recur rest-clauses))))))))
 
 (defmethod my-eval 'cond [exp env]
-  (eval-cond (rest exp) env))
+  (eval-cond (cond-clauses exp) env))

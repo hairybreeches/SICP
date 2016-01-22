@@ -5,11 +5,11 @@
 
 (defn- assignment-variable
   [exp]
-  (second exp))
+  (first (operands exp)))
 
 (defn- assignment-value
   [exp]
-  (nth exp 2))
+  (second (operands exp)))
 
 (defn- eval-assignment
   [exp env]
