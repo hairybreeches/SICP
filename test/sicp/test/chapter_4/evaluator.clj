@@ -200,4 +200,27 @@
                (define steve 4)
                (add-steve 3))))
 
+(deftest named-let-no-recursion
+  (evals-to 4
+    '(let unused-name
+          ((z 4))
+          z)))
+
+(deftest named-let
+  (evals-to 13
+    '(begin
+      (define
+        (fib n)
+        (let fib-iter
+          ((a 1)
+           (b 0)
+           (count n))
+          (if (= count 0)
+              b
+              (fib-iter (+ a b) a (- count 1)))))
+
+       (fib 7))
+            ))
+
+
 
