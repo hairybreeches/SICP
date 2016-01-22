@@ -3,7 +3,7 @@
 
 (defn text-of-quotation
   [exp]
-  (second exp))
+  (first (operands exp)))
 
 (defmethod my-eval 'quote [exp env]
   (text-of-quotation exp))
