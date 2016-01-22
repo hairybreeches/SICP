@@ -5,15 +5,15 @@
 
 (defn- get-body
   [exp]
-  (nth exp 2))
+  (second (operands exp)))
 
 (defn- get-predicate
   [exp]
-  (second exp))
+  (first (operands exp)))
 
 (defn- make-while
   [predicate body]
-  (list 'while predicate body))
+  (create-expression 'while (list predicate body)))
 
 (defmethod my-eval 'while [exp env]
   (my-eval
