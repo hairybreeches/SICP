@@ -184,5 +184,13 @@
             '(+ 1 1)
             ))
 
+(deftest define-function-form
+  (evals-to 16
+            '(begin
+              (define (add-3-to-total a b)
+                      (+ a b 3))
+              (add-3-to-total 4 9))
+            ))
+
 
 
