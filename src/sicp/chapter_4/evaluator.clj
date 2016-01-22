@@ -6,15 +6,15 @@
 
 (defn operator
   [exp]
-  (last exp))
+  (first exp))
 
 (defn operands
   [exp]
-  (reverse (rest (reverse exp))))
+  (rest exp))
 
 (defn create-expression
   [form operands]
-  (concat operands (list form)))
+  (cons form operands))
 
 (defn get-exp-type
   [exp env]

@@ -31,228 +31,204 @@
 
 (deftest can-quote
   (evals-to '(+ 2 3)
-    '((+ 2 3) quote)
+    '(quote (+ 2 3))
     ))
 
 (deftest can-branch-true
   (evals-to 4
-    '(true 4 3 if)
+    '(if true 4 3)
     ))
 
 (deftest numbers-are-true
   (evals-to 4
-    '(2 4 3 if)
+    '(if 2 4 3)
     ))
 
 (deftest can-branch-false
   (evals-to 3
-    '(false 4 3 if)
+    '(if false 4 3)
    ))
 
 (deftest can-branch-false-with-no-alternative
   (evals-to false
-    '(false 4 if)
+    '(if false 4)
             ))
 
 (deftest can-cond-to-first
   (evals-to 1
-    '((true 1)
-       (false 4 3)
-      cond)
+    '(cond
+       (true 1)
+       (false 4 3))
                   ))
 
 (deftest can-cond-to-second
   (evals-to 4
-    '((false 1)
+    '(cond
+       (false 1)
        (3 4)
-       (4 2)
-        cond)
+       (4 2))
                   ))
 
 (deftest can-cond-to-last
   (evals-to 8
-    '((false 1)
+    '(cond
+       (false 1)
        (false 4)
-       (else 8)
-      cond)
+       (else 8))
                   ))
 
 
 (deftest can-use-functional-cond
   (evals-to 7
-    '((false 1)
-       (7 => ([x] x lambda))
-       (else 8)
-       cond)
+    '(cond
+       (false 1)
+       (7 => (lambda [x] x))
+       (else 8))
                   ))
 
 (deftest can-evaluate-lambda
   (evals-to 4
-    '((() 4 lambda))
+    '((lambda () 4))
             ))
 
 (deftest can-receive-parameters-in-lambda
   (evals-to 12
-    '(12 ((x) x lambda))
+    '((lambda (x) x) 12)
             ))
 
 (deftest can-define-values
   (evals-to 8
-    '((x 8 define)
-       x
-      begin)
+    '(begin
+       (define x 8)
+       x)
             ))
 
 (deftest can-set-values
   (evals-to 12
-    '((x 8 define)
-       (x 12 set!)
-       x
-      begin)
+    '(begin
+       (define x 8)
+       (set! x 12)
+       x)
             ))
 
 (deftest and-evaluates-to-true
   (evals-to 4
-    '((true
-          true
-          4
-          "4"
-           and)
+    '(if (and true
+              true
+              4
+              "4")
          4
-         5
-      if)
+         5)
             ))
 
 
 (deftest and-evaluates-to-false
   (evals-to 5
-    '((true
-          false
-          ("this will throw an exception if evaluated")
-          "4"
-           and)
+    '(if (and true
+              false
+              ("this will throw an exception if evaluated")
+              "4")
          4
-         5
-      if)
+         5)
             ))
 
 (deftest or-evaluates-to-false
   (evals-to 5
-    '(( false
+    '(if (or false
               false
-              false
-           or)
+              false)
          4
-         5
-      if)
+         5)
             ))
 
 
 (deftest or-evaluates-to-true
   (evals-to 4
-    '((false
+    '(if (or false
               true
               ("this will throw an exception if evaluated")
-              "4"
-           or)
+              "4")
          4
-         5
-      if )
+         5)
             ))
 
 (deftest let-defines-values
   (evals-to 4
-            '(((x 3) (y 4))
-               y
-              let)))
+            '(let ((x 3) (y 4))
+               y)))
 
 (deftest let-values-override
   (evals-to 4
-            '(
-               (z 2 define)
-               (((z 4))
-                  z
-                let)
-               begin)
+            '(begin
+               (define z 2)
+               (let ((z 4))
+                  z))
             ))
 
 (deftest let-values-go-out-of-scope
   (evals-to 2
-            '(
-               (z 2 define)
-               (((z 4))
-                  false
-                let )
-               z
-               begin)
+            '(begin
+               (define z 2)
+               (let ((z 4))
+                  false)
+               z)
             ))
 
 (deftest let*-passes-values-through
   (evals-to 3
-            '(((x 3) (y x) (z y))
-                   z
-              let*)
+            '(let* ((x 3) (y x) (z y))
+                   z)
             ))
 
 (deftest can-evaluate-plus
   (evals-to 2
-            '(1 1 +)
+            '(+ 1 1)
             ))
 
 (deftest define-function-form
   (evals-to 16
-            '(
-              ((add-3-to-total a b)
-                      (a b 3 +)
-               define)
-              (4 9 add-3-to-total)
-               begin)
+            '(begin
+              (define (add-3-to-total a b)
+                      (+ a b 3))
+              (add-3-to-total 4 9))
             ))
 
 (deftest lambda-resolved-at-correct-time
   (evals-to 7
-            '(
-               ((add-steve a)
-                       (steve a + )
-                define)
-               (steve 4 define )
-               (3 add-steve )
-               begin)
-            ))
+            '(begin
+               (define (add-steve a)
+                       (+ steve a))
+               (define steve 4)
+               (add-steve 3))))
 
 (deftest named-let-no-recursion
   (evals-to 4
-    '(unused-name
+    '(let unused-name
           ((z 4))
-          z
-       let)))
+          z)))
 
 (deftest named-let
   (evals-to 13
-    '(
-      ((fib n)
-        (fib-iter
+    '(begin
+      (define
+        (fib n)
+        (let fib-iter
           ((a 1)
            (b 0)
            (count n))
-          ((count 0 =)
+          (if (= count 0)
               b
-              ((a b +) a (count 1 -) fib-iter)
-           if)
-          let)
-       define)
+              (fib-iter (+ a b) a (- count 1)))))
 
-       (7 fib)
-       begin)
+       (fib 7))
             ))
 
 (deftest while-iterations
   (evals-to 7
-            '((a 3 define)
-               ((a 7 <)
-                (a (a 1 +) set!)
-                while)
-               a
-              begin)))
+            '(begin
+               (define a 3)
+               (while (< a 7)
+                      (set! a (+ a 1)))
+               a)))
 
 
