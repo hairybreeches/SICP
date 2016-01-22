@@ -4,10 +4,22 @@
   (:use sicp.chapter-4.environments)
   (:use sicp.chapter-4.default-environment))
 
+(defn operator
+  [exp]
+  (first exp))
+
+(defn operands
+  [exp]
+  (rest exp))
+
+(defn create-expression
+  [form operands]
+  (cons form operands))
+
 (defn get-exp-type
   [exp env]
   (if (seq? exp)
-      (first exp)
+      (operator exp)
       (type exp)))
 
 (defmulti my-eval get-exp-type)
