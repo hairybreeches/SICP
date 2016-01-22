@@ -98,14 +98,14 @@
 (deftest can-define-values
   (evals-to 8
     '(begin
-       (definition x 8)
+       (define x 8)
        x)
             ))
 
 (deftest can-set-values
   (evals-to 12
     '(begin
-       (definition x 8)
+       (define x 8)
        (set! x 12)
        x)
             ))
@@ -159,7 +159,7 @@
 (deftest let-values-override
   (evals-to 4
             '(begin
-               (definition z 2)
+               (define z 2)
                (let ((z 4))
                   z))
             ))
@@ -167,7 +167,7 @@
 (deftest let-values-go-out-of-scope
   (evals-to 2
             '(begin
-               (definition z 2)
+               (define z 2)
                (let ((z 4))
                   false)
                z)
