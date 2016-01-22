@@ -40,6 +40,8 @@
     (list 'cdr rest)
     (list 'cons cons)
     (list '= =)
+    (list '> >)
+    (list '< <)
     (list '+ +)
     (list '- -)
     (list '* *)

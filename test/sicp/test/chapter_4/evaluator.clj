@@ -11,6 +11,7 @@
   (:use sicp.chapter-4.primitive-datatypes)
   (:use sicp.chapter-4.variables)
   (:use sicp.chapter-4.let)
+  (:use sicp.chapter-4.while)
   (:use sicp.chapter-4.boolean-operators)
   (:use clojure.test))
 
@@ -222,5 +223,12 @@
        (fib 7))
             ))
 
+(deftest while-iterations
+  (evals-to 6
+            '(begin
+               (define a 3)
+               (while (< a 7)
+                      (set! a (+ a 1)))
+               a)))
 
 
