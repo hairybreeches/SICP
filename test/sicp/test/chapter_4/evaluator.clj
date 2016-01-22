@@ -179,4 +179,10 @@
                    z)
             ))
 
+(deftest can-evaluate-plus
+  (evals-to 2
+            '(+ 1 1)
+            ))
+
+
 

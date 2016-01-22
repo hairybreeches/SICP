@@ -1,8 +1,8 @@
 (ns sicp.chapter-4.evaluator
-  (:use sicp.chapter-4.compound-procedures)
-  (:use sicp.chapter-4.primitive-procedures)
+  (:use sicp.chapter-4.procedures)
   (:use sicp.error)
-  (:use sicp.chapter-4.environments))
+  (:use sicp.chapter-4.environments)
+  (:use sicp.chapter-4.default-environment))
 
 (defn get-exp-type
   [exp env]
@@ -34,7 +34,7 @@
             (recur (rest-exps exps) env)))))
 
 (defn execute
-  [exp] (my-eval exp (extend-environment '() '() the-empty-environment)))
+  [exp] (my-eval exp (extend-environment '() '() (create-new-environment))))
 
 
 (defn my-apply

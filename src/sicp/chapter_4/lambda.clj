@@ -1,5 +1,5 @@
 (ns sicp.chapter-4.lambda
-  (:use sicp.chapter-4.compound-procedures)
+  (:use sicp.chapter-4.procedures)
   (:use sicp.chapter-4.evaluator))
 
 (defn- lambda-parameters
