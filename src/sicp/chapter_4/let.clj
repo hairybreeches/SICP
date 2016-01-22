@@ -55,12 +55,14 @@
 
 (defn- named-let->combination
   [exp]
-  (list
+  (create-expression
     (make-lambda
       '()
       (list
         (get-named-let-definition exp)
-        (cons (get-named-let-name exp) (get-variable-values exp))))))
+        (create-expression (get-named-let-name exp) (get-variable-values exp))))
+    '()
+    ))
 
 ;general
 (defn- let->combination
@@ -73,7 +75,7 @@
   (my-eval (let->combination exp) env))
 
 (defn make-let [variable-declarations body]
-  (list 'let variable-declarations body))
+  (create-expression 'let (list variable-declarations body)))
 
 (defn- let*->nested-lets
   ([exp] (let*->nested-lets (get-variable-declarations exp) (get-body exp)))
