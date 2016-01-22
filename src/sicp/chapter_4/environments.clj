@@ -68,7 +68,7 @@
                                         :else (scan (rest vars) (rest values))))]
 
                     (if (= env the-empty-environment)
-                        (error "Unbound variable" var)
+                        (error "Unbound variable: " var)
                       (let [frame (first-frame env)]
                         (scan (frame-variables frame)
                               (frame-values frame))))))]
@@ -79,8 +79,8 @@
   (if (= (count variables) (count values))
       (cons (make-frame variables values) base-env)
       (if (> (count variables) (count values))
-          (error "Too many arguments supplied " variables values)
-          (error "Too few arguments supplied " variables values))))
+          (error "Too few arguments supplied, needed values for: " variables " got values: " values)
+          (error "Too many arguments supplied, needed values for: " variables "got values: " values))))
 
 
 (defn define-variable!
