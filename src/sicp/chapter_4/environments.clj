@@ -18,6 +18,10 @@
   [var]
   @(second var))
 
+(defn- named?
+  [n variable]
+  (= n (variable-name variable)))
+
 ;frames
 (defn- get-frame-variables
   [frame]
@@ -54,7 +58,7 @@
   (letfn [(env-loop [env]
                     (letfn [(scan [vars]
                                   (cond (empty? vars) (env-loop (enclosing-environment env))
-                                        (= var (variable-name (first vars))) (variable-value (first vars))
+                                        (named? var (first vars)) (variable-value (first vars))
                                         :else (scan (rest vars))))]
 
                     (if (= env the-empty-environment)
@@ -77,7 +81,7 @@
   (let [frame (first-frame env)]
     (loop [vars (get-frame-variables frame)]
       (cond (empty? vars) (add-binding-to-frame! var value frame)
-            (= var (variable-name (first vars))) (set-value (first vars) value)
+            (named? var (first vars)) (set-value (first vars) value)
             :else (recur (rest vars))))))
 
 (defn set-variable-value!
@@ -85,7 +89,7 @@
   (letfn [(env-loop [env]
                     (letfn [(scan [vars]
                                   (cond (empty? vars) (env-loop (enclosing-environment env))
-                                        (= var (variable-name (first vars))) (set-value (first vars) value)
+                                        (named? var (first vars)) (set-value (first vars) value)
                                         :else (scan (rest vars))))]
                       (if (= env the-empty-environment)
                           (error "Unbound variable:" var)
