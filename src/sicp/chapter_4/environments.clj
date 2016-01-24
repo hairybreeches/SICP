@@ -40,6 +40,13 @@
   (dosync
     (alter frame (fn [fr] (append-to-frame fr var value)))))
 
+(defn- get-variable-from-frame
+  [var-name frame]
+  (loop [variables (get-frame-variables frame)]
+    (cond (empty? variables) nil
+          (named? var-name (first variables)) (first variables)
+          :else (recur (rest variables)))))
+
 ;environments
 (defn- enclosing-environment
   [env]
@@ -52,20 +59,21 @@
 (def the-empty-environment
   '())
 
+(defn- get-variable-from-environment
+  [var-name env]
+  (loop [env env]
+  (if (= env the-empty-environment)
+      (error "Unbound variable: " var-name)
+      (let [first-frame-variable (get-variable-from-frame var-name (first-frame env))]
+        (if (nil? first-frame-variable)
+            (recur (enclosing-environment env))
+            first-frame-variable)))))
+
 ;public functions
 (defn lookup-variable-value
-  [var env]
-  (letfn [(env-loop [env]
-                    (letfn [(scan [vars]
-                                  (cond (empty? vars) (env-loop (enclosing-environment env))
-                                        (named? var (first vars)) (variable-value (first vars))
-                                        :else (scan (rest vars))))]
-
-                    (if (= env the-empty-environment)
-                        (error "Unbound variable: " var)
-                      (let [frame (first-frame env)]
-                        (scan (get-frame-variables frame))))))]
-    (env-loop env)))
+  [var-name env]
+  (variable-value
+    (get-variable-from-environment var-name env)))
 
 (defn extend-environment
   [variables values base-env]
@@ -77,22 +85,15 @@
 
 
 (defn define-variable!
-  [var value env]
-  (let [frame (first-frame env)]
-    (loop [vars (get-frame-variables frame)]
-      (cond (empty? vars) (add-binding-to-frame! var value frame)
-            (named? var (first vars)) (set-value (first vars) value)
-            :else (recur (rest vars))))))
+  [var-name value env]
+  (let [frame (first-frame env)
+         existing (get-variable-from-frame var-name frame)]
+       (if (nil? existing)
+           (add-binding-to-frame! var-name value frame)
+           (set-value existing value))))
 
 (defn set-variable-value!
-  [var value env]
-  (letfn [(env-loop [env]
-                    (letfn [(scan [vars]
-                                  (cond (empty? vars) (env-loop (enclosing-environment env))
-                                        (named? var (first vars)) (set-value (first vars) value)
-                                        :else (scan (rest vars))))]
-                      (if (= env the-empty-environment)
-                          (error "Unbound variable:" var)
-                          (let [frame (first-frame env)]
-                            (scan (get-frame-variables frame))))))]
-    (env-loop env)))
+  [var-name value env]
+  (set-value
+    (get-variable-from-environment var-name env)
+    value))
