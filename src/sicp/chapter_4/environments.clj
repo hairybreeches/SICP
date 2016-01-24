@@ -1,53 +1,42 @@
 (ns sicp.chapter-4.environments
   (:use sicp.error))
 
-(defn- make-value
-  [value]
-  (ref value))
-
-(defn- retrieve-value
-  [value]
-  @value)
-
+;variables
 (defn- set-value
-  [container value]
-  (dosync (ref-set container value)))
+  [variable value]
+  (dosync (ref-set (second variable) value)))
 
-(defn- make-frame-value
-  [variables values]
-  (list variables values))
+(defn- make-variable
+  [var-name var-value]
+  (list var-name (ref var-value)))
+
+(defn- variable-name
+  [var]
+  (first var))
+
+(defn- variable-value
+  [var]
+  @(second var))
+
+;frames
+(defn- get-frame-variables
+  [frame]
+  @frame)
 
 (defn- make-frame
   [variables values]
-  (ref (make-frame-value variables (map make-value values))))
-
-(defn- frame-variables-from-value
-  [frame-value]
-  (first frame-value))
-
-(defn- frame-values-from-value
-  [frame-value]
-  (second frame-value))
-
-(defn- frame-variables
-  [frame]
-  (frame-variables-from-value @frame))
-
-(defn- frame-values
-  [frame]
-  (frame-values-from-value @frame))
+  (ref (map make-variable variables values)))
 
 (defn- append-to-frame
   [frame-value var value]
-  (make-frame-value
-    (cons var (frame-variables-from-value frame-value))
-    (cons (make-value value) (frame-values-from-value frame-value))))
+  (cons (make-variable var value) frame-value))
 
 (defn- add-binding-to-frame!
   [var value frame]
   (dosync
     (alter frame (fn [fr] (append-to-frame fr var value)))))
 
+;environments
 (defn- enclosing-environment
   [env]
   (rest env))
@@ -59,19 +48,19 @@
 (def the-empty-environment
   '())
 
+;public functions
 (defn lookup-variable-value
   [var env]
   (letfn [(env-loop [env]
-                    (letfn [(scan [vars values]
+                    (letfn [(scan [vars]
                                   (cond (empty? vars) (env-loop (enclosing-environment env))
-                                        (= var (first vars)) (retrieve-value (first values))
-                                        :else (scan (rest vars) (rest values))))]
+                                        (= var (variable-name (first vars))) (variable-value (first vars))
+                                        :else (scan (rest vars))))]
 
                     (if (= env the-empty-environment)
                         (error "Unbound variable: " var)
                       (let [frame (first-frame env)]
-                        (scan (frame-variables frame)
-                              (frame-values frame))))))]
+                        (scan (get-frame-variables frame))))))]
     (env-loop env)))
 
 (defn extend-environment
@@ -86,22 +75,20 @@
 (defn define-variable!
   [var value env]
   (let [frame (first-frame env)]
-    (loop [vars (frame-variables frame)
-           values (frame-values frame)]
+    (loop [vars (get-frame-variables frame)]
       (cond (empty? vars) (add-binding-to-frame! var value frame)
-            (= var (first vars)) (set-value (first values) value)
-            :else (recur (rest vars) (rest values))))))
+            (= var (variable-name (first vars))) (set-value (first vars) value)
+            :else (recur (rest vars))))))
 
 (defn set-variable-value!
   [var value env]
   (letfn [(env-loop [env]
-                    (letfn [(scan [vars values]
+                    (letfn [(scan [vars]
                                   (cond (empty? vars) (env-loop (enclosing-environment env))
-                                        (= var (first vars)) (set-value (first values) value)
-                                        :else (scan (rest vars) (rest values))))]
+                                        (= var (variable-name (first vars))) (set-value (first vars) value)
+                                        :else (scan (rest vars))))]
                       (if (= env the-empty-environment)
                           (error "Unbound variable:" var)
                           (let [frame (first-frame env)]
-                            (scan (frame-variables frame)
-                                  (frame-values frame))))))]
+                            (scan (get-frame-variables frame))))))]
     (env-loop env)))
