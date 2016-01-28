@@ -23,14 +23,12 @@
   [string]
   (prn)
   (prn)
-  (prn string)
-  (prn))
+  (prn string))
 
 (defn- announce-output
   [string]
   (prn)
-  (prn string)
-  (prn))
+  (prn string))
 
 (defn- user-print
   [object]
