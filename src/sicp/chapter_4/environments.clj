@@ -118,6 +118,8 @@
     (get-variable-from-environment var-name env)
     value))
 
+;unbinding works like set - it operates on the first definition it can find.
+;this makes sense - you don't want to affect global scope you don't understand!
 (defn make-unbound!
   [var-name env]
   (remove-binding! env var-name))
