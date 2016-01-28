@@ -32,3 +32,10 @@
 
 (defmethod my-eval 'define [exp env]
   (eval-definition exp env))
+
+(defn- eval-unbind
+  [exp env]
+  (make-unbound! (first (operands exp)) env))
+
+(defmethod my-eval 'unbind! [exp env]
+  (eval-unbind exp env))

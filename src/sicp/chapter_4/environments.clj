@@ -47,6 +47,19 @@
           (named? var-name (first variables)) (first variables)
           :else (recur (rest variables)))))
 
+(defn filter-value
+  [variables var-name]
+    (remove #(named? var-name %) variables))
+
+
+(defn- remove-frame-binding!
+  [var-name frame]
+  (if (nil? (get-variable-from-frame var-name frame))
+      false
+      (dosync
+        (alter frame filter-value var-name)
+        true)))
+
 ;environments
 (defn- enclosing-environment
   [env]
@@ -68,6 +81,13 @@
         (if (nil? first-frame-variable)
             (recur (enclosing-environment env))
             first-frame-variable)))))
+
+(defn- remove-binding!
+  [env var-name]
+  (loop [env env]
+    (cond (= env the-empty-environment) (error "variable not bound! " var-name)
+          (remove-frame-binding! var-name (first-frame env)) true
+          :else (recur (enclosing-environment env)))))
 
 ;public functions
 (defn lookup-variable-value
@@ -97,3 +117,7 @@
   (set-value
     (get-variable-from-environment var-name env)
     value))
+
+(defn make-unbound!
+  [var-name env]
+  (remove-binding! env var-name))

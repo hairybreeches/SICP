@@ -231,4 +231,14 @@
                       (set! a (+ a 1)))
                a)))
 
+(deftest unbinding
+  (evals-to 3
+            '(begin
+               (define a 3)
+               ((lambda (a)
+                (unbind! a)
+                        a) 6))
+               ))
+
+
 
