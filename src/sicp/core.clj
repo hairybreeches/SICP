@@ -1,8 +1,7 @@
 (ns sicp.core
-  (:use sicp.chapter-1.ex-22))
+  (:use sicp.chapter-4.repl))
 
 
 (defn -main
-  "steve"
   []
-  (show-prime-complexity))
+  (driver-loop))
