@@ -46,7 +46,7 @@
             (recur (rest-exps exps) env)))))
 
 (defn execute
-  [exp] (my-eval exp (extend-environment '() '() (create-new-environment))))
+  [exp] (my-eval exp (create-new-environment)))
 
 
 (defn my-apply
