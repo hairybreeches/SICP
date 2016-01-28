@@ -13,6 +13,7 @@
   (:use sicp.chapter-4.variables)
   (:use sicp.chapter-4.let)
   (:use sicp.chapter-4.while)
+  (:use sicp.chapter-4.default-environment)
   (:use sicp.chapter-4.boolean-operators))
 
 (def input-prompt ";;; M-Eval input:")
@@ -43,11 +44,12 @@
 
 (defn driver-loop
   []
+  (let [global-env (create-new-environment)]
   (loop []
     (prompt-for-input input-prompt)
       (let [input (read)
-            output (execute input)]
+            output (my-eval input global-env)]
         (announce-output output-prompt)
         (user-print output))
-    (recur)))
+    (recur))))
 
