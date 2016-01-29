@@ -1,6 +1,6 @@
 (ns sicp.chapter-4.default-environment
   (:use sicp.chapter-4.environments)
-  (:use sicp.chapter-4.procedures))
+  (:use sicp.chapter-4.primitive-procedures))
 
 (defn create-new-environment
   []

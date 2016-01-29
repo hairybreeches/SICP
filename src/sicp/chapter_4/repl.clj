@@ -10,6 +10,7 @@
   (:use sicp.chapter-4.application)
   (:use sicp.chapter-4.primitive-datatypes)
   (:use sicp.chapter-4.procedures)
+  (:use sicp.chapter-4.primitive-procedures)
   (:use sicp.chapter-4.variables)
   (:use sicp.chapter-4.let)
   (:use sicp.chapter-4.while)
