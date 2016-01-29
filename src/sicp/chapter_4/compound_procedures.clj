@@ -1,4 +1,4 @@
-(ns sicp.chapter-4.procedures
+(ns sicp.chapter-4.compound-procedures
   (:use sicp.chapter-4.evaluator)
   (:use sicp.chapter-4.environments))
 

@@ -9,7 +9,7 @@
   (:use sicp.chapter-4.definition)
   (:use sicp.chapter-4.application)
   (:use sicp.chapter-4.primitive-datatypes)
-  (:use sicp.chapter-4.procedures)
+  (:use sicp.chapter-4.compound-procedures)
   (:use sicp.chapter-4.primitive-procedures)
   (:use sicp.chapter-4.variables)
   (:use sicp.chapter-4.let)
