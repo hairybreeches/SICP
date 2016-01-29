@@ -1,8 +1,7 @@
 (ns sicp.chapter-4.evaluator
   (:use sicp.chapter-4.procedures)
   (:use sicp.error)
-  (:use sicp.chapter-4.environments)
-  (:use sicp.chapter-4.default-environment))
+  (:use sicp.chapter-4.environments))
 
 (defn operator
   [exp]
@@ -44,10 +43,6 @@
         (my-eval (first-exp exps) env)
         (do (my-eval (first-exp exps) env)
             (recur (rest-exps exps) env)))))
-
-(defn execute
-  [exp] (my-eval exp (create-new-environment)))
-
 
 (defn my-apply
   [procedure arguments]

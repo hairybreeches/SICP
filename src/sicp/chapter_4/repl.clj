@@ -40,6 +40,9 @@
               <procedure-env>))
       (prn object)))
 
+(defn execute
+  [exp] (my-eval exp (create-new-environment)))
+
 (defn driver-loop
   []
   (let [global-env (create-new-environment)]
