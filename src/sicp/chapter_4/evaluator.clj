@@ -1,7 +1,5 @@
 (ns sicp.chapter-4.evaluator
-  (:use sicp.chapter-4.procedures)
-  (:use sicp.error)
-  (:use sicp.chapter-4.environments))
+  (:use sicp.error))
 
 (defn operator
   [exp]
@@ -44,12 +42,8 @@
         (do (my-eval (first-exp exps) env)
             (recur (rest-exps exps) env)))))
 
-(defn my-apply
+(defn- get-procedure-type
   [procedure arguments]
-  (cond (primitive-procedure? procedure) (apply-primitive-procedure procedure arguments)
-        (compound-procedure? procedure) (eval-sequence
-                                         (procedure-body procedure)
-                                         (extend-environment (procedure-parameters procedure)
-                                                             arguments
-                                                             (procedure-environment procedure)))
-        :else (error "Unknown procedure type: " procedure)))
+  (first procedure))
+
+(defmulti my-apply get-procedure-type)

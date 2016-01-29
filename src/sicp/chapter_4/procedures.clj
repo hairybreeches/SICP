@@ -1,4 +1,6 @@
-(ns sicp.chapter-4.procedures)
+(ns sicp.chapter-4.procedures
+  (:use sicp.chapter-4.evaluator)
+  (:use sicp.chapter-4.environments))
 
 (defn- tagged-list?
   [exp tag]
@@ -25,10 +27,6 @@
 (defn procedure-environment
   [p]
   (nth p 3))
-
-(defn primitive-procedure?
-  [procedure]
-  (tagged-list? procedure 'primitive))
 
 (defn- primitive-implementation
   [procedure]
@@ -58,6 +56,14 @@
   [procedure args]
   (apply procedure args))
 
-(defn apply-primitive-procedure
+(defmethod my-apply 'procedure
+  [procedure arguments]
+  (eval-sequence
+    (procedure-body procedure)
+    (extend-environment (procedure-parameters procedure)
+                        arguments
+                        (procedure-environment procedure))))
+
+(defmethod my-apply 'primitive
   [procedure args]
   (apply-in-underlying-clojure (primitive-implementation procedure) args))
