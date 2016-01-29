@@ -1,6 +1,7 @@
 (ns sicp.chapter-4.compound-procedures
   (:use sicp.chapter-4.evaluator)
-  (:use sicp.chapter-4.environments))
+  (:use sicp.chapter-4.environments)
+  (:use sicp.chapter-4.lambda))
 
 (defn- tagged-list?
   [exp tag]
@@ -35,3 +36,9 @@
     (extend-environment (procedure-parameters procedure)
                         arguments
                         (procedure-environment procedure))))
+
+(defmethod my-eval 'lambda [exp env]
+  (make-procedure
+    (lambda-parameters exp)
+    (lambda-body exp)
+    env))
