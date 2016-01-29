@@ -1,18 +1,6 @@
 (ns sicp.test.chapter-4.evaluator
   (:use sicp.chapter-4.evaluator)
-  (:use sicp.chapter-4.if)
-  (:use sicp.chapter-4.cond)
-  (:use sicp.chapter-4.begin)
-  (:use sicp.chapter-4.assignment)
-  (:use sicp.chapter-4.lambda)
-  (:use sicp.chapter-4.quote)
-  (:use sicp.chapter-4.definition)
-  (:use sicp.chapter-4.application)
-  (:use sicp.chapter-4.primitive-datatypes)
-  (:use sicp.chapter-4.variables)
-  (:use sicp.chapter-4.let)
-  (:use sicp.chapter-4.while)
-  (:use sicp.chapter-4.boolean-operators)
+  (:use sicp.chapter-4.repl)
   (:use clojure.test))
 
 (defn evals-to
