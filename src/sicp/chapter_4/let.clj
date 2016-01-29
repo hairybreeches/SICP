@@ -1,3 +1,4 @@
+
 (ns sicp.chapter-4.let
   (:use sicp.chapter-4.evaluator)
   (:use sicp.chapter-4.begin)
@@ -8,7 +9,7 @@
 (defn- named-let?
   [exp]
   (cond (symbol? (first (operands exp))) true
-        (list? (first (operands exp))) false
+        (seq? (first (operands exp))) false
         :else (error "unknown let type: " exp)))
 
 (defn- get-variable-declarations
