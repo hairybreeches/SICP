@@ -2,7 +2,10 @@
   (:use sicp.chapter-4.evaluator)
   (:use sicp.chapter-4.begin)
   (:use sicp.chapter-4.environments)
-  (:use sicp.chapter-4.lambda))
+  (:use sicp.chapter-4.lambda)
+  (:use sicp.chapter-4.definition)
+  (:use sicp.chapter-4.assignment)
+  (:use sicp.chapter-4.let))
 
 (defn- tagged-list?
   [exp tag]
@@ -14,9 +17,34 @@
   [p]
   (tagged-list? p 'procedure))
 
+(defn- hoist-variables
+  [variable-names parsed-statements]
+  (if (empty? variable-names)
+      (sequence->exp parsed-statements)
+     (make-let
+        (map list variable-names (repeat '*unassigned*))
+        parsed-statements)))
+
+(defn- scan-out-defines
+  [action-list]
+  (loop [variable-names '()
+         action-list action-list
+         parsed-statements '()]
+    (if (empty? action-list) (hoist-variables variable-names (reverse parsed-statements))
+        (let [current (first action-list)]
+              (if (define? current)
+                  (recur
+                    (cons (definition-variable current) variable-names)
+                    (rest action-list)
+                    (cons (make-set (definition-variable current) (definition-value current))
+                          parsed-statements))
+                (recur variable-names
+                       (rest action-list)
+                       (cons current parsed-statements)))))))
+
 (defn- make-procedure
-  [parameters body env]
-  (list 'procedure parameters (sequence->exp body) env))
+  [parameters action-list env]
+  (list 'procedure parameters (scan-out-defines action-list) env))
 
 (defn procedure-body
   [p]

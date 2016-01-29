@@ -92,8 +92,11 @@
 ;public functions
 (defn lookup-variable-value
   [var-name env]
-  (variable-value
-    (get-variable-from-environment var-name env)))
+  (let [value (variable-value
+    (get-variable-from-environment var-name env))]
+    (if (= value '*unassigned*)
+        (error "variable " var-name "is unassigned")
+        value)))
 
 (defn extend-environment
   [variables values base-env]
