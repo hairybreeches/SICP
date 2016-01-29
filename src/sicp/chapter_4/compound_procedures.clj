@@ -13,7 +13,7 @@
   [p]
   (tagged-list? p 'procedure))
 
-(defn make-procedure
+(defn- make-procedure
   [parameters body env]
   (list 'procedure parameters body env))
 
@@ -25,7 +25,7 @@
   [p]
   (second p))
 
-(defn procedure-environment
+(defn- procedure-environment
   [p]
   (nth p 3))
 
