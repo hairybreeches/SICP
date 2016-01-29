@@ -9,6 +9,27 @@
   [actions]
   (create-expression 'begin actions))
 
+(defn- first-exp
+  [exp]
+  (first exp))
+
+(defn- rest-exps
+  [exp]
+  (rest exp))
+
+(defn- last-exp?
+  [exp]
+  (empty? (rest-exps exp)))
+
+(defn- eval-sequence
+  [exps env]
+  (loop [exps exps
+         env env]
+    (if (last-exp? exps)
+        (my-eval (first-exp exps) env)
+        (do (my-eval (first-exp exps) env)
+            (recur (rest-exps exps) env)))))
+
 (defn sequence->exp
   [actions]
   (cond (empty? actions) actions
