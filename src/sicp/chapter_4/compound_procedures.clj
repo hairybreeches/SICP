@@ -1,5 +1,6 @@
 (ns sicp.chapter-4.compound-procedures
   (:use sicp.chapter-4.evaluator)
+  (:use sicp.chapter-4.begin)
   (:use sicp.chapter-4.environments)
   (:use sicp.chapter-4.lambda))
 
@@ -15,7 +16,7 @@
 
 (defn- make-procedure
   [parameters body env]
-  (list 'procedure parameters body env))
+  (list 'procedure parameters (sequence->exp body) env))
 
 (defn procedure-body
   [p]
@@ -31,7 +32,7 @@
 
 (defmethod my-apply 'procedure
   [procedure arguments]
-  (eval-sequence
+  (my-eval
     (procedure-body procedure)
     (extend-environment (procedure-parameters procedure)
                         arguments
