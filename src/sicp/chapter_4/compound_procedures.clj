@@ -25,12 +25,12 @@
         (map list variable-names (repeat '(quote *unassigned*)))
         (sequence->exp parsed-statements))))
 
-(defn- scan-out-defines
+(defn- parse-defines
   [action-list]
   (loop [variable-names '()
          action-list action-list
          parsed-statements '()]
-    (if (empty? action-list) (hoist-variables variable-names (reverse parsed-statements))
+    (if (empty? action-list) {:variable-names variable-names :statements (reverse parsed-statements)}
         (let [current (first action-list)]
               (if (define? current)
                   (recur
@@ -41,6 +41,11 @@
                 (recur variable-names
                        (rest action-list)
                        (cons current parsed-statements)))))))
+
+(defn- scan-out-defines
+  [action-list]
+  (let [result (parse-defines action-list)]
+    (hoist-variables (:variable-names result) (:statements result))))
 
 (defn- make-procedure
   [parameters action-list env]
