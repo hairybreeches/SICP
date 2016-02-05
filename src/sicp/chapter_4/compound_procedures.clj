@@ -23,7 +23,7 @@
       (sequence->exp parsed-statements)
      (make-let
         (map list variable-names (repeat '*unassigned*))
-        parsed-statements)))
+        (sequence->exp parsed-statements))))
 
 (defn- scan-out-defines
   [action-list]
