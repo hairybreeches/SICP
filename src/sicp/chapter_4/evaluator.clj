@@ -16,10 +16,11 @@
 
 ;dispatch functions
 (defn get-exp-type
-  [exp env]
-  (if (seq? exp)
-      (operator exp)
-      (type exp)))
+  ([exp env] (get-exp-type exp))
+  ([exp]
+     (if (seq? exp)
+         (operator exp)
+         (type exp))))
 
 (defn- get-procedure-type
   [procedure arguments]

@@ -18,34 +18,51 @@
   (tagged-list? p 'procedure))
 
 (defn- hoist-variables
-  [variable-names parsed-statements]
+  [variable-names parsed-statement]
   (if (empty? variable-names)
-      (sequence->exp parsed-statements)
+      parsed-statement
      (make-let
         (map list variable-names (repeat '(quote *unassigned*)))
-        (sequence->exp parsed-statements))))
+        parsed-statement)))
 
-(defn- parse-defines
-  [action-list]
-  (loop [variable-names '()
-         action-list action-list
-         parsed-statements '()]
-    (if (empty? action-list) {:variable-names variable-names :statements (reverse parsed-statements)}
-        (let [current (first action-list)]
-              (if (define? current)
-                  (recur
-                    (cons (definition-variable current) variable-names)
-                    (rest action-list)
-                    (cons (make-set (definition-variable current) (definition-value current))
-                          parsed-statements))
-                (recur variable-names
-                       (rest action-list)
-                       (cons current parsed-statements)))))))
+(defn- identity-hoist
+  [exp]
+  {:variable-names '() :statement exp})
+
+(defmulti parse-defines get-exp-type)
+
+(defmethod parse-defines 'lambda [exp] (identity-hoist exp))
+(defmethod parse-defines java.lang.Boolean [exp] (identity-hoist exp))
+(defmethod parse-defines java.lang.Number [exp] (identity-hoist exp))
+(defmethod parse-defines java.lang.String [exp] (identity-hoist exp))
+(defmethod parse-defines clojure.lang.Symbol [exp] (identity-hoist exp))
+(defmethod parse-defines 'define [exp]
+  {
+    :variable-names (list (definition-variable exp))
+    :statement (make-set (definition-variable exp) (definition-value exp))
+  })
+
+(defn- combine
+  [summary-so-far current]
+  {
+    :variable-names (concat (:variable-names summary-so-far)
+                           (:variable-names current))
+    :statement (conj (:statement summary-so-far) (:statement current))
+  })
+
+(defmethod parse-defines :default
+  [exp]
+  (let [result (reduce
+                  combine
+                  {:variable-names '() :statement []}
+                  (map parse-defines exp))]
+    {:variable-names (:variable-names result)
+     :statement (apply list (:statement result))}))
 
 (defn- scan-out-defines
   [action-list]
-  (let [result (parse-defines action-list)]
-    (hoist-variables (:variable-names result) (:statements result))))
+  (let [result (parse-defines (sequence->exp action-list))]
+    (hoist-variables (:variable-names result) (:statement result))))
 
 (defn- make-procedure
   [parameters action-list env]
