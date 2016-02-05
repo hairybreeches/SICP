@@ -19,11 +19,10 @@
 
 (defn- hoist-variables
   [variable-names parsed-statement]
-  (if (empty? variable-names)
-      parsed-statement
-     (make-let
-        (map list variable-names (repeat '(quote *unassigned*)))
-        parsed-statement)))
+  (sequence->exp
+     (concat
+        (map make-define variable-names (repeat '(quote *unassigned*)))
+        (list parsed-statement))))
 
 (defn- identity-hoist
   [exp]

@@ -37,5 +37,9 @@
   [exp env]
   (make-unbound! (first (operands exp)) env))
 
+(defn make-define
+  [n v]
+  (create-expression 'define (list n v)))
+
 (defmethod my-eval 'unbind! [exp env]
   (eval-unbind exp env))
