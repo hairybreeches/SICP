@@ -37,10 +37,5 @@
   [exp env]
   (make-unbound! (first (operands exp)) env))
 
-(defn define?
-  [exp]
-  (and (seq? exp) (= (operator exp)
-                     'define)))
-
 (defmethod my-eval 'unbind! [exp env]
   (eval-unbind exp env))
