@@ -22,7 +22,7 @@
   (if (empty? variable-names)
       (sequence->exp parsed-statements)
      (make-let
-        (map list variable-names (repeat '*unassigned*))
+        (map list variable-names (repeat '(quote *unassigned*)))
         (sequence->exp parsed-statements))))
 
 (defn- scan-out-defines
