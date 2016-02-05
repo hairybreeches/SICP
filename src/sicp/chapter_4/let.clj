@@ -4,6 +4,7 @@
   (:use sicp.chapter-4.begin)
   (:use sicp.error)
   (:use sicp.chapter-4.definition)
+  (:use sicp.chapter-4.assignment)
   (:use sicp.chapter-4.lambda))
 
 (defn- named-let?
@@ -91,6 +92,22 @@
 
 (defmethod my-eval 'let* [exp env]
   (my-eval (let*->nested-lets exp) env))
+
+(defn- make-unassigned
+  [n]
+  (list n '(quote *unassigned*)))
+
+(defn- letrec->let
+  [exp]
+  (make-let
+    (map make-unassigned (get-variable-names exp))
+    (sequence->exp
+      (concat
+        (map make-set (get-variable-names exp) (get-variable-values exp))
+        (get-body exp)))))
+
+(defmethod my-eval 'letrec [exp env]
+  (my-eval (letrec->let exp) env))
 
 
 
