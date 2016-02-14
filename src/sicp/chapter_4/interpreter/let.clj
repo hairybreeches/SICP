@@ -72,8 +72,8 @@
       (named-let->combination exp)
       (unnamed-let->combination exp)))
 
-(defmethod my-eval 'let [exp env]
-  (my-eval (let->combination exp) env))
+(defmethod analyse 'let [exp]
+  (analyse (let->combination exp)))
 
 (defn make-let [variable-declarations body]
   (create-expression 'let (list variable-declarations body)))
@@ -89,8 +89,8 @@
            (rest variable-declarations)
            body)))))
 
-(defmethod my-eval 'let* [exp env]
-  (my-eval (let*->nested-lets exp) env))
+(defmethod analyse 'let* [exp]
+  (analyse (let*->nested-lets exp)))
 
 (defn- make-unassigned
   [n]
@@ -105,8 +105,8 @@
         (map make-set (get-variable-names exp) (get-variable-values exp))
         (get-body exp)))))
 
-(defmethod my-eval 'letrec [exp env]
-  (my-eval (letrec->let exp) env))
+(defmethod analyse 'letrec [exp]
+  (analyse (letrec->let exp)))
 
 
 
