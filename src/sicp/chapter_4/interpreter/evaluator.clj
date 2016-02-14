@@ -1,4 +1,4 @@
-(ns sicp.chapter-4.evaluator
+(ns sicp.chapter-4.interpreter.evaluator
   (:use sicp.error))
 
 ;syntax

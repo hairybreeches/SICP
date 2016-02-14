@@ -1,11 +1,11 @@
-(ns sicp.chapter-4.compound-procedures
-  (:use sicp.chapter-4.evaluator)
-  (:use sicp.chapter-4.begin)
-  (:use sicp.chapter-4.environments)
-  (:use sicp.chapter-4.lambda)
-  (:use sicp.chapter-4.definition)
-  (:use sicp.chapter-4.assignment)
-  (:use sicp.chapter-4.let))
+(ns sicp.chapter-4.interpreter.compound-procedures
+  (:use sicp.chapter-4.interpreter.evaluator)
+  (:use sicp.chapter-4.interpreter.begin)
+  (:use sicp.chapter-4.interpreter.environments)
+  (:use sicp.chapter-4.interpreter.lambda)
+  (:use sicp.chapter-4.interpreter.definition)
+  (:use sicp.chapter-4.interpreter.assignment)
+  (:use sicp.chapter-4.interpreter.let))
 
 (defn- tagged-list?
   [exp tag]

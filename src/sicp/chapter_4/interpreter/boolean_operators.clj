@@ -1,6 +1,6 @@
-(ns sicp.chapter-4.boolean-operators
-  (:use sicp.chapter-4.if)
-  (:use sicp.chapter-4.evaluator))
+(ns sicp.chapter-4.interpreter.boolean-operators
+  (:use sicp.chapter-4.interpreter.if)
+  (:use sicp.chapter-4.interpreter.evaluator))
 
 (defn- and->if [tests]
   (if (empty? tests)

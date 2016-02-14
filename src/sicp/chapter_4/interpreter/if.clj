@@ -1,6 +1,6 @@
-(ns sicp.chapter-4.if
-  (:use sicp.chapter-4.evaluator)
-  (:use sicp.chapter-4.primitive-datatypes))
+(ns sicp.chapter-4.interpreter.if
+  (:use sicp.chapter-4.interpreter.evaluator)
+  (:use sicp.chapter-4.interpreter.primitive-datatypes))
 
 (defn- if-predicate
   [exp]

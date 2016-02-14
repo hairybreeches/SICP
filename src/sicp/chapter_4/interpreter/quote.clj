@@ -1,5 +1,5 @@
-(ns sicp.chapter-4.quote
-  (:use sicp.chapter-4.evaluator))
+(ns sicp.chapter-4.interpreter.quote
+  (:use sicp.chapter-4.interpreter.evaluator))
 
 (defn text-of-quotation
   [exp]

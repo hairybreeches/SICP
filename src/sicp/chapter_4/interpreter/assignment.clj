@@ -1,6 +1,6 @@
-(ns sicp.chapter-4.assignment
-  (:use sicp.chapter-4.evaluator)
-  (:use sicp.chapter-4.environments))
+(ns sicp.chapter-4.interpreter.assignment
+  (:use sicp.chapter-4.interpreter.evaluator)
+  (:use sicp.chapter-4.interpreter.environments))
 
 
 (defn- assignment-variable

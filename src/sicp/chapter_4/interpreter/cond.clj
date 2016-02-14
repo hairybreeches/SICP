@@ -1,7 +1,7 @@
-(ns sicp.chapter-4.cond
-  (:use sicp.chapter-4.evaluator)
-  (:use sicp.chapter-4.primitive-datatypes)
-  (:use sicp.chapter-4.begin)
+(ns sicp.chapter-4.interpreter.cond
+  (:use sicp.chapter-4.interpreter.evaluator)
+  (:use sicp.chapter-4.interpreter.primitive-datatypes)
+  (:use sicp.chapter-4.interpreter.begin)
   (:use sicp.error))
 
 (defn- cond-clauses

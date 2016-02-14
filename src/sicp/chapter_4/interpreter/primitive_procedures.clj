@@ -1,5 +1,5 @@
-(ns sicp.chapter-4.primitive-procedures
-  (:use sicp.chapter-4.evaluator))
+(ns sicp.chapter-4.interpreter.primitive-procedures
+  (:use sicp.chapter-4.interpreter.evaluator))
 
 (defn- primitive-implementation
   [procedure]

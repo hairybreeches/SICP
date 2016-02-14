@@ -1,7 +1,7 @@
-(ns sicp.chapter-4.definition
-  (:use sicp.chapter-4.evaluator)
-  (:use sicp.chapter-4.lambda)
-  (:use sicp.chapter-4.environments))
+(ns sicp.chapter-4.interpreter.definition
+  (:use sicp.chapter-4.interpreter.evaluator)
+  (:use sicp.chapter-4.interpreter.lambda)
+  (:use sicp.chapter-4.interpreter.environments))
 
 
 (defn- function-definition?

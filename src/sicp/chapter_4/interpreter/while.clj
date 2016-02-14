@@ -1,7 +1,7 @@
-(ns sicp.chapter-4.while
-  (:use sicp.chapter-4.if)
-  (:use sicp.chapter-4.begin)
-  (:use sicp.chapter-4.evaluator))
+(ns sicp.chapter-4.interpreter.while
+  (:use sicp.chapter-4.interpreter.if)
+  (:use sicp.chapter-4.interpreter.begin)
+  (:use sicp.chapter-4.interpreter.evaluator))
 
 (defn- get-body
   [exp]

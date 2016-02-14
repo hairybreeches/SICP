@@ -1,5 +1,5 @@
 (ns sicp.test.chapter-4.environments
-  (:use sicp.chapter-4.environments)
+  (:use sicp.chapter-4.interpreter.environments)
   (:use clojure.test))
 
 (deftest can-retrieve-value-in-extended-environment

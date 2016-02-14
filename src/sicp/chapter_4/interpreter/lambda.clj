@@ -1,5 +1,5 @@
-(ns sicp.chapter-4.lambda
-  (:use sicp.chapter-4.evaluator))
+(ns sicp.chapter-4.interpreter.lambda
+  (:use sicp.chapter-4.interpreter.evaluator))
 
 (defn lambda-parameters
   [exp]

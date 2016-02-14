@@ -1,5 +1,5 @@
-(ns sicp.chapter-4.begin
-  (:use sicp.chapter-4.evaluator))
+(ns sicp.chapter-4.interpreter.begin
+  (:use sicp.chapter-4.interpreter.evaluator))
 
 (defn- begin-actions
   [exp]

@@ -1,5 +1,5 @@
-(ns sicp.chapter-4.application
-  (:use sicp.chapter-4.evaluator))
+(ns sicp.chapter-4.interpreter.application
+  (:use sicp.chapter-4.interpreter.evaluator))
 
 (defn- no-operands?
   [ops]

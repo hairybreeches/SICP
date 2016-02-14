@@ -1,4 +1,4 @@
-(ns sicp.chapter-4.environments
+(ns sicp.chapter-4.interpreter.environments
   (:use sicp.error))
 
 ;variables

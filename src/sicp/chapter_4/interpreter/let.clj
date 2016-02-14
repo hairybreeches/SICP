@@ -1,11 +1,11 @@
 
-(ns sicp.chapter-4.let
-  (:use sicp.chapter-4.evaluator)
-  (:use sicp.chapter-4.begin)
+(ns sicp.chapter-4.interpreter.let
+  (:use sicp.chapter-4.interpreter.evaluator)
+  (:use sicp.chapter-4.interpreter.begin)
   (:use sicp.error)
-  (:use sicp.chapter-4.definition)
-  (:use sicp.chapter-4.assignment)
-  (:use sicp.chapter-4.lambda))
+  (:use sicp.chapter-4.interpreter.definition)
+  (:use sicp.chapter-4.interpreter.assignment)
+  (:use sicp.chapter-4.interpreter.lambda))
 
 (defn- named-let?
   [exp]
