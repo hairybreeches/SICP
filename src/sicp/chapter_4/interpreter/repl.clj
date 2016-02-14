@@ -1,8 +1,7 @@
 (ns sicp.chapter-4.interpreter.repl
   (:use sicp.chapter-4.interpreter.evaluator)
   (:use sicp.chapter-4.interpreter.if)
-  (:use sicp.chapter-4.interpreter.cond)
-  (:use sicp.chapter-4.interpreter.begin)
+    (:use sicp.chapter-4.interpreter.begin)
   (:use sicp.chapter-4.interpreter.assignment)
   (:use sicp.chapter-4.interpreter.lambda)
   (:use sicp.chapter-4.interpreter.quote)
@@ -12,8 +11,9 @@
   (:use sicp.chapter-4.interpreter.compound-procedures)
   (:use sicp.chapter-4.interpreter.primitive-procedures)
   (:use sicp.chapter-4.interpreter.variables)
-  (:use sicp.chapter-4.interpreter.let)
-  (:use sicp.chapter-4.interpreter.while)
+  ;(:use sicp.chapter-4.interpreter.let)
+  ;(:use sicp.chapter-4.interpreter.while)
+  ;(:use sicp.chapter-4.interpreter.cond)
   (:use sicp.chapter-4.interpreter.default-environment)
   (:use sicp.chapter-4.interpreter.boolean-operators))
 

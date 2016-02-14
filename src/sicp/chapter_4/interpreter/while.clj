@@ -15,7 +15,7 @@
   [predicate body]
   (create-expression 'while (list predicate body)))
 
-(defmethod my-eval 'while [exp env]
+(defmethod analyse 'while [exp env]
   (my-eval
     (make-if (get-predicate exp)
              (sequence->exp

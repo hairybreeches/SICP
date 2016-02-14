@@ -33,13 +33,14 @@
 (defmethod analyse 'define [exp]
   (analyse-definition exp))
 
-(defn- eval-unbind
-  [exp env]
-  (make-unbound! (first (operands exp)) env))
-
 (defn make-define
   [n v]
   (create-expression 'define (list n v)))
 
+(comment
+(defn- eval-unbind
+  [exp env]
+  (make-unbound! (first (operands exp)) env))
+
 (defmethod my-eval 'unbind! [exp env]
-  (eval-unbind exp env))
+  (eval-unbind exp env)))
