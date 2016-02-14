@@ -6,16 +6,7 @@
   (:use sicp.chapter-4.interpreter.definition)
   (:use sicp.chapter-4.interpreter.assignment))
 
-(defn- tagged-list?
-  [exp tag]
-  (if (seq? exp)
-      (= (first exp) tag)
-      false))
-
-(defn compound-procedure?
-  [p]
-  (tagged-list? p 'procedure))
-
+;hoisting variables
 (defn- hoist-variables
   [variable-names parsed-statement]
   (sequence->exp
@@ -61,6 +52,17 @@
   [exp]
   (let [result (parse-defines exp)]
     (hoist-variables (:variable-names result) (:statement result))))
+
+;compound procedures
+(defn- tagged-list?
+  [exp tag]
+  (if (seq? exp)
+      (= (first exp) tag)
+      false))
+
+(defn compound-procedure?
+  [p]
+  (tagged-list? p 'procedure))
 
 (defn- make-procedure
   [parameters body-proc env]
