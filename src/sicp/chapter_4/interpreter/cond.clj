@@ -4,6 +4,7 @@
   (:use sicp.chapter-4.interpreter.begin)
   (:use sicp.error))
 
+;syntax
 (defn- cond-clauses
   [exp]
   (operands exp))
@@ -28,24 +29,69 @@
   [clause]
   (nth clause 2))
 
-(defn- eval-cond
-  [clauses env]
-  (loop [clauses clauses]
-  (if
-    (empty? clauses)
-    false
+;analysed clauses
+(defn- analysed-clause-action
+  [clause]
+  (second clause))
+
+(defn- analysed-clause-predicate
+  [clause]
+  (first clause))
+
+(defn- make-analysed-clause
+  [predicate action]
+  (list predicate action))
+
+;analysis of clauses
+(defn- analyse-predicate
+  [clause]
+  (if (cond-else-clause? clause)
+      'else
+      (analyse (cond-predicate clause))))
+
+(defn- analyse-statement-action
+  [clause]
+  (let [action (analyse (sequence->exp (cond-actions clause)))]
+    (fn [result env]
+      (action env))))
+
+(defn- analyse-lambda-action
+  [clause]
+  (let [lambda (analyse (clause-function clause))]
+    (fn [result env]
+      (execute-application lambda (list result)))))
+
+(defn- analyse-action
+  [clause]
+  (if (function-clause? clause)
+      (analyse-lambda-action clause)
+      (analyse-statement-action clause)))
+
+(defn- analyse-clause
+  [clause]
+  (make-analysed-clause (analyse-predicate clause) (analyse-action clause)))
+
+(defn- analyse-clauses
+  [clauses]
     (let [first-clause (first clauses)
           rest-clauses (rest clauses)]
       (if (cond-else-clause? first-clause)
           (if (empty? rest-clauses)
-              (sequence->exp (cond-actions first-clause))
+              (make-analysed-clause (fn [_ __] true) (analyse-action first-clause))
               (error "else clause not last: " clauses))
-          (let [predicate-result (my-eval (cond-predicate first-clause) env)]
-               (if (my-true? predicate-result)
-                   (if (function-clause? first-clause)
-                       (my-apply (my-eval (clause-function first-clause) env) (list predicate-result))
-                       (my-eval (sequence->exp (cond-actions first-clause)) env))
-                   (recur rest-clauses))))))))
+          (cons (analyse-clause first-clause) (analyse-clauses rest-clauses)))))
 
-(defmethod my-eval 'cond [exp env]
-  (eval-cond (cond-clauses exp) env))
+(defn- analyse-cond
+  [analysed-clauses]
+  (fn [env]
+    (loop [clauses analysed-clauses]
+      (if
+        (empty? clauses)
+        false
+        (let [predicate-result ((analysed-clause-predicate (first clauses)) env)]
+            (if (my-true? predicate-result)
+                ((analysed-clause-action (first clauses)) predicate-result env)
+                (recur (rest clauses))))))))
+
+(defmethod analyse 'cond [exp]
+  (analyse-cond (analyse-clauses (cond-clauses exp))))
