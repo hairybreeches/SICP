@@ -37,10 +37,11 @@
   [n v]
   (create-expression 'define (list n v)))
 
-(comment
-(defn- eval-unbind
-  [exp env]
-  (make-unbound! (first (operands exp)) env))
+(defn- analyse-unbind
+  [exp]
+  (let [variable-name (first (operands exp))]
+    (fn [env]
+      (make-unbound! variable-name env))))
 
-(defmethod my-eval 'unbind! [exp env]
-  (eval-unbind exp env)))
+(defmethod analyse 'unbind! [exp]
+  (analyse-unbind exp))
