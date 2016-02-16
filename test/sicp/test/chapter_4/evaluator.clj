@@ -306,5 +306,9 @@
     (is (= 10 (actual-value 'w env))) ;this forces the resolution of the second call to id
     (is (= 2 (actual-value 'count env))))) ;and therefore there are two calls in total
 
+(deftest need-to-get-actual-value-of-operator
+  (evals-to 7
+            '(((lambda (x) x) (lambda (x) x)) 7)))
+
 
 
