@@ -310,5 +310,13 @@
   (evals-to 7
             '(((lambda (x) x) (lambda (x) x)) 7)))
 
+(deftest memoisation
+  (let [env (create-new-environment)]
+    (actual-value '(define count 0) env)
+    (actual-value '(define (id x) (set! count (+ count 1)) x) env)
+    (actual-value '(define (square x) (* x x)) env)
+    (is (= 100 (actual-value '(square (id 10)) env)))
+    (is (= 1 (actual-value 'count env))))) ;the argument is only evaluated once because it is memoised
+
 
 
