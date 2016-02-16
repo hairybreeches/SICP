@@ -79,7 +79,7 @@
           rest-clauses (rest clauses)]
       (if (cond-else-clause? first-clause)
           (if (empty? rest-clauses)
-              (make-analysed-clause (fn [_ __] true) (analyse-action first-clause))
+              (list (make-analysed-clause (fn [env] true) (analyse-action first-clause)))
               (error "else clause not last: " clauses))
           (cons (analyse-clause first-clause) (analyse-clauses rest-clauses))))))
 
