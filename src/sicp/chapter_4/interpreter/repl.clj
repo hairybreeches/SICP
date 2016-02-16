@@ -38,7 +38,7 @@
   (if (compound-procedure? object)
       (prn `(
               compound-procedure
-              ~(procedure-parameters object)
+              ~(procedure-parameter-names object)
               ~(procedure-body object)
               <procedure-env>))
       (prn object)))
