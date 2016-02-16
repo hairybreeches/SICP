@@ -44,7 +44,7 @@
       (prn object)))
 
 (defn execute
-  [exp] (my-eval exp (create-new-environment)))
+  [exp] (actual-value exp (create-new-environment)))
 
 (defn driver-loop
   []
