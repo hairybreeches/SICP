@@ -32,7 +32,7 @@
         if-predicate
         consequent))))
 
-(defmethod my-eval 'unless [exp env]
-  (my-eval (unless->if exp) env))
+(defmethod analyse 'unless [exp]
+  (analyse (unless->if exp)))
 
 
