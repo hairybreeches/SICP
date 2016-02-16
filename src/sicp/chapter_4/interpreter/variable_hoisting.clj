@@ -2,8 +2,7 @@
   (:use sicp.chapter-4.interpreter.begin)
   (:use sicp.chapter-4.interpreter.evaluator)
   (:use sicp.chapter-4.interpreter.definition)
-  (:use sicp.chapter-4.interpreter.assignment)
-  (:use sicp.chapter-4.interpreter.let))
+  (:use sicp.chapter-4.interpreter.assignment))
 
 (defn- scan-out-defines
   [variable-names parsed-statement]
