@@ -1,4 +1,5 @@
 (ns sicp.chapter-4.interpreter.compound-procedures
+  (:use sicp.chapter-4.interpreter.begin)
   (:use sicp.chapter-4.interpreter.variable-hoisting)
   (:use sicp.chapter-4.interpreter.evaluator)
   (:use sicp.chapter-4.interpreter.lambda)
