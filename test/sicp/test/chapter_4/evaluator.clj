@@ -297,10 +297,19 @@
                      9)
             ))
 
-(deftest side-effects-can-be-confusing
+(deftest side-effects-can-be-confusing-eager-evaluation
   (let [env (create-new-environment)]
     (actual-value '(define count 0) env)
     (actual-value '(define (id x) (set! count (+ count 1)) x) env)
+    (actual-value '(define w (id (id 10))) env)
+    (is (= 2 (actual-value 'count env)));because id is eager, the inner call is forced when we evaluate the outer one.
+    (is (= 10 (actual-value 'w env)))
+    (is (= 2 (actual-value 'count env)))))
+
+(deftest side-effects-can-be-confusing-lazy-memo
+  (let [env (create-new-environment)]
+    (actual-value '(define count 0) env)
+    (actual-value '(define (id (x lazy-memo)) (set! count (+ count 1)) x) env)
     (actual-value '(define w (id (id 10))) env)
     (is (= 1 (actual-value 'count env))) ;outer call to id is evaluated as part of the define, it doesn't evaluate its args though.
     (is (= 10 (actual-value 'w env))) ;this forces the resolution of the second call to id
@@ -308,12 +317,12 @@
 
 (deftest need-to-get-actual-value-of-operator
   (evals-to 7
-            '(((lambda (x) x) (lambda (x) x)) 7)))
+            '(((lambda ((x lazy-memo)) x) (lambda ((x lazy-memo)) x)) 7)))
 
 (deftest memoisation
   (let [env (create-new-environment)]
     (actual-value '(define count 0) env)
-    (actual-value '(define (id x) (set! count (+ count 1)) x) env)
+    (actual-value '(define (id (x lazy-memo)) (set! count (+ count 1)) x) env)
     (actual-value '(define (square x) (* x x)) env)
     (is (= 100 (actual-value '(square (id 10)) env)))
     (is (= 1 (actual-value 'count env))))) ;the argument is only evaluated once because it is memoised
@@ -333,12 +342,24 @@
   (let [env (create-new-environment)]
     (actual-value
       '(define (p2 x)
-         (define (p e)
+         (define (p (e lazy-memo))
            e
            x)
        (p (set! x (cons x '(2)))))
       env)
     (is (= (actual-value '(p2 1) env) 1))
+    ))
+
+(deftest side-effects-2-simpler-with-eager-evaluation
+  (let [env (create-new-environment)]
+    (actual-value
+      '(define (p2 x)
+         (define (p e)
+           e
+           x)
+       (p (set! x (cons x '(2)))))
+      env)
+    (is (= (actual-value '(p2 1) env) '(1 2)))
     ))
 
 
