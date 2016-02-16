@@ -2,6 +2,7 @@
   (:use sicp.chapter-4.interpreter.evaluator)
   (:use sicp.chapter-4.interpreter.primitive-datatypes)
   (:use sicp.chapter-4.interpreter.begin)
+  (:use sicp.chapter-4.interpreter.compound-procedures)
   (:use sicp.error))
 
 ;syntax
@@ -59,7 +60,7 @@
   [clause]
   (let [lambda (analyse (clause-function clause))]
     (fn [result env]
-      (execute-application lambda (list result)))))
+      (execute-application (lambda env) (list result)))))
 
 (defn- analyse-action
   [clause]
