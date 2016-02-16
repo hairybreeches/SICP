@@ -21,7 +21,7 @@
   [exp]
   (empty? (rest-exps exp)))
 
-(defn- eval-sequence
+(defn eval-sequence
   [exps env]
   (loop [exps exps
          env env]

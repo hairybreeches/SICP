@@ -2,7 +2,9 @@
   (:use sicp.chapter-4.interpreter.variable-hoisting)
   (:use sicp.chapter-4.interpreter.evaluator)
   (:use sicp.chapter-4.interpreter.lambda)
-  (:use sicp.chapter-4.interpreter.environments))
+  (:use sicp.chapter-4.interpreter.environments)
+  (:use sicp.chapter-4.interpreter.laziness)
+  (:use sicp.chapter-4.interpreter.begin))
 
 (defn- tagged-list?
   [exp tag]
@@ -30,12 +32,19 @@
   [p]
   (nth p 3))
 
+(defn list-of-delayed-args
+  [exps env]
+  (if (empty? exps)
+    '()
+    (cons (delay-it (first exps) env)
+          (list-of-delayed-args (rest exps) env))))
+
 (defmethod my-apply 'procedure
-  [procedure arguments]
-  (my-eval
+  [procedure arguments env]
+  (eval-sequence
     (procedure-body procedure)
     (extend-environment (procedure-parameters procedure)
-                        arguments
+                        (list-of-delayed-args arguments env)
                         (procedure-environment procedure))))
 
 (defmethod my-eval 'lambda [exp env]

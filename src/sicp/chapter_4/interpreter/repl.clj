@@ -16,10 +16,11 @@
   (:use sicp.chapter-4.interpreter.while)
   (:use sicp.chapter-4.interpreter.default-environment)
   (:use sicp.chapter-4.interpreter.boolean-operators)
-  (:use sicp.chapter-4.interpreter.unless))
+  (:use sicp.chapter-4.interpreter.unless)
+    (:use sicp.chapter-4.interpreter.laziness))
 
-(def input-prompt ";;; M-Eval input:")
-(def output-prompt ";;; M-Eval value:")
+(def input-prompt ";;; L-Eval input:")
+(def output-prompt ";;; L-Eval value:")
 
 (defn- prompt-for-input
   [string]
@@ -51,7 +52,7 @@
   (loop []
     (prompt-for-input input-prompt)
       (let [input (read)
-            output (my-eval input global-env)]
+            output (actual-value input global-env)]
         (announce-output output-prompt)
         (user-print output))
     (recur))))
