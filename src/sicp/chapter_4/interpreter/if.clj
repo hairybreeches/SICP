@@ -27,8 +27,10 @@
           (alternative env)))))
 
 (defn make-if
-  [predicate consequent alternative]
-  (create-expression 'if (list predicate consequent alternative)))
+  ([predicate consequent alternative]
+    (create-expression 'if (list predicate consequent alternative)))
+  ([predicate consequent]
+    (create-expression 'if (list predicate consequent))))
 
 (defmethod analyse 'if [exp]
   (analyse-if exp))
