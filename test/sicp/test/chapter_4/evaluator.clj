@@ -269,5 +269,30 @@
              (f 11))
             ))
 
+(deftest unless-true-without-alternative
+  (evals-to false
+            '(unless (< 3 4)
+                     9)
+            ))
+
+(deftest unless-true-with-alternative
+  (evals-to 8
+            '(unless (< 3 4)
+                     9
+                     (+ 2 6))
+            ))
+
+(deftest unless-false-with-alternative
+  (evals-to 9
+            '(unless (< 4 3)
+                     9
+                     (+ 2 6))
+            ))
+
+(deftest unless-false-without-alternative
+  (evals-to 9
+            '(unless (< 4 3)
+                     9)
+            ))
 
 
