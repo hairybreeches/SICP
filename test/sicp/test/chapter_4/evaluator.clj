@@ -1,7 +1,9 @@
 (ns sicp.test.chapter-4.evaluator
   (:use sicp.chapter-4.interpreter.evaluator)
   (:use sicp.chapter-4.interpreter.repl)
-  (:use clojure.test))
+  (:use sicp.chapter-4.interpreter.laziness)
+  (:use clojure.test)
+  (:use sicp.chapter-4.interpreter.default-environment))
 
 (defn evals-to
   [result code]
@@ -294,5 +296,15 @@
             '(unless (< 4 3)
                      9)
             ))
+
+(deftest side-effects-can-be-confusing
+  (let [env (create-new-environment)]
+    (actual-value '(define count 0) env)
+    (actual-value '(define (id x) (set! count (+ count 1)) x) env)
+    (actual-value '(define w (id (id 10))) env)
+    (is (= 1 (actual-value 'count env))) ;outer call to id is evaluated as part of the define, it doesn't evaluate its args though.
+    (is (= 10 (actual-value 'w env))) ;this forces the resolution of the second call to id
+    (is (= 2 (actual-value 'count env))))) ;and therefore there are two calls in total
+
 
 
