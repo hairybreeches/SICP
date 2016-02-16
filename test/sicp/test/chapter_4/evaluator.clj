@@ -46,7 +46,7 @@
   (evals-to 1
     '(cond
        (true 1)
-       (false 4 3))
+       (false 4))
                   ))
 
 (deftest can-cond-to-second
