@@ -1,7 +1,7 @@
 (ns sicp.chapter-4.interpreter.repl
   (:use sicp.chapter-4.interpreter.evaluator)
   (:use sicp.chapter-4.interpreter.if)
-    (:use sicp.chapter-4.interpreter.begin)
+  (:use sicp.chapter-4.interpreter.begin)
   (:use sicp.chapter-4.interpreter.assignment)
   (:use sicp.chapter-4.interpreter.lambda)
   (:use sicp.chapter-4.interpreter.quote)
