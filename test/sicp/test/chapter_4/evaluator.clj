@@ -318,5 +318,30 @@
     (is (= 100 (actual-value '(square (id 10)) env)))
     (is (= 1 (actual-value 'count env))))) ;the argument is only evaluated once because it is memoised
 
+;the side effect is evaluated either way, because we call the function.
+(deftest side-effects-1
+  (let [env (create-new-environment)]
+    (actual-value '(define (p1 x) (set! x (cons x '(2))) x) env)
+    (is (= '(1 2) (actual-value '(p1 1) env)))))
+
+;Although Cy's would return (1 2)
+;since it forces all statements to be evaluated
+;in this version, the argument e only gets one pass of an eval
+;which resolves the variable to the thunk, but never evaluates the thunk
+;and therefore the side-effect function is never evaluated.
+(deftest side-effects-2
+  (let [env (create-new-environment)]
+    (actual-value
+      '(define (p2 x)
+         (define (p e)
+           e
+           x)
+       (p (set! x (cons x '(2)))))
+      env)
+    (is (= (actual-value '(p2 1) env) 1))
+    ))
+
+
+
 
 
