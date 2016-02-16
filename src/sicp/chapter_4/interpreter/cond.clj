@@ -73,14 +73,17 @@
 
 (defn- analyse-clauses
   [clauses]
+  (if (empty? clauses)
+      '()
     (let [first-clause (first clauses)
           rest-clauses (rest clauses)]
       (if (cond-else-clause? first-clause)
           (if (empty? rest-clauses)
               (make-analysed-clause (fn [_ __] true) (analyse-action first-clause))
               (error "else clause not last: " clauses))
-          (cons (analyse-clause first-clause) (analyse-clauses rest-clauses)))))
+          (cons (analyse-clause first-clause) (analyse-clauses rest-clauses))))))
 
+; analysis of cond
 (defn- analyse-cond
   [analysed-clauses]
   (fn [env]
