@@ -41,7 +41,7 @@
 
 (defmethod my-apply 'procedure
   [procedure arguments env]
-  (eval-sequence
+  (my-eval
     (procedure-body procedure)
     (extend-environment (procedure-parameters procedure)
                         (list-of-delayed-args arguments env)
