@@ -15,7 +15,8 @@
   (:use sicp.chapter-4.interpreter.let)
   (:use sicp.chapter-4.interpreter.while)
   (:use sicp.chapter-4.interpreter.default-environment)
-  (:use sicp.chapter-4.interpreter.boolean-operators))
+  (:use sicp.chapter-4.interpreter.boolean-operators)
+  (:use sicp.chapter-4.interpreter.unless))
 
 (def input-prompt ";;; M-Eval input:")
 (def output-prompt ";;; M-Eval value:")
