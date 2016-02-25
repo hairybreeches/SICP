@@ -17,7 +17,8 @@
     (list '+ +)
     (list '- -)
     (list '* *)
-    (list '/ /)))
+    (list '/ /)
+    (list 'prn prn)))
 
 (def primitive-procedure-names
   (map first primitive-procedures))
