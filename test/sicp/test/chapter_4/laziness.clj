@@ -5,7 +5,7 @@
   (:use sicp.chapter-4.interpreter.default-environment)
   (:use clojure.test))
 
-(deftest side-effects-can-be-confusing-eager-evaluation
+(deftest timing-of-side-effects-eager-evaluation
   (let [env (create-new-environment)]
     (actual-value '(define count 0) env)
     (actual-value '(define (id x) (set! count (+ count 1)) x) env)
@@ -14,7 +14,7 @@
     (is (= 10 (actual-value 'w env)))
     (is (= 2 (actual-value 'count env)))))
 
-(deftest side-effects-can-be-confusing-lazy-memo
+(deftest timing-of-side-effects-lazy
   (let [env (create-new-environment)]
     (actual-value '(define count 0) env)
     (actual-value '(define (id (x lazy-memo)) (set! count (+ count 1)) x) env)
@@ -44,7 +44,7 @@
     (is (= 2 (actual-value 'count env))))) ;the argument is evaluated twice because it is not memoised
 
 ;the side effect is evaluated either way, because we call the function.
-(deftest side-effects-1
+(deftest side-effects-simple-case
   (let [env (create-new-environment)]
     (actual-value '(define (p1 x) (set! x (cons x '(2))) x) env)
     (is (= '(1 2) (actual-value '(p1 1) env)))))
@@ -54,7 +54,7 @@
 ;in this version, the argument e only gets one pass of an eval
 ;which resolves the variable to the thunk, but never evaluates the thunk
 ;and therefore the side-effect function is never evaluated.
-(deftest side-effects-2
+(deftest side-effects-not-always-evaluated-with-lazy-evaluation
   (let [env (create-new-environment)]
     (actual-value
       '(define (p2 x)
@@ -66,7 +66,7 @@
     (is (= (actual-value '(p2 1) env) 1))
     ))
 
-(deftest side-effects-2-simpler-with-eager-evaluation
+(deftest side-effects-always-evaluated-with-eager-evaluation
   (let [env (create-new-environment)]
     (actual-value
       '(define (p2 x)
