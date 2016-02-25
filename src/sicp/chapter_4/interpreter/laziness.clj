@@ -3,55 +3,61 @@
 
 (def actual-value)
 
-(defn- referenced-list?
-  [exp tag]
-  (and (= (type exp) clojure.lang.Ref)
-       (seq? @exp)
-       (= (first @exp) tag)))
-
 ;thunks
 (defn- make-thunk
   [exp env]
-  (ref
-    (list 'thunk exp env)))
+  ^{:type ::thunk}
+  {
+    :exp exp
+    :env env
+    :memo (ref { :evaluated false})
+    })
 
 (defn- thunk?
   [exp]
-  (referenced-list? exp 'thunk))
+  (= (type exp) ::thunk))
 
-(defn thunk-exp-from-value
+(defn thunk-exp
   [thunk]
-  (second thunk))
+  (:exp thunk))
 
-(defn thunk-env-from-value
+(defn thunk-env
   [thunk]
-  (nth thunk 2))
+  (:env thunk))
 
 ;evaluated thunks
-(defn- evaluated-thunk?
-  [exp]
-  (referenced-list? exp 'evaluated-thunk))
+(defn- thunk-memo
+  [thunk]
+  @(:memo thunk))
+
+(defn- thunk-evaluated?
+  [thunk]
+  (:evaluated (thunk-memo thunk)))
 
 (defn- thunk-value
   [evaluated-thunk]
-  (second @evaluated-thunk))
+  (:value (thunk-memo evaluated-thunk)))
 
-(defn- evaluate-thunk
+(defn- memoise-thunk
   [thunk]
-  (list 'evaluated-thunk (actual-value (thunk-exp-from-value thunk)
-                                       (thunk-env-from-value thunk))))
+  {:evaluated true
+   :value (actual-value (thunk-exp thunk)
+                        (thunk-env thunk))})
 
 (defn- process-thunk
   [thunk]
   (dosync
-    (alter thunk evaluate-thunk)))
+    (ref-set (:memo thunk) (memoise-thunk thunk))))
 
 ;laziness
 (defn- force-it
   [obj]
-  (cond (thunk? obj) (do (process-thunk obj) (thunk-value obj))
-        (evaluated-thunk? obj) (thunk-value obj)
-        :else obj))
+  (if (thunk? obj)
+      (do
+        (if (not (thunk-evaluated? obj))
+            (process-thunk obj))
+        (thunk-value obj))
+      obj))
 
 (defn delay-it
   [exp env]
