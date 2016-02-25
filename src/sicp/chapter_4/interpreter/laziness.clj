@@ -4,9 +4,9 @@
 (def actual-value)
 
 ;thunks
-(defn- make-thunk
+(defn- make-memoising-thunk
   [exp env]
-  ^{:type ::thunk}
+  ^{:type ::memoising-thunk}
   {
     :exp exp
     :env env
@@ -34,15 +34,19 @@
   [thunk]
   (:evaluated (thunk-memo thunk)))
 
-(defn- thunk-value
+(defn- thunk-memoised-value
   [evaluated-thunk]
   (:value (thunk-memo evaluated-thunk)))
+
+(defn- calculate-thunk-value
+  [thunk]
+  (actual-value (thunk-exp thunk)
+                (thunk-env thunk)))
 
 (defn- memoise-thunk
   [thunk]
   {:evaluated true
-   :value (actual-value (thunk-exp thunk)
-                        (thunk-env thunk))})
+   :value (calculate-thunk-value thunk)})
 
 (defn- process-thunk
   [thunk]
@@ -54,15 +58,15 @@
 
 (defmethod force-it :default [obj] obj)
 
-(defmethod force-it ::thunk [thunk]
+(defmethod force-it ::memoising-thunk [thunk]
   (if (not (thunk-evaluated? thunk))
       (process-thunk thunk))
 
-  (thunk-value thunk))
+  (thunk-memoised-value thunk))
 
 (defn delay-it
   [exp env]
-  (make-thunk exp env))
+  (make-memoising-thunk exp env))
 
 (defn actual-value [exp env]
   (force-it (my-eval exp env)))
