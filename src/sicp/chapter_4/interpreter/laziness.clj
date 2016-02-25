@@ -50,14 +50,15 @@
     (ref-set (:memo thunk) (memoise-thunk thunk))))
 
 ;laziness
-(defn- force-it
-  [obj]
-  (if (thunk? obj)
-      (do
-        (if (not (thunk-evaluated? obj))
-            (process-thunk obj))
-        (thunk-value obj))
-      obj))
+(defmulti force-it type)
+
+(defmethod force-it :default [obj] obj)
+
+(defmethod force-it ::thunk [thunk]
+  (if (not (thunk-evaluated? thunk))
+      (process-thunk thunk))
+
+  (thunk-value thunk))
 
 (defn delay-it
   [exp env]
