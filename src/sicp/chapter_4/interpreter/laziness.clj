@@ -13,6 +13,14 @@
     :memo (ref { :evaluated false})
     })
 
+(defn- make-recalculating-thunk
+  [exp env]
+  ^{:type ::recalculating-thunk}
+  {
+    :exp exp
+    :env env
+    })
+
 (defn- thunk?
   [exp]
   (= (type exp) ::thunk))
@@ -25,7 +33,6 @@
   [thunk]
   (:env thunk))
 
-;evaluated thunks
 (defn- thunk-memo
   [thunk]
   @(:memo thunk))
@@ -64,9 +71,16 @@
 
   (thunk-memoised-value thunk))
 
+(defmethod force-it ::recalculating-thunk [thunk]
+  (calculate-thunk-value thunk))
+
 (defn delay-it
   [exp env]
   (make-memoising-thunk exp env))
+
+(defn delay-it-no-memo
+  [exp env]
+  (make-recalculating-thunk exp env))
 
 (defn actual-value [exp env]
   (force-it (my-eval exp env)))

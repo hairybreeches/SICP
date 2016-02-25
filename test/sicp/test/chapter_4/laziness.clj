@@ -35,6 +35,14 @@
     (is (= 100 (actual-value '(square (id 10)) env)))
     (is (= 1 (actual-value 'count env))))) ;the argument is only evaluated once because it is memoised
 
+(deftest no-memoisation
+  (let [env (create-new-environment)]
+    (actual-value '(define count 0) env)
+    (actual-value '(define (id x) (set! count (+ count 1)) x) env)
+    (actual-value '(define (square (x lazy)) (* x x)) env)
+    (is (= 100 (actual-value '(square (id 10)) env)))
+    (is (= 2 (actual-value 'count env))))) ;the argument is evaluated twice because it is not memoised
+
 ;the side effect is evaluated either way, because we call the function.
 (deftest side-effects-1
   (let [env (create-new-environment)]

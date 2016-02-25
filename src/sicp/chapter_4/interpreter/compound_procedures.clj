@@ -43,12 +43,12 @@
       p))
 
 
-
 (defn- lookup-parameter-resolution
   [p]
   (if (seq? p)
       (cond
-        (= (second p) 'lazy-memo) delay-it)
+        (= (second p) 'lazy-memo) delay-it
+        (= (second p) 'lazy) delay-it-no-memo)
       actual-value))
 
 (defn- list-of-args
