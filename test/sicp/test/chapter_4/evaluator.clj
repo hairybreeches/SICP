@@ -1,8 +1,7 @@
 (ns sicp.test.chapter-4.evaluator
   (:use sicp.chapter-4.interpreter.evaluator)
   (:use sicp.chapter-4.interpreter.repl)
-  (:use clojure.test)
-  (:use sicp.chapter-4.interpreter.default-environment))
+  (:use clojure.test))
 
 (defn evals-to
   [result code]
@@ -295,9 +294,5 @@
             '(unless (< 4 3)
                      9)
             ))
-
-
-
-
 
 
