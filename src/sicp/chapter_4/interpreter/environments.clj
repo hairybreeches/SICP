@@ -100,11 +100,13 @@
 
 (defn extend-environment
   [variables values base-env]
-  (if (= (count variables) (count values))
-      (cons (make-frame variables values) base-env)
-      (if (> (count variables) (count values))
-          (error "Too few arguments supplied, needed values for: " variables " got values: " values)
-          (error "Too many arguments supplied, needed values for: " variables "got values: " values))))
+  (let [num-variables (count variables)
+        num-values (count values)
+        list-variables (apply list variables)
+        list-values (apply list values)]
+  (cond (= num-values num-variables) (cons (make-frame list-variables list-values) base-env)
+        (> num-variables num-values) (error "Too few arguments supplied, needed values for: " list-variables " got values: " list-values)
+        :else (error "Too many arguments supplied, needed values for: " list-variables "got values: " list-values))))
 
 
 (defn define-variable!
