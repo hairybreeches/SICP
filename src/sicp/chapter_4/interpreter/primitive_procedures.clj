@@ -8,10 +8,6 @@
 
 (def primitive-procedures
   (list
-    (list 'car first)
-    (list 'cdr rest)
-    (list 'cons cons)
-    (list 'null? empty?)
     (list '= =)
     (list '> >)
     (list '< <)
