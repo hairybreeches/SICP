@@ -4,16 +4,6 @@
   (:use sicp.chapter-4.interpreter.lambda)
   (:use sicp.chapter-4.interpreter.environments))
 
-(defn- tagged-list?
-  [exp tag]
-  (if (seq? exp)
-      (= (first exp) tag)
-      false))
-
-(defn compound-procedure?
-  [p]
-  (tagged-list? p 'procedure))
-
 (defn- make-procedure
   [parameters action-list env]
   (list 'procedure parameters (hoist-variables action-list) env))
