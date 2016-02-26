@@ -32,15 +32,6 @@
   (prn)
   (prn string))
 
-(defn- user-print
-  [object]
-  (if (compound-procedure? object)
-      (prn `(
-              compound-procedure
-              ~(procedure-parameters object)
-              ~(procedure-body object)
-              <procedure-env>))
-      (prn object)))
 
 (defn execute
   [exp] (my-eval exp (create-new-environment)))
@@ -53,6 +44,6 @@
       (let [input (read)
             output (my-eval input global-env)]
         (announce-output output-prompt)
-        (user-print output))
+        (prn output))
     (recur))))
 

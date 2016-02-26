@@ -23,13 +23,22 @@
   (= n (variable-name variable)))
 
 ;frames
+(defmethod print-method ::frame
+  [v w]
+  (.write
+    w
+    (str "<Frame: " (apply list (map variable-name v)) ">")))
+
 (defn- get-frame-variables
   [frame]
   @frame)
 
-(defn- make-frame
+(defn make-frame
   [variables values]
-  (ref (map make-variable variables values)))
+    (ref
+      (with-meta
+        (map make-variable variables values)
+        {:type ::frame})))
 
 (defn- append-to-frame
   [frame-value var value]
