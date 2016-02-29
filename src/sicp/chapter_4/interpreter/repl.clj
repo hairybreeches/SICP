@@ -17,7 +17,8 @@
   (:use sicp.chapter-4.interpreter.default-environment)
   (:use sicp.chapter-4.interpreter.boolean-operators)
   (:use sicp.chapter-4.interpreter.unless)
-    (:use sicp.chapter-4.interpreter.laziness))
+  (:use sicp.chapter-4.interpreter.laziness)
+  (:use sicp.chapter-4.interpreter.lazy-lists))
 
 (def input-prompt ";;; L-Eval input:")
 (def output-prompt ";;; L-Eval value:")
