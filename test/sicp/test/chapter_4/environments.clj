@@ -36,5 +36,32 @@
     (is (= (lookup-variable-value 'y outer) "outer value"))
     (is (= (lookup-variable-value 'y inner) "inner value"))))
 
+(deftest to-string-after-extend
+  (let [env (extend-environment '(x) '(12) the-empty-environment)]
+    (is (= (str env) "(<Frame: (x)>)"))))
+
+(deftest to-string-after-set
+  (let [env (extend-environment '(x) '(12) the-empty-environment)]
+    (set-variable-value! 'x 4 env)
+    (is (= (str env) "(<Frame: (x)>)"))))
+
+(deftest to-string-after-define
+  (let [env (extend-environment '() '() the-empty-environment)]
+    (define-variable! 'x 12 env)
+    (is (= (str env) "(<Frame: (x)>)"))))
+
+(deftest to-string-after-undefine
+  (let [env (extend-environment '(x y) '(11 12) the-empty-environment)]
+    (make-unbound! 'x env)
+    (is (= (str env) "(<Frame: (y)>)"))))
+
+(deftest to-string-after-double-extend
+  (let [env (extend-environment '(z a) '(4 5) (extend-environment '(x y) '(11 12) the-empty-environment))]
+    (is (= (str env) "(<Frame: (z a)> <Frame: (x y)>)"))))
+
+(deftest to-string-after-taking-enclosing
+  (let [env (extend-environment '(z a) '(4 5) (extend-environment '(x y) '(11 12) the-empty-environment))]
+    (is (= (str (enclosing-environment env) "(<Frame: (x y)>)")))))
+
 
 
