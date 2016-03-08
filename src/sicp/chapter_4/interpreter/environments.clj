@@ -33,16 +33,27 @@
   [frame]
   @frame)
 
-(defn make-frame
-  [variables values]
+(defn- make-frame-value
+  [variables]
+  (with-meta
+        variables
+        {:type ::frame}))
+
+(defn- make-frame
+  ([variables values]
+    (make-frame
+      (map make-variable variables values)))
+
+  ([variables]
     (ref
-      (with-meta
-        (map make-variable variables values)
-        {:type ::frame})))
+      (make-frame-value variables))))
 
 (defn- append-to-frame
   [frame-value var value]
-  (cons (make-variable var value) frame-value))
+  (make-frame-value
+    (cons
+      (make-variable var value)
+      frame-value)))
 
 (defn- add-binding-to-frame!
   [var value frame]
@@ -58,7 +69,8 @@
 
 (defn filter-value
   [variables var-name]
-    (remove #(named? var-name %) variables))
+    (make-frame-value
+      (remove #(named? var-name %) variables)))
 
 
 (defn- remove-frame-binding!
@@ -70,16 +82,30 @@
         true)))
 
 ;environments
-(defn- enclosing-environment
+(defn- make-environment
+  [frames]
+  (with-meta
+        frames
+        {:type ::environment}))
+
+(defmethod print-method ::environment
+  [v w]
+  (.write
+    w
+    (str (apply list (map (fn [frame] @frame) v)))))
+
+(defn enclosing-environment
   [env]
-  (rest env))
+  (make-environment
+    (rest env)))
 
 (defn- first-frame
   [env]
   (first env))
 
 (def the-empty-environment
-  '())
+  (make-environment
+  '()))
 
 (defn- get-variable-from-environment
   [var-name env]
@@ -113,7 +139,7 @@
         num-values (count values)
         list-variables (apply list variables)
         list-values (apply list values)]
-  (cond (= num-values num-variables) (cons (make-frame list-variables list-values) base-env)
+  (cond (= num-values num-variables) (make-environment (cons (make-frame list-variables list-values) base-env))
         (> num-variables num-values) (error "Too few arguments supplied, needed values for: " list-variables " got values: " list-values)
         :else (error "Too many arguments supplied, needed values for: " list-variables "got values: " list-values))))
 
