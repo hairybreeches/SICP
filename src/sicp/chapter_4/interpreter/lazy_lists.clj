@@ -40,11 +40,19 @@
   [x]
   (apply list (lazy-list->seq x)))
 
+(defn- printable-subsequence
+  [s]
+  (let [tes (take 21 (lazy-list->seq s))]
+    (if (= (count tes) 21)
+        (concat (take 20 tes) (list '...))
+        (take 20 tes))))
+
+
 (defmethod print-method ::lazy-pair
   [v w]
   (.write
     w
-    (str (lazy-list->list v))))
+    (str (apply list (printable-subsequence v)))))
 
 (defmethod my-eval 'cons [exp env]
   (eval-lazy-pair (first (operands exp))
