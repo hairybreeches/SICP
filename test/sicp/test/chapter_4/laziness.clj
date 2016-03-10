@@ -46,8 +46,8 @@
 ;the side effect is evaluated either way, because we call the function.
 (deftest side-effects-simple-case
   (let [env (create-new-environment)]
-    (actual-value '(define (p1 x) (set! x (cons x '(2))) x) env)
-    (is (= '(1 2) (actual-value '(p1 1) env)))))
+    (actual-value '(define (p1 x) (set! x (+ x 1)) x) env)
+    (is (= 2 (actual-value '(p1 1) env)))))
 
 ;Although Cy's would return (1 2)
 ;since it forces all statements to be evaluated
@@ -61,7 +61,7 @@
          (define (p (e lazy-memo))
            e
            x)
-       (p (set! x (cons x '(2)))))
+       (p (set! x (+ x 1))))
       env)
     (is (= (actual-value '(p2 1) env) 1))
     ))
@@ -73,7 +73,7 @@
          (define (p e)
            e
            x)
-       (p (set! x (cons x '(2)))))
+       (p (set! x (+ x 1))))
       env)
-    (is (= (actual-value '(p2 1) env) '(1 2)))
+    (is (= (actual-value '(p2 1) env) 2))
     ))

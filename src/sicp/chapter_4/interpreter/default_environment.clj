@@ -4,7 +4,9 @@
 
 (defn create-new-environment
   []
-  (let [initial-env (extend-environment primitive-procedure-names
+  (let [initial-env
+        (extend-environment '(null) '(null)
+                    (extend-environment primitive-procedure-names
                                         primitive-procedure-objects
-                                        the-empty-environment)]
+                                        the-empty-environment))]
     initial-env))
