@@ -28,6 +28,3 @@
 
 (defmulti analyse get-exp-type)
 (defmulti execute-application get-procedure-type)
-
-(defn my-eval [exp env]
-  ((analyse exp) env))

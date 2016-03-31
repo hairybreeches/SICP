@@ -32,6 +32,8 @@
   (prn)
   (prn output-prompt))
 
+(defn- my-eval [exp env]
+  ((analyse exp) env))
 
 (defn execute
   [exp] (my-eval exp (create-new-environment)))
