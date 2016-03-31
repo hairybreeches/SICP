@@ -14,6 +14,7 @@
   (:use sicp.chapter-4.interpreter.let)
   (:use sicp.chapter-4.interpreter.while)
   (:use sicp.chapter-4.interpreter.cond)
+  (:use sicp.chapter-4.interpreter.amb)
   (:use sicp.chapter-4.interpreter.default-environment)
   (:use sicp.chapter-4.interpreter.boolean-operators)
   (:use sicp.chapter-4.interpreter.unless))

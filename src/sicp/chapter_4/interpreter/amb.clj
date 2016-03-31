@@ -5,17 +5,20 @@
 (defn- amb-choices [exp]
   (operands exp))
 
+(defn- try-next [choices env succeed fail]
+  (if (empty? choices)
+      (fail)
+      ((first choices)
+        env
+        succeed
+        (fn [] (try-next (rest choices) env succeed fail)))))
+
 (defn- analyse-amb [exp]
   (let [choice-procs (map analyse (amb-choices exp))]
     (fn [env succeed fail]
-      (let [try-next [choices]
-            (if (empty? choices)
-                (fail)
-                ((first choices)
-                 env
-                 succeed
-                 (fn [] (try-next (rest choices)))))]
-        (try-next choice-procs)))))
+      (try-next
+        choice-procs
+        env succeed fail))))
 
 
 (defmethod analyse 'amb [exp]
