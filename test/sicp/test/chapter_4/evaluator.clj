@@ -1,5 +1,4 @@
 (ns sicp.test.chapter-4.evaluator
-  (:use sicp.chapter-4.interpreter.evaluator)
   (:use sicp.chapter-4.interpreter.repl)
   (:use clojure.test))
 
