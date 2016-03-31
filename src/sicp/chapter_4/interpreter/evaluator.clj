@@ -22,7 +22,7 @@
          (type exp)))
 
 (defn- get-procedure-type
-  [procedure arguments]
+  [procedure arguments succeed fail]
   (first procedure))
 
 
