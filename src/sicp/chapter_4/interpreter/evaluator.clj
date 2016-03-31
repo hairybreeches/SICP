@@ -23,7 +23,7 @@
          (type exp))))
 
 (defn- get-procedure-type
-  [procedure arguments]
+  [procedure arguments env]
   (first procedure))
 
 ;eval/apply

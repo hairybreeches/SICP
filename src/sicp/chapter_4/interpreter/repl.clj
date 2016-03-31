@@ -16,10 +16,12 @@
   (:use sicp.chapter-4.interpreter.while)
   (:use sicp.chapter-4.interpreter.default-environment)
   (:use sicp.chapter-4.interpreter.boolean-operators)
-  (:use sicp.chapter-4.interpreter.unless))
+  (:use sicp.chapter-4.interpreter.unless)
+  (:use sicp.chapter-4.interpreter.laziness)
+  (:use sicp.chapter-4.interpreter.lazy-lists))
 
-(def input-prompt ";;; M-Eval input:")
-(def output-prompt ";;; M-Eval value:")
+(def input-prompt ";;; L-Eval input:")
+(def output-prompt ";;; L-Eval value:")
 
 (defn- prompt-for-input
   []
@@ -34,7 +36,7 @@
 
 
 (defn execute
-  [exp] (my-eval exp (create-new-environment)))
+  [exp] (actual-value exp (create-new-environment)))
 
 (defn driver-loop
   []
@@ -42,7 +44,7 @@
   (loop []
     (prompt-for-input)
       (let [input (read)
-            output (my-eval input global-env)]
+            output (actual-value input global-env)]
         (announce-output)
         (prn output))
     (recur))))
