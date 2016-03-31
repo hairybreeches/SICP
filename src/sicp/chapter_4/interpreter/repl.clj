@@ -22,15 +22,15 @@
 (def output-prompt ";;; M-Eval value:")
 
 (defn- prompt-for-input
-  [string]
+  []
   (prn)
   (prn)
-  (prn string))
+  (prn input-prompt))
 
 (defn- announce-output
-  [string]
+  []
   (prn)
-  (prn string))
+  (prn output-prompt))
 
 
 (defn execute
@@ -40,10 +40,10 @@
   []
   (let [global-env (create-new-environment)]
   (loop []
-    (prompt-for-input input-prompt)
+    (prompt-for-input)
       (let [input (read)
             output (my-eval input global-env)]
-        (announce-output output-prompt)
+        (announce-output)
         (prn output))
     (recur))))
 
