@@ -78,6 +78,9 @@
 (defn make-let [variable-declarations body]
   (create-expression 'let (list variable-declarations body)))
 
+(defn make-named-let [n variable-declarations body]
+  (create-expression 'let (list n variable-declarations body)))
+
 (defn- let*->nested-lets
   ([exp] (let*->nested-lets (get-variable-declarations exp) (get-body exp)))
   ([variable-declarations body]
