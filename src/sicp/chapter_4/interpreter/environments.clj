@@ -130,7 +130,7 @@
   (let [value (variable-value
     (get-variable-from-environment var-name env))]
     (if (= value '*unassigned*)
-        (error "variable " var-name "is unassigned")
+        (error "variable " var-name " is unassigned")
         value)))
 
 (defn extend-environment
