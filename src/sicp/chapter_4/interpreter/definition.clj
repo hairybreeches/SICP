@@ -44,8 +44,9 @@
 (defn- analyse-unbind
   [exp]
   (let [variable-name (first (operands exp))]
-    (fn [env]
-      (make-unbound! variable-name env))))
+    (fn [env succeed fail]
+      (make-unbound! variable-name env)
+      (succeed :ok fail))))
 
 (defmethod analyse 'unbind! [exp]
   (analyse-unbind exp))
