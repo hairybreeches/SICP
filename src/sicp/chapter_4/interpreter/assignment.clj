@@ -19,7 +19,7 @@
       (value-proc
         env
         (fn [value fail2]
-          (let [old-value (lookup-variable-value var-name env)]
+          (let [old-value (get-variable-from-environment var-name env)]
                (set-variable-value! var-name value env)
                (succeed
                  :ok
