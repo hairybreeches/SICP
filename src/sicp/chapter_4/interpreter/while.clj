@@ -1,6 +1,7 @@
 (ns sicp.chapter-4.interpreter.while
   (:use sicp.chapter-4.interpreter.if)
   (:use sicp.chapter-4.interpreter.begin)
+  (:use sicp.chapter-4.interpreter.let)
   (:use sicp.chapter-4.interpreter.evaluator))
 
 (defn- get-body
@@ -11,18 +12,23 @@
   [exp]
   (first (operands exp)))
 
-(defn- make-while
-  [predicate body]
-  (create-expression 'while (list predicate body)))
+(defn- while->if
+  [exp]
+  (let [func-name (gensym)]
+    (make-named-let
+      func-name
+      (list)
+      (make-if
+        (get-predicate exp)
+        (sequence->exp
+           (list
+              (get-body exp)
+              (create-expression func-name '())))
+        true))))
 
 (defmethod my-eval 'while [exp env]
-  (my-eval
-    (make-if (get-predicate exp)
-             (sequence->exp
-               (list
-                 (get-body exp)
-                 exp))
-             true)
-    env))
+     (my-eval
+       (while->if exp)
+       env))
 
 
