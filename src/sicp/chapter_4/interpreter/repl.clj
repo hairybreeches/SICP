@@ -57,31 +57,33 @@
 (defn execute
   [exp] (my-eval exp (create-new-environment)))
 
-(defn driver-loop
-  []
-  (let [global-env (create-new-environment)]
-    (loop []
-      (let [internal-loop
-        (fn [try-again]
-          (prompt-for-input)
-          (let [input (read)]
-            (if
-              (= input 'try-again)
-              (try-again)
-              (do
-                (announce-new-problem)
-                (my-eval
-                  input
-                  global-env
-                  (fn [value next-alternative]
-                    (announce-output)
-                    (prn value)
-                    (internal-loop next-alternative global-env))
-                  (fn []
-                    (announce-end input)
-                    (recur)))))))]
-        (internal-loop
-          (fn []
-            (announce-no-problem)
-            (recur)))))))
 
+(defn driver-loop
+
+  ([]
+   (driver-loop
+     (create-new-environment)))
+
+  ([env]
+   (driver-loop
+     env
+     (fn [] (announce-no-problem) (driver-loop))))
+
+  ([env try-again]
+      (prompt-for-input)
+      (let [input (read)]
+        (if
+          (= input 'try-again)
+          (try-again)
+          (do
+            (announce-new-problem)
+            (my-eval
+              input
+              env
+              (fn [value next-alternative]
+                (announce-output)
+                (prn value)
+                (driver-loop env next-alternative))
+              (fn []
+                (announce-end input)
+                (driver-loop env))))))))
