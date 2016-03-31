@@ -12,28 +12,6 @@
   [exp]
   (first (operands exp)))
 
-(defn- make-while
-  [predicate body]
-  (create-expression 'while (list predicate body)))
-
-(defmethod my-eval 'while [exp env]
-  (my-eval
-    (make-if (get-predicate exp)
-             (sequence->exp
-               (list
-                 (get-body exp)
-                 exp))
-             true)
-    env))
-(defmethod analyse 'while [exp]
-  (let [action (analyse (get-body exp))
-        predicate (analyse (get-predicate exp))]
-      (fn [env]
-        (loop []
-          (if (predicate env)
-              (do (action env)
-                  (recur))
-              true)))))
 (defn- while->if
   [exp]
   (let [func-name (gensym)]
@@ -48,9 +26,7 @@
               (create-expression func-name '())))
         true))))
 
-(defmethod analyse 'while [exp env]
-     (analyse
-       (while->if exp)
-       env))
+(defmethod analyse 'while [exp]
+  (analyse (while->if exp)))
 
 
