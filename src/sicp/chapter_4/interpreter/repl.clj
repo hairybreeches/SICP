@@ -54,8 +54,23 @@
 (defn- my-eval [exp env succeed fail]
   ((analyse exp) env succeed fail))
 
+(defn get-all-results
+  [exp]
+  (let [results (ref [])]
+
+  (my-eval
+      exp
+      (create-new-environment)
+      (fn [result do-next]
+          (dosync
+            (alter results (fn [old] (conj old result))))
+          (do-next))
+      (fn [] ))
+
+  @results))
+
 (defn execute
-  [exp] (my-eval exp (create-new-environment)))
+  [exp] (first (get-all-results exp)))
 
 
 (defn driver-loop
