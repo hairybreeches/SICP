@@ -32,8 +32,8 @@
                          (require (integer? k))
                          (list i j k))))))))
 
-           (a-pythagorean-triple-between 1 5)
+           (a-pythagorean-triple-between 1 13)
            ))
 
-      '((3 4 5)))))
+      '((3 4 5) (5 12 13) (6 8 10)))))
 
