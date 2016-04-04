@@ -17,17 +17,10 @@
            (define (require p)
              (if (not p) (amb)))
 
-           (define (range low high)
-             (if (> low high)
-                 (list)
-                 (cons low (range (+ low 1) high))))
-
-           (define (an-element-of items)
-             (require (not (null? items)))
-             (amb (car items) (an-element-of (cdr items))))
-
            (define (an-integer-between low high)
-             (an-element-of (range low high)))
+             (if (> low high)
+               (amb)
+               (amb low (an-integer-between (+ 1 low) high))))
 
            (define (a-pythagorean-triple-between low high)
              (let ((high-squared (* high high)))
