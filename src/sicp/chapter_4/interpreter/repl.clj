@@ -55,20 +55,40 @@
 (defn- my-eval [exp env succeed fail]
   ((analyse exp) env succeed fail))
 
+
+(defn- iterate-over-results
+  [state]
+  ((:try-again @state))
+  (if
+    (:success @state)
+    (cons (:current-result @state) (lazy-seq (iterate-over-results state)))
+    '()))
+
+;surely there's a better way?
 (defn get-all-results
   [exp]
-  (let [results (ref [])]
+  (let [state (ref false)]
+    (dosync
+      (ref-set
+        state
+        {
+          :try-again
+          (fn [] (my-eval
+                   exp
+                   (create-new-environment)
+                   (fn [result do-next]
+                     (dosync
+                       (ref-set state
+                                {
+                                  :current-result result
+                                  :try-again do-next
+                                  :success true
+                                  })))
+                   (fn []
+                     (dosync
+                       (ref-set state { :success false })))))}))
 
-  (my-eval
-      exp
-      (create-new-environment)
-      (fn [result do-next]
-          (dosync
-            (alter results (fn [old] (conj old result))))
-          (do-next))
-      (fn [] ))
-
-  @results))
+    (iterate-over-results state)))
 
 (defn execute
   [exp] (first (get-all-results exp)))

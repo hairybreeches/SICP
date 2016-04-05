@@ -8,6 +8,7 @@
 
 (def primitive-procedures
   (list
+    (list 'int int)
     (list 'list list)
     (list 'integer? integer?)
     (list 'sqrt sqrt)
