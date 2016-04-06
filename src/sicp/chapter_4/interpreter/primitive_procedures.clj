@@ -1,5 +1,5 @@
 (ns sicp.chapter-4.interpreter.primitive-procedures
-  (:use sicp.chapter-4.interpreter.laziness
+  (:use sicp.chapter-4.interpreter.laziness)
   (:use clojure.math.numeric-tower)
   (:use sicp.chapter-4.interpreter.evaluator))
 
