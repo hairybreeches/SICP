@@ -11,16 +11,16 @@
   [exp]
   (second (operands exp)))
 
-(defn- eval-assignment
-  [exp env]
-  (set-variable-value!
-    (assignment-variable exp)
-    (my-eval (assignment-value exp) env)
-    env)
-  :ok)
+(defn- analyse-assignment
+  [exp]
+  (let [var-name (assignment-variable exp)
+        value-proc (analyse (assignment-value exp))]
+    (fn [env]
+      (set-variable-value! var-name (value-proc env) env)
+      :ok)))
 
-(defmethod my-eval 'set! [exp env]
-  (eval-assignment exp env))
+(defmethod analyse 'set! [exp]
+  (analyse-assignment exp))
 
 (defn make-set
   [var-name var-value]

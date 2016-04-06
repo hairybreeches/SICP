@@ -16,11 +16,15 @@
       false
       (nth (operands exp) 2)))
 
-(defn- eval-if
-  [exp env]
-  (if (my-true? (my-eval (if-predicate exp) env))
-    (my-eval (if-consequent exp) env)
-    (my-eval (if-alternative exp) env)))
+(defn- analyse-if
+  [exp]
+  (let [predicate (analyse (if-predicate exp))
+        consequent (analyse (if-consequent exp))
+        alternative (analyse (if-alternative exp))]
+    (fn [env]
+      (if (my-true? (predicate env))
+          (consequent env)
+          (alternative env)))))
 
 (defn make-if
   ([predicate consequent alternative]
@@ -28,5 +32,5 @@
   ([predicate consequent]
     (create-expression 'if (list predicate consequent))))
 
-(defmethod my-eval 'if [exp env]
-  (eval-if exp env))
+(defmethod analyse 'if [exp]
+  (analyse-if exp))

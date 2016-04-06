@@ -68,5 +68,5 @@
   [exp]
   (expand-clauses (cond-clauses exp)))
 
-(defmethod my-eval 'cond [exp env]
-  (my-eval (cond->if exp) env))
+(defmethod analyse 'cond [exp]
+  (analyse (cond->if exp)))

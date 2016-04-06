@@ -16,15 +16,14 @@
   [tests]
   (create-expression 'and tests))
 
-(defmethod my-eval 'not [exp env]
-  (my-eval (make-if (first (operands exp)) false true) env))
+(defmethod analyse 'not [exp]
+  (analyse (make-if (first (operands exp)) false true)))
 
-(defmethod my-eval 'and [exp env]
-  (my-eval (and->if (operands exp)) env))
+(defmethod analyse 'and [exp]
+  (analyse (and->if (operands exp))))
 
-(defmethod my-eval 'or [exp env]
-  (my-eval
+(defmethod analyse 'or [exp]
+  (analyse
     (make-not
       (make-and
-        (map make-not (operands exp))))
-    env))
+        (map make-not (operands exp))))))
