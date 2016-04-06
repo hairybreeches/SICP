@@ -51,7 +51,6 @@
            '(define (an-integer-starting-from low)
               (amb low (an-integer-starting-from (+ 1 low))))
 
-
            '(define (a-pythagorean-triple)
              (let ((root2 (sqrt 2)))
                (let ((hypotenuse (an-integer-starting-from 5)))
