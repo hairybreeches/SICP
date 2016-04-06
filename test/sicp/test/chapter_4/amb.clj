@@ -8,21 +8,27 @@
       (get-all-results '(amb 1 2 3))
       '(1 2 3))))
 
+(def require-code
+  '(define (require p)
+             (if (not p) (amb))))
+
+(def an-integer-between
+  '(define (an-integer-between low high)
+             (if (> low high)
+               (amb)
+               (amb low (an-integer-between (+ 1 low) high)))))
+
 (deftest pythagorean-triples
   (is
     (=
       (get-all-results
-        '(begin
+           require-code
+           an-integer-between
 
-           (define (require p)
-             (if (not p) (amb)))
 
-           (define (an-integer-between low high)
-             (if (> low high)
-               (amb)
-               (amb low (an-integer-between (+ 1 low) high))))
 
-           (define (a-pythagorean-triple-between low high)
+
+          '(define (a-pythagorean-triple-between low high)
              (let ((high-squared (* high high)))
                (let ((i (an-integer-between low high)))
                  (let ((i-squared (* i i)))
@@ -32,29 +38,24 @@
                          (require (integer? k))
                          (list i j k))))))))
 
-           (a-pythagorean-triple-between 1 13)
-           ))
+          '(a-pythagorean-triple-between 1 13)
+           )
 
       '((3 4 5) (5 12 13) (6 8 10)))))
 
 (deftest infinite-pythagorean-triples
   (is
     (=
-      (take 4 (get-all-results
-        '(begin
+      (take 4
+         (get-all-results
+            require-code
+            an-integer-between
 
-           (define (require p)
-             (if (not p) (amb)))
+           '(define (an-integer-starting-from low)
+              (amb low (an-integer-starting-from (+ 1 low))))
 
-           (define (an-integer-starting-from low)
-               (amb low (an-integer-starting-from (+ 1 low))))
 
-           (define (an-integer-between low high)
-             (if (> low high)
-               (amb)
-               (amb low (an-integer-between (+ 1 low) high))))
-
-           (define (a-pythagorean-triple)
+           '(define (a-pythagorean-triple)
              (let ((root2 (sqrt 2)))
                (let ((hypotenuse (an-integer-starting-from 5)))
                  (let ((hypotenuse-squared (* hypotenuse hypotenuse))
@@ -65,8 +66,8 @@
                          (require (integer? i))
                          (list i j hypotenuse)))))))
 
-           (a-pythagorean-triple)
-           )))
+           '(a-pythagorean-triple)
+           ))
 
       '((3 4 5) (6 8 10) (5 12 13) (9 12 15)))))
 
