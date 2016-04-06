@@ -34,7 +34,10 @@
 
 
 (defn execute
-  [exp] (my-eval exp (create-new-environment)))
+  [& expressions]
+  (my-eval
+    (sequence->exp expressions)
+    (create-new-environment)))
 
 (defn driver-loop
   []
