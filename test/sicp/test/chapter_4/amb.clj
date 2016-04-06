@@ -25,9 +25,6 @@
            require-code
            an-integer-between
 
-
-
-
           '(define (a-pythagorean-triple-between low high)
              (let ((high-squared (* high high)))
                (let ((i (an-integer-between low high)))
