@@ -1,4 +1,5 @@
 (ns sicp.chapter-4.interpreter.primitive-procedures
+  (:use clojure.math.numeric-tower)
   (:use sicp.chapter-4.interpreter.evaluator))
 
 (defn- primitive-implementation
@@ -7,6 +8,10 @@
 
 (def primitive-procedures
   (list
+    (list 'int int)
+    (list 'list list)
+    (list 'integer? integer?)
+    (list 'sqrt sqrt)
     (list 'car first)
     (list 'cdr rest)
     (list 'cons cons)
