@@ -1,4 +1,5 @@
 (ns sicp.chapter-4.interpreter.primitive-procedures
+  (:use sicp.chapter-4.interpreter.laziness
   (:use clojure.math.numeric-tower)
   (:use sicp.chapter-4.interpreter.evaluator))
 
@@ -35,6 +36,17 @@
   [procedure args]
   (apply procedure args))
 
-(defmethod my-apply 'primitive
+(defn- apply-primitive-procedure
   [procedure args]
   (apply-in-underlying-clojure (primitive-implementation procedure) args))
+
+(defn list-of-arg-values
+  [exps env]
+  (if (empty? exps)
+      '()
+      (cons (actual-value (first exps) env)
+            (list-of-arg-values (rest exps) env))))
+
+(defmethod my-apply 'primitive
+  [procedure args env]
+  (apply-primitive-procedure procedure (list-of-arg-values args env)))
