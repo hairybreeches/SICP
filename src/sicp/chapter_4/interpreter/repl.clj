@@ -66,7 +66,7 @@
 
 ;surely there's a better way?
 (defn get-all-results
-  [exp]
+  [& expressions]
   (let [state (ref false)]
     (dosync
       (ref-set
@@ -74,7 +74,7 @@
         {
           :try-again
           (fn [] (my-eval
-                   exp
+                   (sequence->exp expressions)
                    (create-new-environment)
                    (fn [result do-next]
                      (dosync
@@ -91,7 +91,7 @@
     (iterate-over-results state)))
 
 (defn execute
-  [exp] (first (get-all-results exp)))
+  [& expressions] (first (apply get-all-results expressions)))
 
 
 (defn driver-loop

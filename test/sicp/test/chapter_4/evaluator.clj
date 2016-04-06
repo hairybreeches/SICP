@@ -3,8 +3,8 @@
   (:use clojure.test))
 
 (defn evals-to
-  [result code]
-  (is (= (execute code) result)))
+  [result & statements]
+  (is (= (apply execute statements) result)))
 
 (deftest can-evaluate-numbers
   (evals-to 4
@@ -85,18 +85,16 @@
 
 (deftest can-define-values
   (evals-to 8
-    '(begin
-       (define x 8)
-       x)
+    '(define x 8)
+     'x
             ))
 
 (deftest can-set-values
   (evals-to 12
-    '(begin
-       (define x 8)
-       (set! x 12)
-       x)
-            ))
+       '(define x 8)
+       '(set! x 12)
+       'x)
+            )
 
 (deftest and-evaluates-to-true
   (evals-to 4
@@ -146,19 +144,17 @@
 
 (deftest let-values-override
   (evals-to 4
-            '(begin
-               (define z 2)
-               (let ((z 4))
-                  z))
+               '(define z 2)
+               '(let ((z 4))
+                  z)
             ))
 
 (deftest let-values-go-out-of-scope
   (evals-to 2
-            '(begin
-               (define z 2)
-               (let ((z 4))
+               '(define z 2)
+               '(let ((z 4))
                   false)
-               z)
+               'z
             ))
 
 (deftest let*-passes-values-through
@@ -174,19 +170,18 @@
 
 (deftest define-function-form
   (evals-to 16
-            '(begin
-              (define (add-3-to-total a b)
+              '(define (add-3-to-total a b)
                       (+ a b 3))
-              (add-3-to-total 4 9))
-            ))
+              '(add-3-to-total 4 9))
+            )
 
 (deftest lambda-resolved-at-correct-time
   (evals-to 7
-            '(begin
-               (define (add-steve a)
-                       (+ steve a))
-               (define steve 4)
-               (add-steve 3))))
+               '(define (add-steve a)
+                        (+ steve a))
+               '(define steve 4)
+               '(add-steve 3)
+            ))
 
 (deftest named-let-no-recursion
   (evals-to 4
@@ -196,8 +191,7 @@
 
 (deftest named-let
   (evals-to 13
-    '(begin
-      (define
+      '(define
         (fib n)
         (let fib-iter
           ((a 1)
@@ -207,25 +201,25 @@
               b
               (fib-iter (+ a b) a (- count 1)))))
 
-       (fib 7))
+       '(fib 7)
             ))
 
 (deftest while-iterations
   (evals-to 7
-            '(begin
-               (define a 3)
-               (while (< a 7)
-                      (set! a (+ a 1)))
-               a)))
+            '(define a 3)
+            '(while (< a 7)
+                    (set! a (+ a 1)))
+            'a
+            ))
 
 (deftest unbinding
   (evals-to 3
-            '(begin
-               (define a 3)
-               ((lambda (a)
+
+               '(define a 3)
+               '((lambda (a)
                 (unbind! a)
-                        a) 6))
-               ))
+                        a) 6)
+            ))
 
 
 (deftest letrec
@@ -256,8 +250,7 @@
 
 (deftest odd-even-y-combinator
   (evals-to false
-          '(begin
-            (define (f x)
+            '(define (f x)
                ((lambda (even? odd?)
                         (even? even? odd? x))
                 (lambda (ev? od? n)
@@ -265,7 +258,7 @@
                 (lambda (ev? od? n)
                         (if (= n 0) false (ev? ev? od? (- n 1))))))
 
-             (f 11))
+             '(f 11)
             ))
 
 (deftest unless-true-without-alternative
