@@ -1,5 +1,6 @@
 (ns sicp.chapter-4.interpreter.if
   (:use sicp.chapter-4.interpreter.evaluator)
+  (:use sicp.chapter-4.interpreter.laziness)
   (:use sicp.chapter-4.interpreter.primitive-datatypes))
 
 (defn- if-predicate
@@ -18,7 +19,7 @@
 
 (defn- eval-if
   [exp env]
-  (if (my-true? (my-eval (if-predicate exp) env))
+  (if (my-true? (actual-value (if-predicate exp) env))
     (my-eval (if-consequent exp) env)
     (my-eval (if-alternative exp) env)))
 
