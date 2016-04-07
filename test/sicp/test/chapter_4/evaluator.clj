@@ -1,5 +1,6 @@
 (ns sicp.test.chapter-4.evaluator
   (:use sicp.chapter-4.interpreter.repl)
+  (:use sicp.chapter-4.interpreter.lazy-lists)
   (:use clojure.test))
 
 (defn evals-to
@@ -17,9 +18,9 @@
     ))
 
 (deftest can-quote
-  (evals-to '(+ 2 3)
-    '(quote (+ 2 3))
-    ))
+  (is (=
+        (lazy-list->list (execute '(quote (+ 2 3))))
+        '(+ 2 3))))
 
 (deftest can-branch-true
   (evals-to 4
