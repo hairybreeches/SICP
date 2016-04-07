@@ -163,8 +163,8 @@
            exclude-code
            member?
 
-           '(let ((melissa 'hood)
-                  (mary 'moore))
+           '(let ((melissa 'hood))
+              (let ((mary (an-element-of (exclude (list melissa) '(downing hall hood moore)))))
               (let ((lorna (an-element-of (exclude (list melissa mary) '(downing hall parker hood)))))
                 (let ((rosalind (an-element-of (exclude (list lorna melissa mary) '(downing parker hood moore)))))
                   (let ((gabrielle (an-element-of (exclude (list lorna melissa mary rosalind) '(downing hall moore)))))
@@ -178,9 +178,10 @@
                           'mary mary
                           'lorna lorna
                           'rosalind rosalind
-                          'gabrielle gabrielle)))))))
+                          'gabrielle gabrielle))))))))
 
-         '((melissa hood mary moore lorna downing rosalind parker gabrielle hall)))))
+         '((melissa hood mary hall lorna parker rosalind downing gabrielle moore)
+           (melissa hood mary moore lorna downing rosalind parker gabrielle hall)))))
 
 
 
