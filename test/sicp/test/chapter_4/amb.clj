@@ -5,8 +5,7 @@
 
 (deftest amb-returns-results
   (is
-    (=
-      (get-all-results '(amb 1 2 3))
+    (= (get-all-results '(amb 1 2 3))
       '(1 2 3))))
 
 (deftest pythagorean-triples
@@ -27,87 +26,16 @@
         '(((baker 3) (cooper 2) (fletcher 4) (miller 5) (smith 1))))))
 
 (deftest liars
-  (is (=
-        (get-liars-solutions)
+  (is (= (get-liars-solutions)
         '(((betty 3) (ethel 5) (joan 2) (kitty 1) (mary 4))))))
 
 (deftest yachts
-  (is (= (get-all-results
-           require-code
-           an-element-of
-           filter-code
-           exclude-code
-           member?
-
-           '(let ((melissa 'hood))
-              (let ((mary (an-element-of (exclude (list melissa) '(downing hall hood moore)))))
-              (let ((lorna (an-element-of (exclude (list melissa mary) '(downing hall parker hood)))))
-                (let ((rosalind (an-element-of (exclude (list lorna melissa mary) '(downing parker hood moore)))))
-                  (let ((gabrielle (an-element-of (exclude (list lorna melissa mary rosalind) '(downing hall moore)))))
-                    (let ((gabrielles-dads-yachts-father
-                          (cond ((= gabrielle 'downing) melissa)
-                                ((= gabrielle 'hall) rosalind)
-                                ((= gabrielle 'moore) lorna))))
-                  (require (= gabrielles-dads-yachts-father 'parker))
-                        (list
-                          'melissa melissa
-                          'mary mary
-                          'lorna lorna
-                          'rosalind rosalind
-                          'gabrielle gabrielle))))))))
-
+  (is (= (get-yachts-solutions)
          '((melissa hood mary hall lorna parker rosalind downing gabrielle moore)
            (melissa hood mary moore lorna downing rosalind parker gabrielle hall)))))
 
 (deftest queens
-  (is (= (take 10 (get-all-results
-           require-code
-           an-element-of
-           filter-code
-           exclude-code
-           member?
-           map-code
-
-           '(define (make-position column row)
-              (list column row))
-
-           '(define (get-column position)
-              (car position))
-
-           '(define (get-row position)
-              (car (cdr position)))
-
-           '(define (get-positions column)
-              (map (lambda (row) (make-position column row)) '(1 2 3 4 5 6 7 8)))
-
-           '(define (clash? pos1 pos2)
-              (or (= (get-row pos1) (get-row pos2))
-                  (= (get-column pos1) (get-column pos2))
-                  (= (abs (- (get-column pos1) (get-column pos2)))
-                     (abs (- (get-row pos1) (get-row pos2))))))
-
-           '(define (safe? position existing)
-              (null?
-                (filter
-                  (lambda (pos2) (clash? position pos2))
-                  existing)))
-
-
-           '(define (get-safe-positions column existing)
-              (filter
-                (lambda (position) (safe? position existing))
-                (get-positions column)))
-
-
-           '(define (queens column)
-              (if (= column 0)
-                  '()
-                  (let ((existing-solution (queens (- column 1))))
-                    (cons (an-element-of (get-safe-positions column existing-solution))
-                          existing-solution))))
-
-           '(queens 8)))
-
+  (is (= (take 10 (get-queens-solutions))
          '(((8 4) (7 2) (6 7) (5 3) (4 6) (3 8) (2 5) (1 1))
            ((8 5) (7 2) (6 4) (5 7) (4 3) (3 8) (2 6) (1 1))
            ((8 3) (7 5) (6 2) (5 8) (4 6) (3 4) (2 7) (1 1))

@@ -138,3 +138,77 @@
              (list 'joan joan)
              (list 'kitty kitty)
              (list 'mary mary)))))
+
+(defn get-queens-solutions []
+  (get-all-results
+    require-code
+    an-element-of
+    filter-code
+    exclude-code
+    member?
+    map-code
+
+    '(define (make-position column row)
+       (list column row))
+
+    '(define (get-column position)
+       (car position))
+
+    '(define (get-row position)
+       (car (cdr position)))
+
+    '(define (get-positions column)
+       (map (lambda (row) (make-position column row)) '(1 2 3 4 5 6 7 8)))
+
+    '(define (clash? pos1 pos2)
+       (or (= (get-row pos1) (get-row pos2))
+           (= (get-column pos1) (get-column pos2))
+           (= (abs (- (get-column pos1) (get-column pos2)))
+              (abs (- (get-row pos1) (get-row pos2))))))
+
+    '(define (safe? position existing)
+       (null?
+         (filter
+           (lambda (pos2) (clash? position pos2))
+           existing)))
+
+
+    '(define (get-safe-positions column existing)
+       (filter
+         (lambda (position) (safe? position existing))
+         (get-positions column)))
+
+
+    '(define (queens column)
+       (if (= column 0)
+         '()
+         (let ((existing-solution (queens (- column 1))))
+           (cons (an-element-of (get-safe-positions column existing-solution))
+                 existing-solution))))
+
+    '(queens 8)))
+
+(defn get-yachts-solutions []
+  (get-all-results
+    require-code
+    an-element-of
+    filter-code
+    exclude-code
+    member?
+
+    '(let ((melissa 'hood))
+       (let ((mary (an-element-of (exclude (list melissa) '(downing hall hood moore)))))
+         (let ((lorna (an-element-of (exclude (list melissa mary) '(downing hall parker hood)))))
+           (let ((rosalind (an-element-of (exclude (list lorna melissa mary) '(downing parker hood moore)))))
+             (let ((gabrielle (an-element-of (exclude (list lorna melissa mary rosalind) '(downing hall moore)))))
+               (let ((gabrielles-dads-yachts-father
+                       (cond ((= gabrielle 'downing) melissa)
+                             ((= gabrielle 'hall) rosalind)
+                             ((= gabrielle 'moore) lorna))))
+                 (require (= gabrielles-dads-yachts-father 'parker))
+                 (list
+                   'melissa melissa
+                   'mary mary
+                   'lorna lorna
+                   'rosalind rosalind
+                   'gabrielle gabrielle)))))))))
