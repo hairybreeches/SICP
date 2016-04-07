@@ -155,6 +155,34 @@
                    (list 'mary mary))))
         '(((betty 3) (ethel 5) (joan 2) (kitty 1) (mary 4))))))
 
+(deftest yachts
+  (is (= (get-all-results
+           require-code
+           an-element-of
+           filter-code
+           exclude-code
+           member?
+
+           '(let ((melissa 'hood)
+                  (mary 'moore)
+                  (lorna (an-element-of '(downing hall parker))))
+              (let ((rosalind (an-element-of (exclude (list lorna) '(downing parker)))))
+                (let ((gabrielle (an-element-of (exclude (list lorna rosalind) '(downing hall)))))
+                  (let ((gabrielles-dads-yacht
+                          (cond ((= gabrielle 'downing) melissa)
+                                ((= gabrielle 'hall) rosalind))))
+
+                  (require (= gabrielles-dads-yacht 'parker))
+                        (list
+                          'melissa melissa
+                          'mary mary
+                          'lorna lorna
+                          'rosalind rosalind
+                          'gabrielle gabrielle))))))
+
+         '((melissa hood mary moore lorna downing rosalind parker gabrielle hall)))))
+
+
 
 
 
