@@ -21,10 +21,14 @@
   (let [predicate (analyse (if-predicate exp))
         consequent (analyse (if-consequent exp))
         alternative (analyse (if-alternative exp))]
-    (fn [env]
-      (if (my-true? (predicate env))
-          (consequent env)
-          (alternative env)))))
+    (fn [env succeed fail]
+      (predicate
+        env
+        (fn [predicate-value fail2]
+          (if (my-true? predicate-value)
+              (consequent env succeed fail2)
+              (alternative env succeed fail2)))
+        fail))))
 
 (defn make-if
   ([predicate consequent alternative]

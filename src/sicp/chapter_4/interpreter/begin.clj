@@ -15,7 +15,12 @@
 
 (defn- sequentially
   [proc1 proc2]
-  (fn [env] (proc1 env) (proc2 env)))
+  (fn [env succeed fail]
+    (proc1
+      env
+      (fn [proc1-value fail2]
+          (proc2 env succeed fail2))
+      fail)))
 
 (defn- analyse-sequence
   [exps]

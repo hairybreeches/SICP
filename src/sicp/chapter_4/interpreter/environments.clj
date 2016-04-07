@@ -107,7 +107,7 @@
   (make-environment
   '()))
 
-(defn- get-variable-from-environment
+(defn get-variable-from-environment
   [var-name env]
   (loop [env env]
   (if (= env the-empty-environment)

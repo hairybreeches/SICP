@@ -22,14 +22,19 @@
   (nth p 3))
 
 (defmethod execute-application 'procedure
-  [procedure arguments]
+  [procedure arguments succeed fail]
   ((procedure-body procedure)
-    (extend-environment (procedure-parameters procedure)
-                        arguments
-                        (procedure-environment procedure))))
+    (extend-environment
+      (procedure-parameters procedure)
+      arguments
+      (procedure-environment procedure))
+   succeed
+   fail))
 
 (defmethod analyse 'lambda [exp]
   (let [vars (lambda-parameters exp)
         body (analyse (hoist-variables (sequence->exp (lambda-body exp))))]
-    (fn [env]
-      (make-procedure vars body env))))
+    (fn [env succeed fail]
+      (succeed
+        (make-procedure vars body env)
+        fail))))

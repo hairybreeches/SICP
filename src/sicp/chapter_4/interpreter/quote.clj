@@ -7,4 +7,4 @@
 
 (defmethod analyse 'quote [exp]
   (let [text (text-of-quotation exp)]
-  (fn [_] text)))
+  (analyse-self-evaluating text)))

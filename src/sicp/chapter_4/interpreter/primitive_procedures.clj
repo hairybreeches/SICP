@@ -38,5 +38,9 @@
   (apply procedure args))
 
 (defmethod execute-application 'primitive
-  [procedure args]
-  (apply-in-underlying-clojure (primitive-implementation procedure) args))
+  [procedure args succeed fail]
+  (succeed
+    (apply-in-underlying-clojure
+      (primitive-implementation procedure)
+      args)
+    fail))
