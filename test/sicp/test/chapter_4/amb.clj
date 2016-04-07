@@ -82,15 +82,18 @@
              (require (not (= fletcher 5)))
              (require (not (= fletcher 1)))
              (require (> miller cooper))
-             (require (not (= (abs (- smith fletcher)) 1)))
              (require (not (= (abs (- fletcher cooper)) 1)))
              (list (list 'baker baker)
                    (list 'cooper cooper)
                    (list 'fletcher fletcher)
                    (list 'miller miller)
                    (list 'smith smith))))
-        '(((baker 3) (cooper 2) (fletcher 4) (miller 5) (smith 1)))
-        )))
+        '(
+           ((baker 1) (cooper 2) (fletcher 4) (miller 3) (smith 5))
+           ((baker 1) (cooper 2) (fletcher 4) (miller 5) (smith 3))
+           ((baker 1) (cooper 4) (fletcher 2) (miller 5) (smith 3))
+           ((baker 3) (cooper 2) (fletcher 4) (miller 5) (smith 1))
+           ((baker 3) (cooper 4) (fletcher 2) (miller 5) (smith 1))))))
 
 
 
