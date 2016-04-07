@@ -1,12 +1,13 @@
 (ns sicp.chapter-4.interpreter.compound-procedures
+  (:use sicp.chapter-4.interpreter.begin)
   (:use sicp.chapter-4.interpreter.variable-hoisting)
   (:use sicp.chapter-4.interpreter.evaluator)
   (:use sicp.chapter-4.interpreter.lambda)
   (:use sicp.chapter-4.interpreter.environments))
 
 (defn- make-procedure
-  [parameters action-list env]
-  (list 'procedure parameters (hoist-variables action-list) env))
+  [parameters body-proc env]
+  (list 'procedure parameters body-proc env))
 
 (defn procedure-body
   [p]
@@ -20,16 +21,15 @@
   [p]
   (nth p 3))
 
-(defmethod my-apply 'procedure
+(defmethod execute-application 'procedure
   [procedure arguments]
-  (my-eval
-    (procedure-body procedure)
+  ((procedure-body procedure)
     (extend-environment (procedure-parameters procedure)
                         arguments
                         (procedure-environment procedure))))
 
-(defmethod my-eval 'lambda [exp env]
-  (make-procedure
-    (lambda-parameters exp)
-    (lambda-body exp)
-    env))
+(defmethod analyse 'lambda [exp]
+  (let [vars (lambda-parameters exp)
+        body (analyse (hoist-variables (sequence->exp (lambda-body exp))))]
+    (fn [env]
+      (make-procedure vars body env))))

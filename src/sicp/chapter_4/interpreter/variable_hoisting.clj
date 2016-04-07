@@ -1,6 +1,6 @@
 (ns sicp.chapter-4.interpreter.variable-hoisting
-  (:use sicp.chapter-4.interpreter.begin)
   (:use sicp.chapter-4.interpreter.evaluator)
+  (:use sicp.chapter-4.interpreter.begin)
   (:use sicp.chapter-4.interpreter.definition)
   (:use sicp.chapter-4.interpreter.assignment))
 
@@ -46,6 +46,6 @@
      :statement (apply list (:statement result))}))
 
 (defn hoist-variables
-  [action-list]
-  (let [result (parse-defines (sequence->exp action-list))]
+  [exp]
+  (let [result (parse-defines exp)]
     (scan-out-defines (:variable-names result) (:statement result))))

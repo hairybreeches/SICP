@@ -5,5 +5,6 @@
   [exp]
   (first (operands exp)))
 
-(defmethod my-eval 'quote [exp env]
-  (text-of-quotation exp))
+(defmethod analyse 'quote [exp]
+  (let [text (text-of-quotation exp)]
+  (fn [_] text)))

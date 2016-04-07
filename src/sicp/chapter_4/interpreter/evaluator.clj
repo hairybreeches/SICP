@@ -16,16 +16,15 @@
 
 ;dispatch functions
 (defn get-exp-type
-  ([exp env] (get-exp-type exp))
-  ([exp]
+  [exp]
      (if (seq? exp)
          (operator exp)
-         (type exp))))
+         (type exp)))
 
 (defn- get-procedure-type
   [procedure arguments]
   (first procedure))
 
-;eval/apply
-(defmulti my-eval get-exp-type)
-(defmulti my-apply get-procedure-type)
+
+(defmulti analyse get-exp-type)
+(defmulti execute-application get-procedure-type)

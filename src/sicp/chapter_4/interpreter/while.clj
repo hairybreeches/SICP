@@ -26,9 +26,7 @@
               (create-expression func-name '())))
         true))))
 
-(defmethod my-eval 'while [exp env]
-     (my-eval
-       (while->if exp)
-       env))
+(defmethod analyse 'while [exp]
+  (analyse (while->if exp)))
 
 

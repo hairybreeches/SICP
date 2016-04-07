@@ -22,24 +22,26 @@
         (rest (first (operands exp)))
         (drop 1 (operands exp)))))
 
-(defn- eval-definition
-  [exp env]
-  (define-variable!
-    (definition-variable exp)
-    (my-eval (definition-value exp) env)
-    env)
-  :ok)
+(defn- analyse-definition
+  [exp]
+  (let [variable-name (definition-variable exp)
+        value-proc (analyse (definition-value exp))]
+    (fn [env]
+      (define-variable! variable-name (value-proc env) env)
+      :ok)))
 
-(defmethod my-eval 'define [exp env]
-  (eval-definition exp env))
-
-(defn- eval-unbind
-  [exp env]
-  (make-unbound! (first (operands exp)) env))
+(defmethod analyse 'define [exp]
+  (analyse-definition exp))
 
 (defn make-define
   [n v]
   (create-expression 'define (list n v)))
 
-(defmethod my-eval 'unbind! [exp env]
-  (eval-unbind exp env))
+(defn- analyse-unbind
+  [exp]
+  (let [variable-name (first (operands exp))]
+    (fn [env]
+      (make-unbound! variable-name env))))
+
+(defmethod analyse 'unbind! [exp]
+  (analyse-unbind exp))

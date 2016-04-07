@@ -1,8 +1,9 @@
 (ns sicp.chapter-4.interpreter.primitive-datatypes
   (:use sicp.chapter-4.interpreter.evaluator))
 
-(defmethod my-eval java.lang.Number [exp env] exp)
-(defmethod my-eval java.lang.String [exp env] exp)
+
+(defmethod analyse java.lang.Number [exp] (fn [_] exp))
+(defmethod analyse java.lang.String [exp] (fn [_] exp))
 
 (defn my-false?
   [x]
@@ -12,4 +13,4 @@
   [x]
   (not (my-false? x)))
 
-(defmethod my-eval java.lang.Boolean [exp env] exp)
+(defmethod analyse java.lang.Boolean [exp] (fn [_] exp))
