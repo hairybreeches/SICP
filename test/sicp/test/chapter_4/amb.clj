@@ -99,11 +99,26 @@
                (not (member? excluded object)))
                objects))
 
-          '(let ((baker (amb 1 2 3 4)))
-             (let ((cooper (an-element-of (exclude (list baker) '(2 3 4 5)))))
-               (let ((fletcher (an-element-of (exclude (list baker cooper (+ cooper 1) (- cooper 1)) '(2 3 4)))))
-                 (let ((miller (an-element-of (filter (lambda (option) (> option cooper)) (exclude (list baker cooper fletcher) '(1 2 3 4 5))))))
-                   (let ((smith (an-element-of (exclude (list baker cooper fletcher miller (+ fletcher 1) (- fletcher 1)) '(1 2 3 4 5)))))
+          '(define (baker-options)
+             '(1 2 3 4))
+
+          '(define (cooper-options baker)
+             (exclude (list baker) '(2 3 4 5)))
+
+          '(define (fletcher-options baker cooper)
+             (exclude (list baker cooper (+ cooper 1) (- cooper 1)) '(2 3 4)))
+
+          '(define (miller-options baker cooper fletcher)
+             (filter (lambda (option) (> option cooper)) (exclude (list baker cooper fletcher) '(1 2 3 4 5))))
+
+          '(define (smith-options baker cooper fletcher miller)
+             (exclude (list baker cooper fletcher miller (+ fletcher 1) (- fletcher 1)) '(1 2 3 4 5)))
+
+          '(let ((baker (an-element-of (baker-options))))
+             (let ((cooper (an-element-of (cooper-options baker))))
+               (let ((fletcher (an-element-of (fletcher-options baker cooper))))
+                 (let ((miller (an-element-of (miller-options baker cooper fletcher))))
+                   (let ((smith (an-element-of (smith-options baker cooper fletcher miller))))
                      (list (list 'baker baker)
                            (list 'cooper cooper)
                            (list 'fletcher fletcher)
