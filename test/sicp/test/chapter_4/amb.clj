@@ -1,6 +1,7 @@
 (ns sicp.test.chapter-4.amb
   (:use sicp.chapter-4.interpreter.repl)
   (:use sicp.chapter-4.amb-code)
+  (:use sicp.chapter-4.language)
   (:use clojure.test))
 
 (deftest amb-returns-results
@@ -41,6 +42,10 @@
            ((8 3) (7 5) (6 2) (5 8) (4 6) (3 4) (2 7) (1 1))
            ((8 3) (7 6) (6 4) (5 2) (4 8) (3 5) (2 7) (1 1))
            ((8 5) (7 7) (6 1) (5 3) (4 8) (3 6) (2 4) (1 2))))))
+
+(deftest simple-sentence
+  (is (= (parse ''(the cat eats))
+         '((sentence (noun-phrase (article the) (noun cat)) (verb eats))))))
 
 
 
