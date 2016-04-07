@@ -28,6 +28,13 @@
            ((predicate (car things)) (cons (car things) (filter predicate (cdr things))))
            (else (filter predicate (cdr things))))))
 
+(def map-code
+  '(define (map transformer things)
+     (if
+       (null? things)
+       '()
+       (cons (transformer (car things)) (map transformer (cdr things))))))
+
 (def an-element-of
   '(define (an-element-of things)
      (require (not (null? things)))
@@ -182,6 +189,72 @@
 
          '((melissa hood mary hall lorna parker rosalind downing gabrielle moore)
            (melissa hood mary moore lorna downing rosalind parker gabrielle hall)))))
+
+(deftest queens
+  (is (= (take 10 (get-all-results
+           require-code
+           an-element-of
+           filter-code
+           exclude-code
+           member?
+           map-code
+
+           '(define (make-position column row)
+              (list column row))
+
+           '(define (get-column position)
+              (car position))
+
+           '(define (get-row position)
+              (car (cdr position)))
+
+           '(define (get-positions column)
+              (map (lambda (row) (make-position column row)) '(1 2 3 4 5 6 7 8)))
+
+           '(define (clash? pos1 pos2)
+              (or (= (get-row pos1) (get-row pos2))
+                  (= (get-column pos1) (get-column pos2))
+                  (= (abs (- (get-column pos1) (get-column pos2)))
+                     (abs (- (get-row pos1) (get-row pos2))))))
+
+           '(define (safe? position existing)
+              (null?
+                (filter
+                  (lambda (pos2) (clash? position pos2))
+                  existing)))
+
+
+           '(define (get-safe-positions column existing)
+              (filter
+                (lambda (position) (safe? position existing))
+                (get-positions column)))
+
+
+           '(define (queens column)
+              (if (= column 0)
+                  '()
+                  (let ((existing-solution (queens (- column 1))))
+                    (cons (an-element-of (get-safe-positions column existing-solution))
+                          existing-solution))))
+
+           '(queens 8)))
+         '(((8 4) (7 2) (6 7) (5 3) (4 6) (3 8) (2 5) (1 1))
+           ((8 5) (7 2) (6 4) (5 7) (4 3) (3 8) (2 6) (1 1))
+           ((8 3) (7 5) (6 2) (5 8) (4 6) (3 4) (2 7) (1 1))
+           ((8 3) (7 6) (6 4) (5 2) (4 8) (3 5) (2 7) (1 1))
+           ((8 5) (7 7) (6 1) (5 3) (4 8) (3 6) (2 4) (1 2))
+           ((8 4) (7 6) (6 8) (5 3) (4 1) (3 7) (2 5) (1 2))
+           ((8 3) (7 6) (6 8) (5 1) (4 4) (3 7) (2 5) (1 2))
+           ((8 5) (7 3) (6 8) (5 4) (4 7) (3 1) (2 6) (1 2))
+           ((8 5) (7 7) (6 4) (5 1) (4 3) (3 8) (2 6) (1 2))
+           ((8 4) (7 1) (6 5) (5 8) (4 6) (3 3) (2 7) (1 2))))))
+
+
+
+
+
+
+
 
 
 
