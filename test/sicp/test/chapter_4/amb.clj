@@ -18,6 +18,10 @@
                (amb)
                (amb low (an-integer-between (+ 1 low) high)))))
 
+(def an-integer-starting-from
+  '(define (an-integer-starting-from low)
+     (amb low (an-integer-starting-from (+ 1 low)))))
+
 (def filter-code
   '(define (filter predicate things)
      (cond ((null? things) '())
@@ -34,6 +38,14 @@
      (cond ((null? collection) false)
            ((= (car collection) object) true)
            (else (member? (cdr collection) object)))))
+
+(def exclude-code
+  '(define (exclude excluded objects)
+     (filter
+       (lambda
+         (object)
+         (not (member? excluded object)))
+       objects)))
 
 (deftest pythagorean-triples
   (is
@@ -64,9 +76,7 @@
          (get-all-results
             require-code
             an-integer-between
-
-           '(define (an-integer-starting-from low)
-              (amb low (an-integer-starting-from (+ 1 low))))
+            an-integer-starting-from
 
            '(define (a-pythagorean-triple)
              (let ((root2 (sqrt 2)))
@@ -91,13 +101,7 @@
           an-element-of
           member?
           filter-code
-
-          '(define (exclude excluded objects)
-             (filter
-             (lambda
-               (object)
-               (not (member? excluded object)))
-               objects))
+          exclude-code
 
           '(define (baker-options)
              '(1 2 3 4))
