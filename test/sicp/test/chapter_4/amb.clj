@@ -164,21 +164,21 @@
            member?
 
            '(let ((melissa 'hood)
-                  (mary 'moore)
-                  (lorna (an-element-of '(downing hall parker))))
-              (let ((rosalind (an-element-of (exclude (list lorna) '(downing parker)))))
-                (let ((gabrielle (an-element-of (exclude (list lorna rosalind) '(downing hall)))))
-                  (let ((gabrielles-dads-yacht
+                  (mary 'moore))
+              (let ((lorna (an-element-of (exclude (list melissa mary) '(downing hall parker hood)))))
+                (let ((rosalind (an-element-of (exclude (list lorna melissa mary) '(downing parker hood moore)))))
+                  (let ((gabrielle (an-element-of (exclude (list lorna melissa mary rosalind) '(downing hall moore)))))
+                    (let ((gabrielles-dads-yachts-father
                           (cond ((= gabrielle 'downing) melissa)
-                                ((= gabrielle 'hall) rosalind))))
-
-                  (require (= gabrielles-dads-yacht 'parker))
+                                ((= gabrielle 'hall) rosalind)
+                                ((= gabrielle 'moore) lorna))))
+                  (require (= gabrielles-dads-yachts-father 'parker))
                         (list
                           'melissa melissa
                           'mary mary
                           'lorna lorna
                           'rosalind rosalind
-                          'gabrielle gabrielle))))))
+                          'gabrielle gabrielle)))))))
 
          '((melissa hood mary moore lorna downing rosalind parker gabrielle hall)))))
 
