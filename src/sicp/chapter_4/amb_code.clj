@@ -46,3 +46,26 @@
          (object)
          (not (member? excluded object)))
        objects)))
+
+(def a-pythagorean-triple-between
+  '(define (a-pythagorean-triple-between low high)
+     (let ((high-squared (* high high)))
+       (let ((i (an-integer-between low high)))
+         (let ((i-squared (* i i)))
+           (let ((j-max (sqrt (- high-squared i-squared))))
+             (let ((j (an-integer-between i j-max)))
+               (let ((k (sqrt (+ i-squared (* j j)))))
+                 (require (integer? k))
+                 (list i j k)))))))))
+
+(def a-pythagorean-triple
+  '(define (a-pythagorean-triple)
+     (let ((root2 (sqrt 2)))
+       (let ((hypotenuse (an-integer-starting-from 5)))
+         (let ((hypotenuse-squared (* hypotenuse hypotenuse))
+               (j-max (- hypotenuse 1))
+               (j-min (+ 1 (int (/ hypotenuse root2)))))
+           (let ((j (an-integer-between j-min j-max)))
+             (let ((i (sqrt (- hypotenuse-squared (* j j)))))
+               (require (integer? i))
+               (list i j hypotenuse))))))))
