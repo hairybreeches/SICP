@@ -18,6 +18,23 @@
                (amb)
                (amb low (an-integer-between (+ 1 low) high)))))
 
+(def filter-code
+  '(define (filter predicate things)
+     (cond ((null? things) '())
+           ((predicate (car things)) (cons (car things) (filter predicate (cdr things))))
+           (else (filter predicate (cdr things))))))
+
+(def an-element-of
+  '(define (an-element-of things)
+     (require (not (null? things)))
+     (amb (car things) (an-element-of (cdr things)))))
+
+(def member?
+  '(define (member? collection object)
+     (cond ((null? collection) false)
+           ((= (car collection) object) true)
+           (else (member? (cdr collection) object)))))
+
 (deftest pythagorean-triples
   (is
     (=
@@ -71,20 +88,31 @@
   (is (=
         (get-all-results
           require-code
-          '(let ((baker (amb 1 2 3 4))
-                 (cooper (amb 2 3 4 5))
-                 (fletcher (amb 2 3 4))
-                 (miller (amb 1 2 3 4 5))
-                 (smith (amb 1 2 3 4 5)))
-             (require (distinct? baker cooper fletcher miller smith))
-             (require (> miller cooper))
-             (require (not (= (abs (- smith fletcher)) 1)))
-             (require (not (= (abs (- fletcher cooper)) 1)))
-             (list (list 'baker baker)
-                   (list 'cooper cooper)
-                   (list 'fletcher fletcher)
-                   (list 'miller miller)
-                   (list 'smith smith))))
+          an-element-of
+          member?
+          filter-code
+
+          '(define (exclude excluded objects)
+             (filter
+             (lambda
+               (object)
+               (not (member? excluded object)))
+               objects))
+
+          '(let ((baker (amb 1 2 3 4)))
+             (let ((cooper (an-element-of (exclude (list baker) '(2 3 4 5)))))
+               (let ((fletcher (an-element-of (exclude (list baker cooper) '(2 3 4)))))
+                 (let ((miller (an-element-of (exclude (list baker cooper fletcher) '(1 2 3 4 5)))))
+                   (let ((smith (an-element-of (exclude (list baker cooper fletcher miller) '(1 2 3 4 5)))))
+                     (require (> miller cooper))
+                     (require (not (= (abs (- smith fletcher)) 1)))
+                     (require (not (= (abs (- fletcher cooper)) 1)))
+                     (list (list 'baker baker)
+                           (list 'cooper cooper)
+                           (list 'fletcher fletcher)
+                           (list 'miller miller)
+                           (list 'smith smith))))))))
+
         '(((baker 3) (cooper 2) (fletcher 4) (miller 5) (smith 1)))
         )))
 
