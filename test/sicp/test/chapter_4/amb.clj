@@ -84,7 +84,10 @@
 
       '((3 4 5) (6 8 10) (5 12 13) (9 12 15)))))
 
-(deftest multiple-dwelling
+(def multiple-dwelling-solution
+  '(((baker 3) (cooper 2) (fletcher 4) (miller 5) (smith 1))))
+
+(deftest multiple-dwelling-amb
   (is (=
         (get-all-results
           require-code
@@ -125,7 +128,7 @@
                            (list 'miller miller)
                            (list 'smith smith))))))))
 
-        '(((baker 3) (cooper 2) (fletcher 4) (miller 5) (smith 1)))
+        multiple-dwelling-solution
         )))
 
 
