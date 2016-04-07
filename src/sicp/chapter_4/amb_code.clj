@@ -69,3 +69,72 @@
              (let ((i (sqrt (- hypotenuse-squared (* j j)))))
                (require (integer? i))
                (list i j hypotenuse))))))))
+
+(defn get-pythagorean-triples []
+  (get-all-results
+    require-code
+    an-integer-between
+    an-integer-starting-from
+    a-pythagorean-triple
+    '(a-pythagorean-triple)))
+
+(defn get-pythagorean-triples-between [low high]
+  (get-all-results
+    require-code
+    an-integer-between
+    a-pythagorean-triple-between
+    (list 'a-pythagorean-triple-between low high)))
+
+(defn get-multiple-dwelling-solutions []
+  (get-all-results
+    require-code
+    an-element-of
+    member?
+    filter-code
+    exclude-code
+    '(define (baker-options)
+       '(1 2 3 4))
+
+    '(define (cooper-options baker)
+       (exclude (list baker) '(2 3 4 5)))
+
+    '(define (fletcher-options baker cooper)
+       (exclude (list baker cooper (+ cooper 1) (- cooper 1)) '(2 3 4)))
+
+    '(define (miller-options baker cooper fletcher)
+       (filter (lambda (option) (> option cooper)) (exclude (list baker cooper fletcher) '(1 2 3 4 5))))
+
+    '(define (smith-options baker cooper fletcher miller)
+       (exclude (list baker cooper fletcher miller (+ fletcher 1) (- fletcher 1)) '(1 2 3 4 5)))
+
+    '(let ((baker (an-element-of (baker-options))))
+       (let ((cooper (an-element-of (cooper-options baker))))
+         (let ((fletcher (an-element-of (fletcher-options baker cooper))))
+           (let ((miller (an-element-of (miller-options baker cooper fletcher))))
+             (let ((smith (an-element-of (smith-options baker cooper fletcher miller))))
+               (list (list 'baker baker)
+                     (list 'cooper cooper)
+                     (list 'fletcher fletcher)
+                     (list 'miller miller)
+                     (list 'smith smith)))))))))
+
+(defn get-liars-solutions []
+  (get-all-results
+    require-code
+    an-element-of
+    '(let ((betty (amb 1 2 3 4 5))
+           (ethel (amb 1 2 3 4 5))
+           (joan (amb 1 2 3 4 5))
+           (kitty (amb 1 2 3 4 5))
+           (mary (amb 1 2 3 4 5)))
+       (require (distinct? betty ethel joan kitty mary))
+       (require (xor (= kitty 2) (= betty 3)))
+       (require (xor (= ethel 1) (= joan 2)))
+       (require (xor (= joan 3) (= ethel 5)))
+       (require (xor (= kitty 2) (= mary 4)))
+       (require (xor (= mary 4) (= betty 1)))
+       (list (list 'betty betty)
+             (list 'ethel ethel)
+             (list 'joan joan)
+             (list 'kitty kitty)
+             (list 'mary mary)))))
