@@ -9,6 +9,8 @@
 
 (def primitive-procedures
   (list
+    (list '<= <=)
+    (list '>= >=)
     (list 'abs abs)
     (list 'distinct? distinct?)
     (list 'int int)
