@@ -1,5 +1,6 @@
 (ns sicp.chapter-4.language
   (:use sicp.chapter-4.amb-code)
+  (:use sicp.chapter-4.sequences)
   (:use sicp.chapter-4.interpreter.repl))
 
 (defn parse [sentence]
