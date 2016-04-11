@@ -39,6 +39,6 @@
   [procedure args]
   (apply procedure args))
 
-(defmethod my-apply 'primitive
+(defmethod execute-application 'primitive
   [procedure args]
   (apply-in-underlying-clojure (primitive-implementation procedure) args))

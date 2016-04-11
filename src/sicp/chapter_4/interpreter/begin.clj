@@ -9,34 +9,30 @@
   [actions]
   (create-expression 'begin actions))
 
-(defn- first-exp
-  [exp]
-  (first exp))
+(defn- last?
+  [exps]
+  (empty? (rest exps)))
 
-(defn- rest-exps
-  [exp]
-  (rest exp))
+(defn- sequentially
+  [proc1 proc2]
+  (fn [env] (proc1 env) (proc2 env)))
 
-(defn- last-exp?
-  [exp]
-  (empty? (rest-exps exp)))
-
-(defn- eval-sequence
-  [exps env]
-  (loop [exps exps
-         env env]
-    (if (last-exp? exps)
-        (my-eval (first-exp exps) env)
-        (do (my-eval (first-exp exps) env)
-            (recur (rest-exps exps) env)))))
+(defn- analyse-sequence
+  [exps]
+  (let [procs (map analyse exps)]
+  (loop [first-proc (first procs)
+         rest-procs (rest procs)]
+    (if (empty? rest-procs)
+        first-proc
+        (recur (sequentially first-proc (first rest-procs))
+               (rest rest-procs))))))
 
 (defn sequence->exp
   [actions]
   (cond (empty? actions) actions
-        (last-exp? actions) (first-exp actions)
+        (last? actions) (first actions)
         :else (make-begin actions)))
 
-(defmethod my-eval 'begin [exp env]
-  (eval-sequence
-    (begin-actions exp)
-    env))
+(defmethod analyse 'begin [exp]
+  (analyse-sequence
+    (begin-actions exp)))
