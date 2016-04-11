@@ -107,7 +107,7 @@
   (make-environment
   '()))
 
-(defn get-variable-from-environment
+(defn- get-variable-from-environment
   [var-name env]
   (loop [env env]
   (if (= env the-empty-environment)
@@ -125,10 +125,15 @@
           :else (recur (enclosing-environment env)))))
 
 ;public functions
+
+(defn peek-variable
+  [var-name env]
+  (variable-value
+    (get-variable-from-environment var-name env)))
+
 (defn lookup-variable-value
   [var-name env]
-  (let [value (variable-value
-    (get-variable-from-environment var-name env))]
+  (let [value (peek-variable var-name env)]
     (if (= value '*unassigned*)
         (error "variable " var-name " is unassigned")
         value)))
