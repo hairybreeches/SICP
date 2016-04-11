@@ -40,6 +40,23 @@
   [x]
   (apply list (lazy-list->seq x)))
 
+(defn list->lazy-list
+  [l]
+  (if (empty? l)
+      'null
+      (create-expression
+        'cons
+        (list
+          (create-expression 'quote (list (first l)))
+          (list->lazy-list (rest l))))))
+
+(defn to-lazy-lists
+  [exp env]
+  (cond (not (seq? exp)) exp
+        :else (-> (map #(to-lazy-lists % env) exp)
+                  (list->lazy-list)
+                  (my-eval env))))
+
 (defn- printable-subsequence
   [s]
   (let [tes (take 21 (lazy-list->seq s))]
@@ -68,3 +85,6 @@
   (let [l (my-eval (first (operands exp)) env)]
     (verify-lazy-pair l)
     (cdr l)))
+
+(defmethod my-eval 'list [exp env]
+  (list->lazy-list (map #(my-eval % env) (operands exp))))

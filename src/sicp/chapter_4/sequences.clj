@@ -26,3 +26,7 @@
          (object)
          (not (member? excluded object)))
        objects)))
+
+(def null?
+  '(define (null? l)
+     (= 'null l)))
