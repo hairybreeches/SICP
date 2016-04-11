@@ -14,12 +14,16 @@
   (:use sicp.chapter-4.interpreter.let)
   (:use sicp.chapter-4.interpreter.while)
   (:use sicp.chapter-4.interpreter.cond)
+  (:use sicp.chapter-4.interpreter.amb)
   (:use sicp.chapter-4.interpreter.default-environment)
   (:use sicp.chapter-4.interpreter.boolean-operators)
   (:use sicp.chapter-4.interpreter.unless))
 
-(def input-prompt ";;; M-Eval input:")
-(def output-prompt ";;; M-Eval value:")
+(def input-prompt ";;; Amb-Eval input:")
+(def output-prompt ";;; Amb-Eval value:")
+(def new-problem ";;; Starting a new problem")
+(def end-problem ";;; There are no more values of:")
+(def no-problem ";;; There is no current problem")
 
 (defn- prompt-for-input
   []
@@ -32,23 +36,90 @@
   (prn)
   (prn output-prompt))
 
-(defn- my-eval [exp env]
-  ((analyse exp) env))
+(defn- announce-new-problem
+  []
+  (prn)
+  (prn new-problem))
+
+(defn- announce-end
+  [input]
+  (prn)
+  (prn end-problem)
+  (prn input))
+
+(defn- announce-no-problem
+  []
+  (prn)
+  (prn no-problem))
+
+(defn- my-eval [exp env succeed fail]
+  ((analyse exp) env succeed fail))
+
+
+(defn- iterate-over-results
+  [state]
+  ((:try-again @state))
+  (if
+    (:success @state)
+    (cons (:current-result @state) (lazy-seq (iterate-over-results state)))
+    '()))
+
+;surely there's a better way?
+(defn get-all-results
+  [& expressions]
+  (let [state (ref false)]
+    (dosync
+      (ref-set
+        state
+        {
+          :try-again
+          (fn [] (my-eval
+                   (sequence->exp expressions)
+                   (create-new-environment)
+                   (fn [result do-next]
+                     (dosync
+                       (ref-set state
+                                {
+                                  :current-result result
+                                  :try-again do-next
+                                  :success true
+                                  })))
+                   (fn []
+                     (dosync
+                       (ref-set state { :success false })))))}))
+
+    (iterate-over-results state)))
 
 (defn execute
-  [& expressions]
-  (my-eval
-    (sequence->exp expressions)
-    (create-new-environment)))
+  [& expressions] (first (apply get-all-results expressions)))
+
 
 (defn driver-loop
-  []
-  (let [global-env (create-new-environment)]
-  (loop []
-    (prompt-for-input)
-      (let [input (read)
-            output (my-eval input global-env)]
-        (announce-output)
-        (prn output))
-    (recur))))
 
+  ([]
+   (driver-loop
+     (create-new-environment)))
+
+  ([env]
+   (driver-loop
+     env
+     (fn [] (announce-no-problem) (driver-loop))))
+
+  ([env try-again]
+      (prompt-for-input)
+      (let [input (read)]
+        (if
+          (= input 'try-again)
+          (try-again)
+          (do
+            (announce-new-problem)
+            (my-eval
+              input
+              env
+              (fn [value next-alternative]
+                (announce-output)
+                (prn value)
+                (driver-loop env next-alternative))
+              (fn []
+                (announce-end input)
+                (driver-loop env))))))))

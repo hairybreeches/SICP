@@ -26,9 +26,13 @@
   [exp]
   (let [variable-name (definition-variable exp)
         value-proc (analyse (definition-value exp))]
-    (fn [env]
-      (define-variable! variable-name (value-proc env) env)
-      :ok)))
+    (fn [env succeed fail]
+      (value-proc
+        env
+        (fn [value fail2]
+            (define-variable! variable-name value env)
+            (succeed :ok fail2))
+        fail))))
 
 (defmethod analyse 'define [exp]
   (analyse-definition exp))
@@ -40,8 +44,9 @@
 (defn- analyse-unbind
   [exp]
   (let [variable-name (first (operands exp))]
-    (fn [env]
-      (make-unbound! variable-name env))))
+    (fn [env succeed fail]
+      (make-unbound! variable-name env)
+      (succeed :ok fail))))
 
 (defmethod analyse 'unbind! [exp]
   (analyse-unbind exp))

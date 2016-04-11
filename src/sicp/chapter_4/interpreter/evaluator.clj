@@ -22,9 +22,14 @@
          (type exp)))
 
 (defn- get-procedure-type
-  [procedure arguments]
+  [procedure arguments succeed fail]
   (first procedure))
 
 
 (defmulti analyse get-exp-type)
 (defmulti execute-application get-procedure-type)
+
+(defn analyse-self-evaluating
+  [value]
+  (fn [env succeed fail]
+    (succeed value fail)))

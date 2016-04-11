@@ -15,9 +15,18 @@
   [exp]
   (let [var-name (assignment-variable exp)
         value-proc (analyse (assignment-value exp))]
-    (fn [env]
-      (set-variable-value! var-name (value-proc env) env)
-      :ok)))
+    (fn [env succeed fail]
+      (value-proc
+        env
+        (fn [value fail2]
+          (let [old-value (peek-variable var-name env)]
+               (set-variable-value! var-name value env)
+               (succeed
+                 :ok
+                 (fn []
+                   (set-variable-value! var-name old-value env)
+                   (fail2)))))
+        fail))))
 
 (defmethod analyse 'set! [exp]
   (analyse-assignment exp))
