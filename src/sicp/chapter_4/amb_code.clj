@@ -8,9 +8,8 @@
 
 (def an-integer-between
   '(define (an-integer-between low high)
-             (if (> low high)
-               (amb)
-               (amb low (an-integer-between (+ 1 low) high)))))
+     (require (<= low high))
+     (amb low (an-integer-between (+ 1 low) high))))
 
 (def an-integer-starting-from
   '(define (an-integer-starting-from low)
