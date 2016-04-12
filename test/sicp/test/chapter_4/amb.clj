@@ -39,79 +39,15 @@
   (is (= (first (get-queens-solutions))
          '((8 4) (7 2) (6 7) (5 3) (4 6) (3 8) (2 5) (1 1)))))
 
-(deftest simple-sentence
-  (is (= (parse ''(the cat eats))
-         '((sentence (simple-noun-phrase (article the) (noun cat)) (verb eats))))))
-
-(deftest intermediate-sentence
-  (is (= (parse ''(the professor lectures to the student with the cat))
+(deftest sentence-generation
+  (is (= (take 6 (generate-sentence))
          '(
-            ;the professor lectures with the cat
-            (sentence
-              (simple-noun-phrase (article the) (noun professor))
-              (verb-phrase
-                (verb-phrase (verb lectures) (prep-phrase (prep to) (simple-noun-phrase (article the) (noun student))))
-                (prep-phrase (prep with) (simple-noun-phrase (article the) (noun cat)))))
-
-            ;the student has the cat
-            (sentence
-              (simple-noun-phrase (article the) (noun professor))
-              (verb-phrase
-                (verb lectures)
-                (prep-phrase
-                  (prep to)
-                  (noun-phrase (simple-noun-phrase (article the) (noun student))
-                               (prep-phrase (prep with) (simple-noun-phrase (article the) (noun cat)))))))))))
-
-(deftest complex-sentence
-  (is (= (parse ''(the professor lectures to the student in the class with the cat))
-         '(
-            ;the professor is in the class
-            ;the professor has the cat
-            (sentence
-              (simple-noun-phrase (article the) (noun professor))
-              (verb-phrase
-                (verb-phrase
-                  (verb-phrase (verb lectures) (prep-phrase (prep to) (simple-noun-phrase (article the) (noun student))))
-                  (prep-phrase (prep in) (simple-noun-phrase (article the) (noun class))))
-                (prep-phrase (prep with) (simple-noun-phrase (article the) (noun cat)))))
-
-
-            ;the professor is in the class
-            ;the class has the cat
-            (sentence
-              (simple-noun-phrase (article the) (noun professor))
-              (verb-phrase
-                (verb-phrase (verb lectures) (prep-phrase (prep to) (simple-noun-phrase (article the) (noun student))))
-                (prep-phrase (prep in) (noun-phrase (simple-noun-phrase (article the) (noun class))
-                                                    (prep-phrase (prep with) (simple-noun-phrase (article the) (noun cat)))))))
-
-            ;the student is in the class
-            ;the professor has the cat
-            (sentence
-              (simple-noun-phrase (article the) (noun professor))
-              (verb-phrase
-                (verb-phrase (verb lectures) (prep-phrase (prep to) (noun-phrase (simple-noun-phrase (article the) (noun student))
-                                                                                 (prep-phrase (prep in) (simple-noun-phrase (article the) (noun class))))))
-                (prep-phrase (prep with) (simple-noun-phrase (article the) (noun cat)))))
-
-            ;the student is in the class
-            ;the student has the cat
-            (sentence
-              (simple-noun-phrase (article the) (noun professor))
-              (verb-phrase
-                (verb lectures) (prep-phrase (prep to) (noun-phrase (noun-phrase (simple-noun-phrase (article the) (noun student))
-                                                                                            (prep-phrase (prep in) (simple-noun-phrase (article the) (noun class))))
-                                                                               (prep-phrase (prep with) (simple-noun-phrase (article the) (noun cat)))))))
-
-            ;the student is in the class
-            ;the class has the cat
-            (sentence
-              (simple-noun-phrase (article the) (noun professor))
-              (verb-phrase
-                (verb lectures) (prep-phrase (prep to) (noun-phrase (simple-noun-phrase (article the) (noun student))
-                                                                               (prep-phrase (prep in) (noun-phrase (simple-noun-phrase (article the) (noun class))
-                                                                                                                   (prep-phrase (prep with) (simple-noun-phrase (article the) (noun cat)))))))))))))
+            (sentence (simple-noun-phrase (article the) (noun student)) (verb studies))
+            (sentence (simple-noun-phrase (article the) (noun student)) (verb-phrase (verb studies) (prep-phrase (prep for) (simple-noun-phrase (article the) (noun student)))))
+            (sentence (simple-noun-phrase (article the) (noun student)) (verb-phrase (verb-phrase (verb studies) (prep-phrase (prep for) (simple-noun-phrase (article the) (noun student)))) (prep-phrase (prep for) (simple-noun-phrase (article the) (noun student)))))
+            (sentence (simple-noun-phrase (article the) (noun student)) (verb-phrase (verb-phrase (verb-phrase (verb studies) (prep-phrase (prep for) (simple-noun-phrase (article the) (noun student)))) (prep-phrase (prep for) (simple-noun-phrase (article the) (noun student)))) (prep-phrase (prep for) (simple-noun-phrase (article the) (noun student)))))
+            (sentence (simple-noun-phrase (article the) (noun student)) (verb-phrase (verb-phrase (verb-phrase (verb-phrase (verb studies) (prep-phrase (prep for) (simple-noun-phrase (article the) (noun student)))) (prep-phrase (prep for) (simple-noun-phrase (article the) (noun student)))) (prep-phrase (prep for) (simple-noun-phrase (article the) (noun student)))) (prep-phrase (prep for) (simple-noun-phrase (article the) (noun student)))))
+            (sentence (simple-noun-phrase (article the) (noun student)) (verb-phrase (verb-phrase (verb-phrase (verb-phrase (verb-phrase (verb studies) (prep-phrase (prep for) (simple-noun-phrase (article the) (noun student)))) (prep-phrase (prep for) (simple-noun-phrase (article the) (noun student)))) (prep-phrase (prep for) (simple-noun-phrase (article the) (noun student)))) (prep-phrase (prep for) (simple-noun-phrase (article the) (noun student)))) (prep-phrase (prep for) (simple-noun-phrase (article the) (noun student)))))))))
 
 
 

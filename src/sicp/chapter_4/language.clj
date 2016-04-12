@@ -3,11 +3,11 @@
   (:use sicp.chapter-4.sequences)
   (:use sicp.chapter-4.interpreter.repl))
 
-(defn parse [sentence]
+(defn generate-sentence []
   (get-all-results
     require-code
     member?
-
+    an-element-of
     '(define nouns '(noun student professor cat class))
 
     '(define verbs '(verb studies lectures eats sleeps))
@@ -17,11 +17,9 @@
     '(define prepositions '(prep for to in by with))
 
     '(define (parse-word word-list)
-      (require (not (null? *unparsed*)))
-      (require (member? (cdr word-list) (car *unparsed*)))
-      (let ((found-word (car *unparsed*)))
-        (set! *unparsed* (cdr *unparsed*))
-        (list (car word-list) found-word)))
+       (list
+         (car word-list)
+         (an-element-of (cdr word-list))))
 
     '(define (parse-simple-noun-phrase)
       (list 'simple-noun-phrase
@@ -52,21 +50,12 @@
                   (parse-prepositional-phrase)))))
        (maybe-extend (parse-word verbs)))
 
-    '(define (parse-sentence)
+    '(define (generate-sentence)
       (list 'sentence
             (parse-noun-phrase)
             (parse-verb-phrase)))
 
-
-    '(define *unparsed* '())
-
-    '(define (parse input)
-       (set! *unparsed* input)
-       (let ((sent (parse-sentence)))
-         (require (null? *unparsed*))
-         sent))
-
-    (list 'parse sentence)))
+    (list 'generate-sentence)))
 
 
 
