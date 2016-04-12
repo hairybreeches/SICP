@@ -114,6 +114,21 @@
                                                                                                                    (prep-phrase (prep with) (simple-noun-phrase (article the) (noun cat)))))))))))))
 
 
+(deftest adjective-sentence
+  (is (= (parse ''(the red cat eats with a small complex student))
+                '((sentence
+                    (simple-noun-phrase (descriptor-sequence (article the) (adjective red)) (noun cat))
+                    (verb-phrase
+                      (verb eats)
+                      (prep-phrase
+                        (prep with)
+                        (simple-noun-phrase
+                          (descriptor-sequence
+                            (descriptor-sequence (article a) (adjective small))
+                            (adjective complex))
+                          (noun student)))))))))
+
+
 
 
 

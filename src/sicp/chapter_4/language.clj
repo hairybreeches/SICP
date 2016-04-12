@@ -16,6 +16,8 @@
 
     '(define prepositions '(prep for to in by with))
 
+    '(define adjectives '(adjective red small complex))
+
     '(define (parse-word word-list)
       (require (not (null? *unparsed*)))
       (require (member? (cdr word-list) (car *unparsed*)))
@@ -23,9 +25,19 @@
         (set! *unparsed* (cdr *unparsed*))
         (list (car word-list) found-word)))
 
+    '(define (parse-descriptor-sequence)
+       (define (maybe-extend descriptor-sequence)
+         (amb descriptor-sequence
+              (maybe-extend
+                (list 'descriptor-sequence
+                      descriptor-sequence
+                      (parse-word adjectives)))))
+
+       (maybe-extend (parse-word articles)))
+
     '(define (parse-simple-noun-phrase)
       (list 'simple-noun-phrase
-            (parse-word articles)
+            (parse-descriptor-sequence)
             (parse-word nouns)))
 
     '(define (parse-prepositional-phrase)
