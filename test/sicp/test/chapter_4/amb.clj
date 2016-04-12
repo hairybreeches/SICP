@@ -66,6 +66,8 @@
 (deftest complex-sentence
   (is (= (parse ''(the professor lectures to the student in the class with the cat))
          '(
+            ;the professor is in the class
+            ;the professor has the cat
             (sentence
               (simple-noun-phrase (article the) (noun professor))
               (verb-phrase
@@ -75,6 +77,8 @@
                 (prep-phrase (prep with) (simple-noun-phrase (article the) (noun cat)))))
 
 
+            ;the professor is in the class
+            ;the class has the cat
             (sentence
               (simple-noun-phrase (article the) (noun professor))
               (verb-phrase
@@ -82,6 +86,8 @@
                 (prep-phrase (prep in) (noun-phrase (simple-noun-phrase (article the) (noun class))
                                                     (prep-phrase (prep with) (simple-noun-phrase (article the) (noun cat)))))))
 
+            ;the student is in the class
+            ;the professor has the cat
             (sentence
               (simple-noun-phrase (article the) (noun professor))
               (verb-phrase
@@ -89,15 +95,21 @@
                                                                                  (prep-phrase (prep in) (simple-noun-phrase (article the) (noun class))))))
                 (prep-phrase (prep with) (simple-noun-phrase (article the) (noun cat)))))
 
+            ;the student is in the class
+            ;the student has the cat
             (sentence
               (simple-noun-phrase (article the) (noun professor))
-              (verb-phrase (verb lectures) (prep-phrase (prep to) (noun-phrase (noun-phrase (simple-noun-phrase (article the) (noun student))
+              (verb-phrase
+                (verb lectures) (prep-phrase (prep to) (noun-phrase (noun-phrase (simple-noun-phrase (article the) (noun student))
                                                                                             (prep-phrase (prep in) (simple-noun-phrase (article the) (noun class))))
                                                                                (prep-phrase (prep with) (simple-noun-phrase (article the) (noun cat)))))))
 
+            ;the student is in the class
+            ;the class has the cat
             (sentence
               (simple-noun-phrase (article the) (noun professor))
-              (verb-phrase (verb lectures) (prep-phrase (prep to) (noun-phrase (simple-noun-phrase (article the) (noun student))
+              (verb-phrase
+                (verb lectures) (prep-phrase (prep to) (noun-phrase (simple-noun-phrase (article the) (noun student))
                                                                                (prep-phrase (prep in) (noun-phrase (simple-noun-phrase (article the) (noun class))
                                                                                                                    (prep-phrase (prep with) (simple-noun-phrase (article the) (noun cat)))))))))))))
 
