@@ -50,7 +50,17 @@
     (can-do-job (computer wizard) (computer programmer))
     (can-do-job (computer wizard) (computer technician))
     (can-do-job (computer programmer) (computer programmer trainee))
-    (can-do-job (administration secretary) (administration big wheel))))
+    (can-do-job (administration secretary) (administration big wheel))
+
+    (rule (same ?x ?x))
+
+    (rule (replaces ?person1 ?person2)
+          (and (job ?person1 ?person1-job)
+               (job ?person1 ?person2-job)
+               (or (same ?person1-job ?person2-job)
+                   (can-do-job ?person1-job ?person2-job))
+               (not (same ?person1 ?person2))))
+    ))
 
 
 (deftest retrieve-by-supervisor
@@ -152,6 +162,36 @@
            (and (supervisor (Aull DeWitt) (Warbucks Oliver))
                 (not (job ?supervisor (computer . ?title)))
                 (job (Warbucks Oliver) (administration big wheel)))))))
+
+(deftest cydefect-replacements
+  (is (=
+        (execute-query
+          people
+          '(replaces ?person (Fect Cy D)))
+        '((replaces (Hacker Alyssa P) (Fect Cy D))
+          (replaces (Bitdiddle Ben) (Fect Cy D))))))
+
+(deftest cheaper-replacements
+  (is (=
+        (execute-query
+          people
+          '(and
+             (replaces ?replacer ?replaced)
+             (salary ?replacer ?replacer-salary)
+             (salary ?replaced ?replaced-salary)
+             (clojure-value < ?replacer-salary ?replaced-salary)))
+        '((and
+             (replaces (Fect Cy D) (Hacker Alyssa P))
+             (salary (Fect Cy D) 35000)
+             (salary (Hacker Alyssa P) 40000)
+             (clojure-value < 35000 40000))
+
+           (and
+             (replaces (Aull DeWitt) (Warbucks Oliver))
+             (salary (Aull DeWitt) 25000)
+             (salary (Warbucks Oliver) 150000)
+             (clojure-value < 25000 150000))))))
+
 
 
 
