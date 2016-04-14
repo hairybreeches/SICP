@@ -82,5 +82,76 @@
           (address (Reasoner Louis) (Slumerville (Pine Tree Road) 80))
           (address (Aull DeWitt) (Slumerville (Onion Square) 5))))))
 
+(deftest retrieve-by-supervisor-with-address
+  (is (=
+        (execute-query
+          people
+          '(and (supervisor ?name (Bitdiddle Ben))
+                (address ?name ?address)))
+
+        '((and (supervisor (Hacker Alyssa P) (Bitdiddle Ben))
+               (address (Hacker Alyssa P) (Cambridge (Mass Ave) 78)))
+          (and (supervisor (Fect Cy D) (Bitdiddle Ben))
+               (address (Fect Cy D) (Cambridge (Ames Street) 3)))
+          (and (supervisor (Tweakit Lem E) (Bitdiddle Ben))
+               (address (Tweakit Lem E) (Boston (Bay State Road) 22)))))))
+
+(deftest salary-less-than-bens
+  (is (=
+        (execute-query
+          people
+          '(and (salary (Bitdiddle Ben) ?ben-salary)
+                (salary ?person ?amount)
+                (clojure-value < ?amount ?ben-salary)))
+
+        '(
+           (and (salary (Bitdiddle Ben) 60000)
+                (salary (Hacker Alyssa P) 40000)
+                (clojure-value < 40000 60000))
+
+           (and (salary (Bitdiddle Ben) 60000)
+                (salary (Fect Cy D) 35000)
+                (clojure-value < 35000 60000))
+
+           (and (salary (Bitdiddle Ben) 60000)
+                (salary (Tweakit Lem E) 25000)
+                (clojure-value < 25000 60000))
+
+           (and (salary (Bitdiddle Ben) 60000)
+                (salary (Reasoner Louis) 30000)
+                (clojure-value < 30000 60000))
+
+           (and (salary (Bitdiddle Ben) 60000)
+                (salary (Cratchet Robert) 18000)
+                (clojure-value < 18000 60000))
+
+           (and (salary (Bitdiddle Ben) 60000)
+                (salary (Aull DeWitt) 25000)
+                (clojure-value < 25000 60000))))))
+
+(deftest non-computer-supervisor
+  (is (=
+        (execute-query
+          people
+          '(and (supervisor ?person ?supervisor)
+                (not (job ?supervisor (computer . ?title)))
+                (job ?supervisor ?role)))
+        '(
+           (and (supervisor (Bitdiddle Ben) (Warbucks Oliver))
+                (not (job ?supervisor (computer . ?title)))
+                (job (Warbucks Oliver) (administration big wheel)))
+
+           (and (supervisor (Scrooge Eben) (Warbucks Oliver))
+                (not (job ?supervisor (computer . ?title)))
+                (job (Warbucks Oliver) (administration big wheel)))
+
+           (and (supervisor (Cratchet Robert) (Scrooge Eben))
+                (not (job ?supervisor (computer . ?title)))
+                (job (Scrooge Eben) (accounting chief accountant)))
+
+           (and (supervisor (Aull DeWitt) (Warbucks Oliver))
+                (not (job ?supervisor (computer . ?title)))
+                (job (Warbucks Oliver) (administration big wheel)))))))
+
 
 
