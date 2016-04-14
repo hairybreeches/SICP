@@ -131,6 +131,7 @@
 (deftest permanent-set
 
   (is (= (get-all-results
+           require-code
            an-element-of
 
            '(define count 0)
@@ -147,6 +148,7 @@
 
 (deftest if-fail-fails
   (is (= (execute
+           require-code
            an-element-of
            '(if-fail (let ((x (an-element-of '(1 3 5))))
                        (require (even? x))
@@ -156,6 +158,7 @@
 
 (deftest if-fail-succeeds
   (is (= (execute
+           require-code
            an-element-of
            '(if-fail (let ((x (an-element-of '(1 3 5 8 9))))
                        (require (even? x))
@@ -172,6 +175,7 @@
 
 (deftest permanence
   (is (= (execute
+           require-code
            an-element-of
            prime-sum-pair
            '(let ((pairs '()))
@@ -182,6 +186,7 @@
 
          (reverse
            (get-all-results
+             require-code
              an-element-of
              prime-sum-pair
              '(prime-sum-pair '(1 3 5 8) '(20 35 110))))
