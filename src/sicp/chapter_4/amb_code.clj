@@ -2,10 +2,6 @@
   (:use sicp.chapter-4.sequences)
   (:use sicp.chapter-4.interpreter.repl))
 
-(def require-code
-  '(define (require p)
-             (if (not p) (amb))))
-
 (def an-integer-between
   '(define (an-integer-between low high)
      (require (<= low high))
@@ -45,7 +41,6 @@
 
 (defn get-pythagorean-triples []
   (get-all-results
-    require-code
     an-integer-between
     an-integer-starting-from
     a-pythagorean-triple
@@ -53,14 +48,12 @@
 
 (defn get-pythagorean-triples-between [low high]
   (get-all-results
-    require-code
     an-integer-between
     a-pythagorean-triple-between
     (list 'a-pythagorean-triple-between low high)))
 
 (defn get-multiple-dwelling-solutions []
   (get-all-results
-    require-code
     an-element-of
     member?
     filter-code
@@ -93,7 +86,6 @@
 
 (defn get-liars-solutions []
   (get-all-results
-    require-code
     an-element-of
     '(let ((betty (amb 1 2 3 4 5))
            (ethel (amb 1 2 3 4 5))
@@ -114,7 +106,6 @@
 
 (defn get-queens-solutions []
   (get-all-results
-    require-code
     an-element-of
     filter-code
     exclude-code
@@ -163,7 +154,6 @@
 
 (defn get-yachts-solutions []
   (get-all-results
-    require-code
     an-element-of
     filter-code
     exclude-code

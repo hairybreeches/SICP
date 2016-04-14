@@ -5,7 +5,6 @@
 
 (defn parse [sentence]
   (get-all-results
-    require-code
     member?
 
     '(define nouns '(noun student professor cat class))

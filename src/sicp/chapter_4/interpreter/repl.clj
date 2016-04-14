@@ -18,7 +18,8 @@
   (:use sicp.chapter-4.interpreter.default-environment)
   (:use sicp.chapter-4.interpreter.boolean-operators)
   (:use sicp.chapter-4.interpreter.unless)
-  (:use sicp.chapter-4.interpreter.if-fail))
+  (:use sicp.chapter-4.interpreter.if-fail)
+  (:use sicp.chapter-4.interpreter.require))
 
 (def input-prompt ";;; Amb-Eval input:")
 (def output-prompt ";;; Amb-Eval value:")
