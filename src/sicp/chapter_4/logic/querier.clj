@@ -75,7 +75,7 @@
               (prn
                 (map
                   #(instantiate query % (fn [v f] (contract-question-mark v)))
-                  (qeval query '())))
+                  (qeval query '(()))))
               (recur))))))
 
 (defn execute-query [data query]
