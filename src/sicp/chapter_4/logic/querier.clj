@@ -3,6 +3,7 @@
   (:use sicp.chapter-4.logic.clojure-value)
   (:use sicp.chapter-4.logic.and)
   (:use sicp.chapter-4.logic.or)
+  (:use sicp.chapter-4.logic.always-true)
   (:use sicp.chapter-4.logic.not)
   (:use sicp.chapter-4.logic.evaluation))
 
