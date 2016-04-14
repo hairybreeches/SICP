@@ -1,4 +1,5 @@
 (ns sicp.test.chapter-4.logic
+  (:use sicp.chapter-4.logic)
   (:use clojure.test))
 
 (def people
@@ -50,4 +51,36 @@
     (can-do-job (computer wizard) (computer technician))
     (can-do-job (computer programmer) (computer programmer trainee))
     (can-do-job (administration secretary) (administration big wheel))))
+
+
+(deftest retrieve-by-supervisor
+  (is (=
+        (execute-query
+          people
+          '(supervisor ?x (Bitdiddle Ben)))
+
+        '((supervisor (Hacker Alyssa P) (Bitdiddle Ben))
+          (supervisor (Fect Cy D) (Bitdiddle Ben))
+          (supervisor (Tweakit Lem E) (Bitdiddle Ben))))))
+
+(deftest retrieve-by-division
+  (is (=
+        (execute-query
+          people
+          '(job ?name (accounting . ?job)))
+
+        '((job (Scrooge Eben) (accounting chief accountant))
+          (job (Cratchet Robert) (accounting scrivener))))))
+
+(deftest retrieve-by-town
+  (is (=
+        (execute-query
+          people
+          '(address ?name (Slumerville . ?address)))
+
+        '((address (Bitdiddle Ben) (Slumerville (Ridge Road) 10))
+          (address (Reasoner Louis) (Slumerville (Pine Tree Road) 80))
+          (address (Aull DeWitt) (Slumerville (Onion Square) 5))))))
+
+
 
