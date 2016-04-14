@@ -2,7 +2,8 @@
   (:use sicp.chapter-4.logic.evaluation))
 
 (defn- conjoin [conjuncts frames]
-  (loop [conjuncts frames]
+  (loop [conjuncts conjuncts
+         frames frames]
     (if (empty? conjuncts)
         frames
       (recur (rest conjuncts)
