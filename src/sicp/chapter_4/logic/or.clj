@@ -1,4 +1,4 @@
-(ns sicp.chapter-4.logic.and
+(ns sicp.chapter-4.logic.or
   (:use sicp.chapter-4.logic.evaluation))
 
 (defn- disjoin [disjuncts frames]
