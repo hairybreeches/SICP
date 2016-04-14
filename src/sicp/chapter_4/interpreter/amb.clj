@@ -20,6 +20,16 @@
         choice-procs
         env succeed fail))))
 
+(defn- analyse-ramb [exp]
+  (let [choice-procs (map analyse (amb-choices exp))]
+    (fn [env succeed fail]
+      (try-next
+        (shuffle choice-procs)
+        env succeed fail))))
+
 
 (defmethod analyse 'amb [exp]
   (analyse-amb exp))
+
+(defmethod analyse 'ramb [exp]
+  (analyse-ramb exp))

@@ -4,7 +4,7 @@
   (:use sicp.chapter-4.interpreter.repl))
 
 (defn generate-sentence []
-  (get-all-results
+  (execute
     require-code
     member?
     an-element-of
@@ -16,10 +16,14 @@
 
     '(define prepositions '(prep for to in by with))
 
+    '(define (random-element things)
+       (require (not (null? things)))
+       (ramb (car things) (random-element (cdr things))))
+
     '(define (parse-word word-list)
        (list
          (car word-list)
-         (an-element-of (cdr word-list))))
+         (random-element (cdr word-list))))
 
     '(define (parse-simple-noun-phrase)
       (list 'simple-noun-phrase
@@ -33,7 +37,7 @@
 
     '(define (parse-noun-phrase)
        (define (maybe-extend noun-phrase)
-         (amb noun-phrase
+         (ramb noun-phrase
               (maybe-extend
                 (list 'noun-phrase
                       noun-phrase
@@ -42,7 +46,7 @@
 
     '(define (parse-verb-phrase)
        (define (maybe-extend verb-phrase)
-         (amb verb-phrase
+         (ramb verb-phrase
               (maybe-extend
                 (list
                   'verb-phrase

@@ -1,7 +1,7 @@
 (ns sicp.core
-  (:use sicp.chapter-4.interpreter.repl))
+  (:use sicp.chapter-4.language))
 
 
 (defn -main
   []
-  (driver-loop))
+  (prn (generate-sentence)))
