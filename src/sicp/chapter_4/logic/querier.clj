@@ -1,4 +1,6 @@
-(ns sicp.chapter-4.logic.querier)
+(ns sicp.chapter-4.logic.querier
+  (:use sicp.chapter-4.logic.simple-queries)
+  (:use sicp.chapter-4.logic.evaluation))
 
 (def input-prompt ";;; Query input:")
 (def output-prompt ";;; Query results:")
@@ -40,8 +42,6 @@
 (defn contract-question-mark [variable frame]
   )
 
-(defn qeval [query frames]
-  )
 
 (defn variable-value [variable]
   )
