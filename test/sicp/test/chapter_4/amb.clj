@@ -128,6 +128,24 @@
                             (adjective complex))
                           (noun student)))))))))
 
+(deftest permanent-set
+
+  (is (= (get-all-results
+           require-code
+           an-element-of
+
+           '(define count 0)
+
+           '(let ((x (an-element-of '(a b c)))
+                  (y (an-element-of '(a b c))))
+              (permanent-set! count (+ count 1))
+              (require (not (= x y)))
+              (list x y count))
+
+           )
+
+         '((a b 2) (a c 3) (b a 4) (b c 6) (c a 7) (c b 8)))))
+
 
 
 
