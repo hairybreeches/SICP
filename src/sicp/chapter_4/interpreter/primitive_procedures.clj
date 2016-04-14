@@ -12,6 +12,7 @@
     (list '>= >=)
     (list 'abs abs)
     (list 'distinct? distinct?)
+    (list 'prime? (fn [n] (.isProbablePrime (java.math.BigInteger/valueOf n) 100)))
     (list 'even? even?)
     (list 'int int)
     (list 'list list)
