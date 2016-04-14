@@ -60,6 +60,12 @@
                (or (same ?person1-job ?person2-job)
                    (can-do-job ?person1-job ?person2-job))
                (not (same ?person1 ?person2))))
+
+    (rule (big-shot ?person ?division)
+          (and (job ?person (?division . ?role))
+               (not (and (supervisor ?person ?supervisor)
+                         (job ?supervisor (?division . ?supervisor-role))))))
+
     ))
 
 
@@ -191,6 +197,15 @@
              (salary (Aull DeWitt) 25000)
              (salary (Warbucks Oliver) 150000)
              (clojure-value < 25000 150000))))))
+
+(deftest big-shot
+  (is (=
+        (execute-query
+          people
+          '(big-shot ?person accounting))
+        '((big-shot (Scrooge Eben) accounting)))))
+
+
 
 
 
