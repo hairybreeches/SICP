@@ -1,5 +1,6 @@
 (ns sicp.chapter-4.logic.querier
   (:use sicp.chapter-4.logic.simple-queries)
+  (:use sicp.chapter-4.logic.clojure-value)
   (:use sicp.chapter-4.logic.and)
   (:use sicp.chapter-4.logic.or)
   (:use sicp.chapter-4.logic.not)
@@ -24,43 +25,20 @@
   (prn)
   (prn "Assertion added to data base"))
 
-(defn binding-in-frame [exp frame]
+(defn- add-rule-or-assertion [assertion]
   )
 
-(defn variable? [exp]
+(defn- add-assertion-body [query]
   )
 
-(defn add-rule-or-assertion [assertion]
+(defn- assertion-to-be-added? [query]
   )
 
-(defn add-assertion-body [query]
+(defn- query-syntax-process [input]
   )
 
-(defn assertion-to-be-added? [query]
+(defn- contract-question-mark [variable frame]
   )
-
-(defn query-syntax-process [input]
-  )
-
-(defn contract-question-mark [variable frame]
-  )
-
-
-(defn variable-value [variable]
-  )
-
-(defn instantiate [exp frame unbound-var-handler]
-  (cond (variable? exp)
-        (let [result (binding-in-frame exp frame)]
-          (if result
-            (instantiate (variable-value result) frame unbound-var-handler)
-            (unbound-var-handler exp frame)))
-
-          (seq? exp)
-          (map #(instantiate % frame unbound-var-handler) exp)
-
-          :else exp))
-
 
 (defn query-driver-loop []
   (loop []
