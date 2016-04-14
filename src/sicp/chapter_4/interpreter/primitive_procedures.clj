@@ -12,6 +12,7 @@
     (list '>= >=)
     (list 'abs abs)
     (list 'distinct? distinct?)
+    (list 'even? even?)
     (list 'int int)
     (list 'list list)
     (list 'integer? integer?)

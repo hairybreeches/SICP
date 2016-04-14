@@ -146,6 +146,26 @@
 
          '((a b 2) (a c 3) (b a 4) (b c 6) (c a 7) (c b 8)))))
 
+(deftest if-fail-fails
+  (is (= (execute
+           require-code
+           an-element-of
+           '(if-fail (let ((x (an-element-of '(1 3 5))))
+                       (require (even? x))
+                       x)
+                     'all-odd))
+         'all-odd)))
+
+(deftest if-fail-succeeds
+  (is (= (execute
+           require-code
+           an-element-of
+           '(if-fail (let ((x (an-element-of '(1 3 5 8 9))))
+                       (require (even? x))
+                       x)
+                     'all-odd))
+         8)))
+
 
 
 
