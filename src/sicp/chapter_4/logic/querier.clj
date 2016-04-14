@@ -1,5 +1,8 @@
 (ns sicp.chapter-4.logic.querier
   (:use sicp.chapter-4.logic.simple-queries)
+  (:use sicp.chapter-4.logic.and)
+  (:use sicp.chapter-4.logic.or)
+  (:use sicp.chapter-4.logic.not)
   (:use sicp.chapter-4.logic.evaluation))
 
 (def input-prompt ";;; Query input:")
