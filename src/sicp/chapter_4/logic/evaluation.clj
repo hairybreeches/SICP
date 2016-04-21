@@ -2,8 +2,6 @@
   (:use sicp.chapter-4.logic.query-syntax)
   (:use sicp.chapter-4.logic.frames))
 
-(def user-initial-environment)
-
 (defmulti qeval (fn [query frames] (type query)))
 
 (defn instantiate [exp frame unbound-var-handler]

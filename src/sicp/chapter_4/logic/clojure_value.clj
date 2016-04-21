@@ -4,7 +4,7 @@
   (:use sicp.chapter-4.logic.evaluation))
 
 (defn- execute [exp]
-  (apply (eval (predicate exp) user-initial-environment)
+  (apply (eval (predicate exp))
          (args exp)))
 
 (defn- clojure-value [call frames]
