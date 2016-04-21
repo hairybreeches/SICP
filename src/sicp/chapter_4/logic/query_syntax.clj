@@ -33,3 +33,8 @@
 
 (defn make-new-variable
   [variable id]  )
+
+(defn constant-symbol? [exp]
+  )
+
+(defn rule? [exp])
