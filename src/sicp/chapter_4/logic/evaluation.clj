@@ -7,17 +7,17 @@
 (defn variable? [exp]
   )
 
-(defn- binding-in-frame [exp frame]
+(defn binding-in-frame [exp frame]
   )
 
-(defn- variable-value [variable]
+(defn binding-value [variable]
   )
 
 (defn instantiate [exp frame unbound-var-handler]
   (cond (variable? exp)
         (let [result (binding-in-frame exp frame)]
           (if result
-            (instantiate (variable-value result) frame unbound-var-handler)
+            (instantiate (binding-value result) frame unbound-var-handler)
             (unbound-var-handler exp frame)))
 
           (seq? exp)
