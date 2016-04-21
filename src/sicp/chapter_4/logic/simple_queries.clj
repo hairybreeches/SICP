@@ -1,12 +1,8 @@
 (ns sicp.chapter-4.logic.simple-queries
-  (:use sicp.chapter-4.logic.evaluation))
+  (:use sicp.chapter-4.logic.evaluation)
+  (:use sicp.chapter-4.logic.rules))
 
 (def pattern-match)
-
-(defn- exten [variable datum frame])
-
-(defn- fetch-assertions [pattern frame]
-  )
 
 (defn- extend-if-consistent
   [variable datum frame]
@@ -40,9 +36,6 @@
   (mapcat
     (fn [datum] (check-an-assertion datum pattern frame))
     (fetch-assertions pattern frame)))
-
-(defn- apply-rules [query-pattern frame]
-  )
 
 (defmethod qeval :default [query-pattern frames]
   (mapcat

@@ -26,21 +26,6 @@
   (prn)
   (prn "Assertion added to data base"))
 
-(defn- add-rule-or-assertion [assertion]
-  )
-
-(defn- add-assertion-body [query]
-  )
-
-(defn- assertion-to-be-added? [query]
-  )
-
-(defn- query-syntax-process [input]
-  )
-
-(defn- contract-question-mark [variable frame]
-  )
-
 (defn query-driver-loop []
   (loop []
     (prompt-for-input)

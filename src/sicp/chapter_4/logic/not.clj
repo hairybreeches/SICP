@@ -1,9 +1,6 @@
 (ns sicp.chapter-4.logic.not
   (:use sicp.chapter-4.logic.evaluation))
 
-(defn- negated-query [operands]
-  )
-
 (defn- negate [operands frames]
   (mapcat
     (fn [frame]
