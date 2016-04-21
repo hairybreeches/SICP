@@ -10,6 +10,6 @@
              (qeval (first conjuncts)
                     frames)))))
 
-(defmethod qeval :and [query-pattern frames]
+(defmethod qeval-dispatch 'and [_ query-pattern frames]
   (conjoin query-pattern frames))
 

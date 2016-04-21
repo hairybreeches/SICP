@@ -8,5 +8,5 @@
       (qeval (first disjuncts) frames)
       (disjoin (rest disjuncts) frames))))
 
-(defmethod qeval :or [query-pattern frames]
+(defmethod qeval-dispatch 'or [_ query-pattern frames]
   (disjoin query-pattern frames))

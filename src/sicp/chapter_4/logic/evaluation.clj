@@ -2,7 +2,14 @@
   (:use sicp.chapter-4.logic.query-syntax)
   (:use sicp.chapter-4.logic.frames))
 
-(defmulti qeval (fn [query frames] (type query)))
+
+(defmulti qeval-dispatch (fn [query-type query frames] query-type))
+
+(defn qeval [query frames]
+  (qeval-dispatch
+    (query-type query)
+    (query-content query)
+    frames))
 
 (defn instantiate [exp frame unbound-var-handler]
   (cond (variable? exp)

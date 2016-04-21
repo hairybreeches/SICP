@@ -4,5 +4,5 @@
 (defn- always-true [ignore frames]
   frames)
 
-(defmethod qeval :always-true [query-pattern frames]
+(defmethod qeval-dispatch 'always-true [_ query-pattern frames]
   (always-true query-pattern frames))

@@ -38,3 +38,11 @@
   )
 
 (defn rule? [exp])
+
+(defn query-content
+  [exp]
+  )
+
+(defn query-type
+  [exp]
+  )

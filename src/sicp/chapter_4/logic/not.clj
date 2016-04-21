@@ -12,5 +12,5 @@
     frames))
 
 
-(defmethod qeval :not [query-pattern frames]
+(defmethod qeval-dispatch 'not [_ query-pattern frames]
   (negate query-pattern frames))
