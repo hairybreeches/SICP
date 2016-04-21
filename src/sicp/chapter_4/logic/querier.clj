@@ -23,30 +23,28 @@
   (prn)
   (prn output-prompt))
 
-(defn- acknowledge-rule
-  []
-  (prn)
-  (prn "Assertion added to data base"))
+(defn- execute-expression
+  [exp]
+  (let [query (query-syntax-process exp)]
+      (cond (assertion-to-be-added? query)
+            (do
+              (add-rule-or-assertion (add-assertion-body query))
+              "Assertion added to data base")
+
+            :else
+             (map
+                  #(instantiate query % (fn [v f] (contract-question-mark v)))
+                  (qeval query '(()))))))
 
 (defn query-driver-loop []
   (loop []
     (prompt-for-input)
-    (let [query (query-syntax-process (read))]
-      (cond (assertion-to-be-added? query)
-            (do
-              (add-rule-or-assertion (add-assertion-body query))
-              (acknowledge-rule)
-              (recur))
-
-            :else
-            (do
-              (announce-output)
-              (prn
-                (map
-                  #(instantiate query % (fn [v f] (contract-question-mark v)))
-                  (qeval query '(()))))
-              (recur))))))
+    (let [input (read)]
+      (announce-output (execute-expression input))
+      (recur))))
 
 (defn execute-query [data query]
-  "")
+  (clear-database)
+  (load-database data)
+  (execute-expression query))
 
