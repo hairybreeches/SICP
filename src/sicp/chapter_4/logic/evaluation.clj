@@ -1,51 +1,8 @@
-(ns sicp.chapter-4.logic.evaluation)
+(ns sicp.chapter-4.logic.evaluation
+  (:use sicp.chapter-4.logic.query-syntax)
+  (:use sicp.chapter-4.logic.frames))
 
 (def user-initial-environment)
-
-(defn variable? [exp]
-  )
-
-(defn binding-in-frame [exp frame]
-  )
-
-(defn binding-value [variable]
-  )
-
-(defn make-new-variable
-  [variable id]  )
-
-(defn exten [variable datum frame])
-
-(defn fetch-assertions [pattern frame]
-  )
-
-(defn negated-query [operands]
-  )
-
-(defn add-rule-or-assertion [assertion]
-  )
-
-(defn add-assertion-body [query]
-  )
-
-(defn assertion-to-be-added? [query]
-  )
-
-(defn query-syntax-process [input]
-  )
-
-(defn contract-question-mark [variable frame]
-  )
-
-(defn conclusion
-  [rule])
-
-(defn rule-body
-  [rule])
-
-(defn fetch-rules
-  [pattern frame])
-
 
 (defmulti qeval (fn [query frames] (type query)))
 

@@ -5,7 +5,9 @@
   (:use sicp.chapter-4.logic.or)
   (:use sicp.chapter-4.logic.always-true)
   (:use sicp.chapter-4.logic.not)
-  (:use sicp.chapter-4.logic.evaluation))
+  (:use sicp.chapter-4.logic.evaluation)
+  (:use sicp.chapter-4.logic.query-syntax)
+  (:use sicp.chapter-4.logic.database))
 
 (def input-prompt ";;; Query input:")
 (def output-prompt ";;; Query results:")

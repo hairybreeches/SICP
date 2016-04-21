@@ -1,12 +1,7 @@
 (ns sicp.chapter-4.logic.clojure-value
   (:use sicp.error)
+  (:use sicp.chapter-4.logic.query-syntax)
   (:use sicp.chapter-4.logic.evaluation))
-
-(defn- predicate [exp]
-  (first exp))
-
-(defn- args [exp]
-  (rest exp))
 
 (defn- execute [exp]
   (apply (eval (predicate exp) user-initial-environment)
