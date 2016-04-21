@@ -1,9 +1,18 @@
 (ns sicp.chapter-4.logic.frames)
 
-(defn binding-in-frame [exp frame]
-  )
+(defn binding-value [bind]
+  (:value bind))
 
-(defn binding-value [variable]
-  )
+(defn binding-variable
+  [bind]
+  (:variable bind))
 
-(defn exten [variable datum frame])
+(defn make-binding
+  [variable value]
+  {:variable variable :value value})
+
+(defn binding-in-frame [k frame]
+  (frame k))
+
+(defn exten [variable datum frame]
+  (assoc frame variable (make-binding variable datum)))
