@@ -63,7 +63,6 @@
           (list o)))))))
 
 
-
 (defn- store-assertion-in-index [assertion]
   (store-in-index assertion-index assertion))
 
@@ -82,3 +81,18 @@
   (if (rule? exp)
     (add-rule! exp)
     (add-assertion! exp)))
+
+(defn clear-database
+  []
+  (dosync
+    (ref-set rules '())
+    (ref-set assertions '())
+    (ref-set rule-index {})
+    (ref-set assertion-index {})))
+
+(defn load-database
+  [db]
+  (for [exp db]
+    (add-rule-or-assertion exp)))
+
+
