@@ -1,4 +1,5 @@
-(ns sicp.chapter-4.logic.query-syntax)
+(ns sicp.chapter-4.logic.query-syntax
+  (:use sicp.sequences))
 
 (defn query-content
   [exp]
@@ -51,7 +52,7 @@
       sym)))
 
 (defn- map-over-symbols [proc exp]
-  (cond (seq? exp) (cons
+  (cond (non-empty-seq? exp) (cons
                      (map-over-symbols proc (first exp))
                      (map-over-symbols proc (rest exp)))
         (symbol? exp) (proc exp)
