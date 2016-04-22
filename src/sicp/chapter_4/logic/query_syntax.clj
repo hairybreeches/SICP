@@ -47,8 +47,8 @@
 
 (defn expand-question-mark [sym]
   (let [s (name sym)]
-    (if (= "?" (first s))
-      (list '? (sym (rest s)))
+    (if (= \? (first s))
+      (list '? (symbol (apply str (rest s))))
       sym)))
 
 (defn- map-over-symbols [proc exp]
