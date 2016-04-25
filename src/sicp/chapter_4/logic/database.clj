@@ -28,9 +28,6 @@
 (defn- get-all-rules []
   @rules)
 
-(defn- get-all-assertions []
-  @assertions)
-
 (defn- get-indexed-assertions [pattern]
   (@assertion-index (index-key-of pattern) '()))
 
