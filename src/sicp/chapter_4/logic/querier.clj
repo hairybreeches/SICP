@@ -7,7 +7,8 @@
   (:use sicp.chapter-4.logic.not)
   (:use sicp.chapter-4.logic.evaluation)
   (:use sicp.chapter-4.logic.query-syntax)
-  (:use sicp.chapter-4.logic.database))
+  (:use sicp.chapter-4.logic.database)
+  (:use sicp.chapter-4.logic.frames))
 
 (def input-prompt ";;; Query input:")
 (def output-prompt ";;; Query results:")
@@ -34,7 +35,7 @@
             :else
              (map
                   #(instantiate query % (fn [v f] (contract-question-mark v)))
-                  (qeval query '(()))))))
+                  (qeval query (list (create-empty-frame)))))))
 
 (defn query-driver-loop []
   (loop []

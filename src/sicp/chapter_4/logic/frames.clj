@@ -16,3 +16,6 @@
 
 (defn exten [variable datum frame]
   (assoc frame variable (make-binding variable datum)))
+
+(defn create-empty-frame []
+  {})
