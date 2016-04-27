@@ -66,13 +66,18 @@
 (defn- store-rule-in-index [rule]
   (store-in-index rule-index rule))
 
+(defn- make-conser
+  [to-cons]
+  (fn [previous]
+    (cons to-cons previous)))
+
 (defn- add-rule! [rule]
   (store-rule-in-index rule)
-  (dosync (alter rules cons rule)))
+  (dosync (alter rules (make-conser rule))))
 
 (defn- add-assertion! [assertion]
   (store-assertion-in-index assertion)
-  (dosync (alter assertions cons assertion)))
+  (dosync (alter assertions (make-conser assertion))))
 
 (defn add-rule-or-assertion [exp]
   (if (rule? exp)
