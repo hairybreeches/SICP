@@ -26,7 +26,8 @@
                                       (rest datum)
                                       (pattern-match
                                         (first pattern)
-                                        (first datum)))
+                                        (first datum)
+                                        frame))
     :else 'failed))
 
 (defn- check-an-assertion [assertion query-pattern query-frame]
