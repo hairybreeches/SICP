@@ -1,4 +1,5 @@
 (ns sicp.chapter-4.logic.rules
+  (:use sicp.sequences)
   (:use sicp.chapter-4.logic.evaluation)
   (:use sicp.chapter-4.logic.query-syntax)
   (:use sicp.chapter-4.logic.frames)
@@ -52,7 +53,7 @@
   ([exp id]
    (cond
      (variable? exp) (make-new-variable exp id)
-     (seq? exp) (cons (rename-variables-in (first exp) id)
+     (non-empty-seq? exp) (cons (rename-variables-in (first exp) id)
                       (rename-variables-in (rest exp) id))
      :else exp)))
 
