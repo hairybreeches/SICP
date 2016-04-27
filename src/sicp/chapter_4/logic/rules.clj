@@ -43,7 +43,8 @@
                             (rest pattern2)
                             (unify-match
                               (first pattern1)
-                              (first pattern2)))
+                              (first pattern2)
+                              frame))
     :else 'failed))
 
 
