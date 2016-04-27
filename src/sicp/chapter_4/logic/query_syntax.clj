@@ -62,7 +62,10 @@
   (map-over-symbols expand-question-mark input))
 
 (defn variable? [exp]
-  (= (query-type exp) '?))
+  (and
+    (seq? exp)
+    (= (first exp) '?)))
+
 
 (defn constant-symbol? [exp]
   (symbol? exp))
