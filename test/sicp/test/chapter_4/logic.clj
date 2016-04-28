@@ -139,6 +139,16 @@
     '((and (meeting-time (Hacker Alyssa P) (Wednesday 15)) (meeting computer (Wednesday 15)))
       (and (meeting-time (Hacker Alyssa P) (Wednesday 13)) (meeting whole-company (Wednesday 13))))))
 
+(deftest people-who-live-near
+  (returns-results
+    '(and (lives-near ?person-1 ?person-2)
+          (clojure-value sicp.chapter-4.logic.clojure-value/name-before ?person-1 ?person-2))
+
+    '((and (lives-near (Reasoner Louis) (Bitdiddle Ben)) (clojure-value sicp.chapter-4.logic.clojure-value/name-before (Reasoner Louis) (Bitdiddle Ben)))
+      (and (lives-near (Reasoner Louis) (Aull DeWitt)) (clojure-value sicp.chapter-4.logic.clojure-value/name-before (Reasoner Louis) (Aull DeWitt)))
+      (and (lives-near (Bitdiddle Ben) (Aull DeWitt)) (clojure-value sicp.chapter-4.logic.clojure-value/name-before (Bitdiddle Ben) (Aull DeWitt)))
+      (and (lives-near (Hacker Alyssa P) (Fect Cy D)) (clojure-value sicp.chapter-4.logic.clojure-value/name-before (Hacker Alyssa P) (Fect Cy D))))))
+
 
 
 

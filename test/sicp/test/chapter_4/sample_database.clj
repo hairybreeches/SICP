@@ -77,4 +77,9 @@
               (job ?person (?division . ?title))
               (meeting ?division ?day-and-time))))
 
+    (rule (lives-near ?person1 ?person2)
+          (and (address ?person1 (?town . ?rest1))
+               (address ?person2 (?town . ?rest2))
+               (not (same ?person1 ?person2))))
+
     ))
