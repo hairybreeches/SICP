@@ -3,7 +3,8 @@
   (:use sicp.chapter-4.logic.evaluation)
   (:use sicp.chapter-4.logic.query-syntax)
   (:use sicp.chapter-4.logic.frames)
-  (:use sicp.chapter-4.logic.database))
+  (:use sicp.chapter-4.logic.database)
+  (:use sicp.sequences))
 
 (def unify-match)
 
@@ -39,8 +40,8 @@
     (variable? pattern2) (extend-if-possible pattern2 pattern1 frame)
     (and (seq? pattern1)
          (seq? pattern2)) (unify-match
-                            (rest pattern1)
-                            (rest pattern2)
+                            (scheme-rest pattern1)
+                            (scheme-rest pattern2)
                             (unify-match
                               (first pattern1)
                               (first pattern2)
