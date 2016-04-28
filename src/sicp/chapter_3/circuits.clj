@@ -78,7 +78,7 @@
   ((agenda :add-action!) wait action))
 
 ;primitive gates
-(defn- update
+(defn- update-gates
   [output operation wait inputs]
   (let [new-value (apply operation (map get-signal inputs))]
     (after-delay
@@ -87,7 +87,7 @@
 
 (defn- make-box
   [output operation wait & inputs]
-  (let [action (partial update output operation wait inputs)]
+  (let [action (partial update-gates output operation wait inputs)]
     (doseq
       [input inputs]
       (add-action! input action))))
