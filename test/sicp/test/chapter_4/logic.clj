@@ -89,19 +89,19 @@
                 (job ?supervisor ?role)))
         #{
            '(and (supervisor (Bitdiddle Ben) (Warbucks Oliver))
-                (not (job ?supervisor (computer . ?title)))
+                (not (job (Warbucks Oliver) (computer . ?title)))
                 (job (Warbucks Oliver) (administration big wheel)))
 
            '(and (supervisor (Scrooge Eben) (Warbucks Oliver))
-                (not (job ?supervisor (computer . ?title)))
+                (not (job (Warbucks Oliver) (computer . ?title)))
                 (job (Warbucks Oliver) (administration big wheel)))
 
            '(and (supervisor (Cratchet Robert) (Scrooge Eben))
-                (not (job ?supervisor (computer . ?title)))
+                (not (job (Scrooge Eben) (computer . ?title)))
                 (job (Scrooge Eben) (accounting chief accountant)))
 
            '(and (supervisor (Aull DeWitt) (Warbucks Oliver))
-                (not (job ?supervisor (computer . ?title)))
+                (not (job (Warbucks Oliver) (computer . ?title)))
                 (job (Warbucks Oliver) (administration big wheel)))}))
 
 (deftest cydefect-replacements
