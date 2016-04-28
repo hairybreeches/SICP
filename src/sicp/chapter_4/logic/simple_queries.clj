@@ -41,9 +41,13 @@
     (fn [datum] (check-an-assertion datum pattern frame))
     (fetch-assertions pattern frame)))
 
-(defmethod qeval-dispatch :default [_ query-pattern frames]
+(defn- evaluate-simple-query [query-pattern frames]
   (mapcat
     #(concat
        (find-assertions query-pattern %)
        (apply-rules query-pattern %))
     frames))
+
+(defmethod qeval-dispatch :default [query-type query-pattern frames]
+  (evaluate-simple-query (cons query-type query-pattern) frames))
+
