@@ -109,7 +109,7 @@
         (execute-query
           people
           '(replaces ?person (Fect Cy D)))
-        {'(replaces (Hacker Alyssa P) (Fect Cy D))
+        #{'(replaces (Hacker Alyssa P) (Fect Cy D))
           '(replaces (Bitdiddle Ben) (Fect Cy D))}))
 
 (deftest cheaper-replacements
