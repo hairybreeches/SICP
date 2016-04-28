@@ -16,7 +16,7 @@
                             (if b
                               (depends-on? (binding-value b) variable frame)
                               false)))
-        (seq? exp) (or (depends-on? (first exp) variable frame)
+        (non-empty-seq? exp) (or (depends-on? (first exp) variable frame)
                        (depends-on? (rest exp) variable frame))
         :else false))
 
