@@ -37,7 +37,7 @@
      '(always-true)
     (nth rule 2)))
 
-(defn contract-question-mark [variable frame]
+(defn contract-question-mark [variable]
   (symbol (str "?"
                (if (number? (second variable))
                  (str (nth variable 2)
