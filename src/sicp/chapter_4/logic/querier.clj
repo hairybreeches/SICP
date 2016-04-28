@@ -47,5 +47,5 @@
 (defn execute-query [data query]
   (clear-database)
   (load-database data)
-  (execute-expression query))
+  (apply hash-set (execute-expression query)))
 
