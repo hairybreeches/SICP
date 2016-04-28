@@ -5,9 +5,13 @@
   (:use clojure.test))
 
 (defn- returns-results
-  [query expected-results]
-  (is-set= (execute-query people query)
-           (apply hash-set expected-results)))
+
+  ([query expected-results]
+   (returns-results people query expected-results))
+
+  ([db query expected-results]
+   (is-set= (execute-query db query)
+            (apply hash-set expected-results))))
 
 (deftest retrieve-by-supervisor
   (returns-results
@@ -148,6 +152,28 @@
       (and (lives-near (Reasoner Louis) (Aull DeWitt)) (clojure-value sicp.chapter-4.logic.clojure-value/name-before (Reasoner Louis) (Aull DeWitt)))
       (and (lives-near (Bitdiddle Ben) (Aull DeWitt)) (clojure-value sicp.chapter-4.logic.clojure-value/name-before (Bitdiddle Ben) (Aull DeWitt)))
       (and (lives-near (Hacker Alyssa P) (Fect Cy D)) (clojure-value sicp.chapter-4.logic.clojure-value/name-before (Hacker Alyssa P) (Fect Cy D))))))
+
+(def next-to-rules
+  '((rule (?x next-to ?y in (?x ?y . ?u)))
+    (rule (?x next-to ?y in (?v . ?z))
+          (?x next-to ?y in ?z))))
+
+(deftest next-to-1
+  (returns-results
+    next-to-rules
+    '(?x next-to 1 in (2 1 3 1))
+
+    '((2 next-to 1 in (2 1 3 1))
+      (3 next-to 1 in (2 1 3 1)))))
+
+(deftest next-to-2
+  (returns-results
+    next-to-rules
+    '(?x next-to ?y in (1 (2 3) 4))
+
+    '((1 next-to (2 3) in (1 (2 3) 4))
+      ((2 3) next-to 4 in (1 (2 3) 4)))))
+
 
 
 
