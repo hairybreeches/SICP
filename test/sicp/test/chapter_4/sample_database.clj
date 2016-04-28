@@ -54,7 +54,7 @@
 
     (rule (replaces ?person1 ?person2)
           (and (job ?person1 ?person1-job)
-               (job ?person1 ?person2-job)
+               (job ?person2 ?person2-job)
                (or (same ?person1-job ?person2-job)
                    (can-do-job ?person1-job ?person2-job))
                (not (same ?person1 ?person2))))
