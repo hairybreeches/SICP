@@ -80,7 +80,8 @@
   [exp]
   (cond (not (non-empty-seq? exp)) exp
         (not (= '. (first exp))) (cons (remove-dots (first exp)) (remove-dots (rest exp)))
-        (= 2 (count exp)) (remove-dots (second exp))
-        :else (error "cannot use dotted notation with more than one subsequent: " exp)))
+        (not (= 2 (count exp))) (error "cannot use dotted notation with more than one subsequent: " exp)
+        (seq? (second exp)) (remove-dots (second exp))
+        :else exp))
 
 
