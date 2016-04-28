@@ -95,7 +95,7 @@
 (defn load-database
   [db]
   (clear-database)
-  (doseq [exp db]
+  (doseq [exp (map query-syntax-process db)]
     (add-rule-or-assertion exp)))
 
 
