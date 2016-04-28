@@ -46,13 +46,13 @@
     (get-indexed-rules pattern)
     (get-all-rules)))
 
-(defn- store-in-index [index o]
-  (if (indexable? o)
+(defn- store-in-index [index o conclusion]
+  (if (indexable? conclusion)
   (dosync
     (alter
       index
       update
-      (index-key-of o)
+      (index-key-of conclusion)
       (fn
         [existing]
         (if existing
@@ -61,10 +61,10 @@
 
 
 (defn- store-assertion-in-index [assertion]
-  (store-in-index assertion-index assertion))
+  (store-in-index assertion-index assertion assertion))
 
 (defn- store-rule-in-index [rule]
-  (store-in-index rule-index rule))
+  (store-in-index rule-index rule (conclusion rule)))
 
 (defn- make-conser
   [to-cons]
