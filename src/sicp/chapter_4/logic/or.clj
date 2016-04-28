@@ -1,10 +1,11 @@
 (ns sicp.chapter-4.logic.or
-  (:use sicp.chapter-4.logic.evaluation))
+  (:use sicp.chapter-4.logic.evaluation)
+  (:use sicp.sequences))
 
 (defn- disjoin [disjuncts frames]
   (if (empty? disjuncts)
     '()
-    (interleave
+    (interleave-all
       (qeval (first disjuncts) frames)
       (disjoin (rest disjuncts) frames))))
 
