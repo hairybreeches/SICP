@@ -127,6 +127,18 @@
     '(big-shot ?person accounting)
     '((big-shot (Scrooge Eben) accounting))))
 
+(deftest meetings-by-day
+  (returns-results
+    '(meeting ?division (Friday ?time))
+    '((meeting administration (Friday 13)))))
+
+(deftest alyssa-wednesday-meetings
+  (returns-results
+    '(and (meeting-time (Hacker Alyssa P) (Wednesday ?time))
+          (meeting ?division (Wednesday ?time)))
+    '((and (meeting-time (Hacker Alyssa P) (Wednesday 15)) (meeting computer (Wednesday 15)))
+      (and (meeting-time (Hacker Alyssa P) (Wednesday 13)) (meeting whole-company (Wednesday 13))))))
+
 
 
 

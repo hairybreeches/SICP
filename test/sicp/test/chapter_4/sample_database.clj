@@ -64,4 +64,17 @@
                (not (and (supervisor ?person ?supervisor)
                          (job ?supervisor (?division . ?supervisor-role))))))
 
+    (meeting accounting (Monday 9))
+    (meeting administration (Monday 10))
+    (meeting computer (Wednesday 15))
+    (meeting administration (Friday 13))
+    (meeting whole-company (Wednesday 13))
+
+    (rule (meeting-time ?person ?day-and-time)
+          (or
+            (meeting whole-company ?day-and-time)
+            (and
+              (job ?person (?division . ?title))
+              (meeting ?division ?day-and-time))))
+
     ))
