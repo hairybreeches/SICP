@@ -1,4 +1,5 @@
 (ns sicp.chapter-4.logic.query-syntax
+  (:use sicp.error)
   (:use sicp.sequences))
 
 (defn query-content
@@ -73,3 +74,13 @@
 (defn make-new-variable
   [variable id]
   (cons '? (cons id (rest variable))))
+
+
+(defn remove-dots
+  [exp]
+  (cond (not (non-empty-seq? exp)) exp
+        (not (= '. (first exp))) (cons (remove-dots (first exp)) (remove-dots (rest exp)))
+        (= 2 (count exp)) (remove-dots (second exp))
+        :else (error "cannot use dotted notation with more than one subsequent: " exp)))
+
+

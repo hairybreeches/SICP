@@ -3,7 +3,8 @@
   (:use sicp.chapter-4.logic.rules)
   (:use sicp.chapter-4.logic.frames)
   (:use sicp.chapter-4.logic.query-syntax)
-  (:use sicp.chapter-4.logic.database))
+  (:use sicp.chapter-4.logic.database)
+  (:use sicp.sequences))
 
 (def pattern-match)
 
@@ -14,7 +15,6 @@
       (pattern-match (binding-value bind) datum frame)
       (exten variable datum frame))))
 
-;todo: doesn't deal with dot notation
 (defn- pattern-match
   [pattern datum frame]
   (cond
@@ -22,7 +22,7 @@
     (= pattern datum) frame
     (variable? pattern) (extend-if-consistent pattern datum frame)
     (and (seq? pattern)
-         (seq? datum)) (pattern-match (rest pattern)
+         (seq? datum)) (pattern-match (scheme-rest pattern)
                                       (rest datum)
                                       (pattern-match
                                         (first pattern)
