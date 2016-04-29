@@ -38,8 +38,8 @@
     (= pattern1 pattern2) frame
     (variable? pattern1) (extend-if-possible pattern1 pattern2 frame)
     (variable? pattern2) (extend-if-possible pattern2 pattern1 frame)
-    (and (seq? pattern1)
-         (seq? pattern2)) (unify-match
+    (and (non-empty-seq? pattern1)
+         (non-empty-seq? pattern2)) (unify-match
                             (scheme-rest pattern1)
                             (scheme-rest pattern2)
                             (unify-match
