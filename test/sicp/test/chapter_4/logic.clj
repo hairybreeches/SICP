@@ -197,9 +197,39 @@
     '(last (2 ?x) (3))
     '((last (2 3) (3)))))
 
+(def bible-characters
+  '((son Adam Cain)
+    (son Cain Enoch)
+    (son Enoch Irad)
+    (son Irad Mehujael)
+    (son Mehujael Methushael)
+    (son Methushael Lamech)
+    (wife Lamech Ada)
+    (son Ada Jabal)
+    (son Ada Jubal)
+    (rule (son ?father ?son)
+          (and (wife ?father ?mother)
+               (son ?mother ?son)))
+    (rule (grandson ?grandfather ?grandson)
+          (and (son ?grandfather ?father)
+               (son ?father ?grandson)))))
 
+(deftest grandsons-of-cain
+  (returns-results
+    bible-characters
+    '(grandson Cain ?x)
+    '((grandson Cain Irad))))
 
+(deftest sons-of-lamech
+  (returns-results
+    bible-characters
+    '(son Lamech ?x)
+    '((son Lamech Jabal)
+      (son Lamech Jubal))))
 
-
-
-
+(deftest grandsons-of-Methushael
+  (returns-results
+    bible-characters
+    '(grandson Methushael ?x)
+    '((grandson Methushael Jabal)
+      (grandson Methushael Jubal))))
