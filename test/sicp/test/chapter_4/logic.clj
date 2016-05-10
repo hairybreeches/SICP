@@ -10,7 +10,7 @@
    (returns-results people query expected-results))
 
   ([db query expected-results]
-   (is-set= (execute-query db query)
+   (is-set= (apply hash-set (execute-query db query))
             (apply hash-set expected-results))))
 
 (deftest retrieve-by-supervisor
