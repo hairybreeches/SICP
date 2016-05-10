@@ -1,4 +1,4 @@
-(ns sicp.test.chapter-4.sample-database)
+(ns sicp.chapter-4.logic.sample-database)
 
 (def people
   '((address (Bitdiddle Ben) (Slumerville (Ridge Road) 10))
