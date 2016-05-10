@@ -174,6 +174,29 @@
     '((1 next-to (2 3) in (1 (2 3) 4))
       ((2 3) next-to 4 in (1 (2 3) 4)))))
 
+(def last-rules
+  '((rule (last (?x) (?x)))
+    (rule (last (?y ?z . ?u) (?x))
+          (last (?z . ?u) (?x)))))
+
+(deftest can-solve-base-case-of-last
+  (returns-results
+    last-rules
+    '(last (3) ?x)
+    '((last (3) (3)))))
+
+(deftest can-reduce-to-last
+  (returns-results
+    last-rules
+    '(last (1 2 3) ?x)
+    '((last (1 2 3) (3)))))
+
+(deftest can-insert-last-element
+  (returns-results
+    last-rules
+    '(last (2 ?x) (3))
+    '((last (2 3) (3)))))
+
 
 
 
