@@ -100,3 +100,12 @@
     (rule (grandson ?grandfather ?grandson)
           (and (son ?grandfather ?father)
                (son ?father ?grandson)))))
+
+(def sequence-operations
+  '((rule (?x next-to ?y in (?x ?y . ?u)))
+    (rule (?x next-to ?y in (?v . ?z))
+          (?x next-to ?y in ?z))
+
+    (rule (last (?x) (?x)))
+    (rule (last (?y ?z . ?u) (?x))
+          (last (?z . ?u) (?x)))))

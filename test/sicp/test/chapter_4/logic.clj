@@ -153,14 +153,9 @@
       (and (lives-near (Bitdiddle Ben) (Aull DeWitt)) (clojure-value sicp.chapter-4.logic.clojure-value/name-before (Bitdiddle Ben) (Aull DeWitt)))
       (and (lives-near (Hacker Alyssa P) (Fect Cy D)) (clojure-value sicp.chapter-4.logic.clojure-value/name-before (Hacker Alyssa P) (Fect Cy D))))))
 
-(def next-to-rules
-  '((rule (?x next-to ?y in (?x ?y . ?u)))
-    (rule (?x next-to ?y in (?v . ?z))
-          (?x next-to ?y in ?z))))
-
 (deftest next-to-1
   (returns-results
-    next-to-rules
+    sequence-operations
     '(?x next-to 1 in (2 1 3 1))
 
     '((2 next-to 1 in (2 1 3 1))
@@ -168,32 +163,27 @@
 
 (deftest next-to-2
   (returns-results
-    next-to-rules
+    sequence-operations
     '(?x next-to ?y in (1 (2 3) 4))
 
     '((1 next-to (2 3) in (1 (2 3) 4))
       ((2 3) next-to 4 in (1 (2 3) 4)))))
 
-(def last-rules
-  '((rule (last (?x) (?x)))
-    (rule (last (?y ?z . ?u) (?x))
-          (last (?z . ?u) (?x)))))
-
 (deftest can-solve-base-case-of-last
   (returns-results
-    last-rules
+    sequence-operations
     '(last (3) ?x)
     '((last (3) (3)))))
 
 (deftest can-reduce-to-last
   (returns-results
-    last-rules
+    sequence-operations
     '(last (1 2 3) ?x)
     '((last (1 2 3) (3)))))
 
 (deftest can-insert-last-element
   (returns-results
-    last-rules
+    sequence-operations
     '(last (2 ?x) (3))
     '((last (2 3) (3)))))
 
