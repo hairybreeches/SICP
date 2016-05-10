@@ -83,3 +83,20 @@
                (not (same ?person1 ?person2))))
 
     ))
+
+(def bible-characters
+  '((son Adam Cain)
+    (son Cain Enoch)
+    (son Enoch Irad)
+    (son Irad Mehujael)
+    (son Mehujael Methushael)
+    (son Methushael Lamech)
+    (wife Lamech Ada)
+    (son Ada Jabal)
+    (son Ada Jubal)
+    (rule (son ?father ?son)
+          (and (wife ?father ?mother)
+               (son ?mother ?son)))
+    (rule (grandson ?grandfather ?grandson)
+          (and (son ?grandfather ?father)
+               (son ?father ?grandson)))))
