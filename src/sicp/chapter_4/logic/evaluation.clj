@@ -23,3 +23,8 @@
 
           :else exp))
 
+(defn prettify
+  [query frame]
+  (remove-dots
+    (instantiate query frame (fn [v f] (contract-question-mark v)))))
+

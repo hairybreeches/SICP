@@ -24,11 +24,6 @@
   (prn)
   (prn output-prompt))
 
-(defn- prettify
-  [query frame]
-  (remove-dots
-    (instantiate query frame (fn [v f] (contract-question-mark v)))))
-
 (defn- execute-expression
   [exp]
   (let [query (query-syntax-process exp)]
