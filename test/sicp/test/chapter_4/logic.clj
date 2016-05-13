@@ -206,3 +206,27 @@
     '(grandson Methushael ?x)
     '((grandson Methushael Jabal)
       (grandson Methushael Jubal))))
+
+(deftest concatenate
+  (returns-results
+    sequence-operations
+    '(append-to-form (a b) (c d) ?z)
+    '((append-to-form (a b) (c d) (a b c d)))))
+
+(deftest find-right-append
+  (returns-results
+    sequence-operations
+    '(append-to-form (a b) ?y (a b c d))
+    '((append-to-form (a b) (c d) (a b c d)))))
+
+(deftest all-concatenating-lists
+  (returns-results
+    sequence-operations
+    '(append-to-form ?x ?y (a b c d))
+    '((append-to-form () (a b c d) (a b c d))
+      (append-to-form (a) (b c d) (a b c d))
+      (append-to-form (a b) (c d) (a b c d))
+      (append-to-form (a b c) (d) (a b c d))
+      (append-to-form (a b c d) () (a b c d)))))
+
+

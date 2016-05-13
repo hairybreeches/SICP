@@ -108,4 +108,8 @@
 
     (rule (last (?x) (?x)))
     (rule (last (?y ?z . ?u) (?x))
-          (last (?z . ?u) (?x)))))
+          (last (?z . ?u) (?x)))
+
+    (rule (append-to-form () ?y ?y))
+    (rule (append-to-form (?u . ?v) ?y (?u . ?z))
+          (append-to-form ?v ?y ?z))))
