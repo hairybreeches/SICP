@@ -235,3 +235,15 @@
       (append-to-form (a b c) (d) (a b c d))
       (append-to-form (a b c d) () (a b c d)))))
 
+(deftest reverse-right
+  (returns-results
+    sequence-operations
+    '(reverse (3 2 1) ?x)
+    '((reverse (3 2 1) (1 2 3)))))
+
+(deftest reverse-left
+  (returns-results
+    sequence-operations
+    '(reverse ?x (1 2 3))
+    '((reverse (3 2 1) (1 2 3)))))
+

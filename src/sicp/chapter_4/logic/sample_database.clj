@@ -112,4 +112,12 @@
 
     (rule (append-to-form () ?y ?y))
     (rule (append-to-form (?u . ?v) ?y (?u . ?z))
-          (append-to-form ?v ?y ?z))))
+          (append-to-form ?v ?y ?z))
+
+    (reverse () ())
+    (rule (reverse ?x ?y)
+          (reverse ?y ?x))
+    (rule (reverse (?x . ?y) ?z)
+          (and
+            (reverse ?y ?rev-y)
+            (append-to-form ?rev-y (?x) ?z)))))
