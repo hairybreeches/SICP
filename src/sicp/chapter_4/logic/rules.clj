@@ -59,6 +59,10 @@
                       (rename-variables-in (rest exp) id))
      :else exp)))
 
+(defn- make-stack-layer
+  [rule-instance rule-general frame]
+  {:rule rule-general
+   :rule-values (instantiate (conclusion rule-instance) frame (fn [v f] '?))})
 
 (defn- apply-a-rule
   [rule pattern frame]
@@ -68,8 +72,11 @@
                                   frame)]
     (if (= unify-result 'failed)
       '()
-      (qeval (rule-body clean-rule)
-             (list unify-result)))))
+      (let [current-stack-layer (make-stack-layer clean-rule rule unify-result)]
+        (if (duplicate-stack-layer? unify-result current-stack-layer)
+          '()
+          (qeval (rule-body clean-rule)
+                 (list (add-stack-layer unify-result current-stack-layer))))))))
 
 (defn apply-rules [pattern frame]
   (mapcat
