@@ -40,7 +40,7 @@
 
 (defn contract-question-mark [variable]
   (symbol (str "?"
-               (if (number? (second variable))
+               (if (= 3 (count variable))
                  (str (nth variable 2)
                       "-"
                       (second variable))
