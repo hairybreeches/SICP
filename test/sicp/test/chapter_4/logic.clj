@@ -235,6 +235,15 @@
       (append-to-form (a b c) (d) (a b c d))
       (append-to-form (a b c d) () (a b c d)))))
 
+(deftest simple-overflow
+  (returns-results
+    '((rule (married ?x ?y)
+            (married ?y ?x))
+      (married mickey minnie))
+    '(married minnie ?x)
+    '((married minnie mickey))))
+
+
 (deftest reverse-right
   (returns-results
     sequence-operations
