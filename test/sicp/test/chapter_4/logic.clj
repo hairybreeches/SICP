@@ -207,6 +207,54 @@
     '((grandson Methushael Jabal)
       (grandson Methushael Jubal))))
 
+(deftest great-grandsons
+  (returns-results
+    bible-characters
+    '((great grandson) ?ggf ?ggs)
+    '(((great grandson) Adam Irad)
+      ((great grandson) Cain Mehujael)
+      ((great grandson) Enoch Methushael)
+      ((great grandson) Irad Lamech)
+      ((great grandson) Mehujael Jabal)
+      ((great grandson) Mehujael Jubal))))
+
+(deftest Adam-Irad-relationship
+  (returns-results
+    bible-characters
+    '(?relationship Adam Irad)
+    '(((great grandson) Adam Irad))))
+
+(deftest Adam-Mehujael-relationship
+  (returns-results
+    bible-characters
+    '(?relationship Adam Mehujael)
+    '(((great great grandson) Adam Mehujael))))
+
+(deftest Cain-Methushael-relationship
+  (returns-results
+    bible-characters
+    '(?relationship Cain Methushael)
+    '(((great great grandson) Cain Methushael))))
+
+(deftest Adam-Methushael-relationship
+  (returns-results
+    bible-characters
+    '(?relationship Adam Methushael)
+    '(((great great great grandson) Adam Methushael))))
+
+(deftest Adam-Jubal-relationship
+  (returns-results
+    bible-characters
+    '(?relationship Adam Jubal)
+    '(((great great great great great grandson) Adam Jubal))))
+
+(deftest Adam-gggggsons
+  (returns-results
+    bible-characters
+    '((great great great great great grandson) Adam ?gggggson)
+    '(((great great great great great grandson) Adam Jubal)
+      ((great great great great great grandson) Adam Jabal))))
+
 (deftest concatenate
   (returns-results
     sequence-operations
@@ -255,4 +303,5 @@
     sequence-operations
     '(reverse ?x (1 2 3))
     '((reverse (3 2 1) (1 2 3)))))
+
 

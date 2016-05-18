@@ -84,23 +84,6 @@
 
     ))
 
-(def bible-characters
-  '((son Adam Cain)
-    (son Cain Enoch)
-    (son Enoch Irad)
-    (son Irad Mehujael)
-    (son Mehujael Methushael)
-    (son Methushael Lamech)
-    (wife Lamech Ada)
-    (son Ada Jabal)
-    (son Ada Jubal)
-    (rule (son ?father ?son)
-          (and (wife ?father ?mother)
-               (son ?mother ?son)))
-    (rule (grandson ?grandfather ?grandson)
-          (and (son ?grandfather ?father)
-               (son ?father ?grandson)))))
-
 (def sequence-operations
   '((rule (?x next-to ?y in (?x ?y . ?u)))
     (rule (?x next-to ?y in (?v . ?z))
@@ -121,3 +104,34 @@
           (and
             (reverse ?y ?rev-y)
             (append-to-form ?rev-y (?x) ?z)))))
+
+(def bible-characters
+  (concat
+    sequence-operations
+    '((son Adam Cain)
+      (son Cain Enoch)
+      (son Enoch Irad)
+      (son Irad Mehujael)
+      (son Mehujael Methushael)
+      (son Methushael Lamech)
+      (wife Lamech Ada)
+      (son Ada Jabal)
+      (son Ada Jubal)
+      (rule (son ?father ?son)
+            (and (wife ?father ?mother)
+                 (son ?mother ?son)))
+      (rule (grandson ?grandfather ?grandson)
+            (and (son ?grandfather ?father)
+                 (son ?father ?grandson)))
+
+      (rule ((great grandson) ?great-grandfather ?great-grandson)
+            (and (son ?great-grandfather ?grandfather)
+                 (grandson ?grandfather ?great-grandson)))
+
+      (rule ((great . ?x) ?ancestor ?descendant)
+            (and
+              (son ?ancestor ?intermediate)
+              (?x ?intermediate ?descendant)
+              (last ?x (grandson))))
+
+      )))
