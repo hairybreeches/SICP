@@ -65,7 +65,7 @@
    :rule-values (instantiate (conclusion rule-instance) frame (fn [v f] '?))})
 
 (defn- apply-a-rule
-  [rule pattern frame]
+  [rule pattern frame rule-stack]
   (let [clean-rule (rename-variables-in rule)
         unify-result (unify-match pattern
                                   (conclusion clean-rule)
@@ -73,12 +73,13 @@
     (if (= unify-result 'failed)
       '()
       (let [current-stack-layer (make-stack-layer clean-rule rule unify-result)]
-        (if (duplicate-stack-layer? unify-result current-stack-layer)
+        (if (duplicate-stack-layer? rule-stack current-stack-layer)
           '()
           (qeval (rule-body clean-rule)
-                 (list (add-stack-layer unify-result current-stack-layer))))))))
+                 (list unify-result)
+                 (cons current-stack-layer rule-stack)))))))
 
-(defn apply-rules [pattern frame]
+(defn apply-rules [pattern frame rule-stack]
   (mapcat
-    (fn [rule] (apply-a-rule rule pattern frame))
+    (fn [rule] (apply-a-rule rule pattern frame rule-stack))
     (fetch-rules pattern frame)))

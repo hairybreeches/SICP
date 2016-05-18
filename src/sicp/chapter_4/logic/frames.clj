@@ -18,11 +18,7 @@
   (assoc frame variable (make-binding variable datum)))
 
 (defn create-empty-frame []
-  {:stack []})
+  {})
 
-(defn duplicate-stack-layer? [frame stack-layer]
-  (some #{stack-layer} (:stack frame)))
-
-(defn add-stack-layer [frame stack-layer]
-  (update-in frame [:stack] (fn [stack] (cons stack-layer stack))))
-
+(defn duplicate-stack-layer? [rule-stack stack-layer]
+  (some #{stack-layer} rule-stack))

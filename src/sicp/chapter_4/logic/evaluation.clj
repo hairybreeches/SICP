@@ -3,13 +3,19 @@
   (:use sicp.chapter-4.logic.frames))
 
 
-(defmulti qeval-dispatch (fn [query-type query frames] query-type))
+(defmulti qeval-dispatch (fn [query-type query frames rule-stack] query-type))
 
-(defn qeval [query frames]
-  (qeval-dispatch
+(defn qeval
+  ([query frames]
+   (qeval query frames '()))
+
+  ([query frames rule-stack]
+
+   (qeval-dispatch
     (query-type query)
     (query-content query)
-    frames))
+    frames
+     rule-stack)))
 
 (defn instantiate [exp frame unbound-var-handler]
   (cond (variable? exp)

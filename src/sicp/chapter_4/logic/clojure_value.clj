@@ -24,5 +24,5 @@
         '()))
     frames))
 
-(defmethod qeval-dispatch 'clojure-value [_ query-pattern frames]
+(defmethod qeval-dispatch 'clojure-value [_ query-pattern frames rule-stack]
   (clojure-value query-pattern frames))
