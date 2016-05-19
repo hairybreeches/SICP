@@ -8,6 +8,7 @@
   (:use sicp.chapter-4.logic.evaluation)
   (:use sicp.chapter-4.logic.query-syntax)
   (:use sicp.chapter-4.logic.database)
+  (:use sicp.chapter-4.logic.unique)
   (:use sicp.chapter-4.logic.frames))
 
 (def input-prompt ";;; Query input:")

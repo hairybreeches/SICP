@@ -304,4 +304,36 @@
     '(reverse ?x (1 2 3))
     '((reverse (3 2 1) (1 2 3)))))
 
+(deftest find-only-computer-wizard
+  (returns-results
+    people
+    '(unique (job ?x (computer wizard)))
+    '((unique (job (Bitdiddle Ben) (computer wizard))))))
+
+(deftest find-only-computer-programmer
+  (returns-results
+    people
+    '(unique (job ?x (computer programmer)))
+    '()))
+
+(deftest find-unique-jobs
+  (returns-results
+    people
+    '(and (job ?x ?job)
+          (unique (job ?anyone ?job)))
+    '((and (job (Reasoner Louis) (computer programmer trainee)) (unique (job (Reasoner Louis) (computer programmer trainee))))
+      (and (job (Tweakit Lem E) (computer technician)) (unique (job (Tweakit Lem E) (computer technician))))
+      (and (job (Warbucks Oliver) (administration big wheel)) (unique (job (Warbucks Oliver) (administration big wheel))))
+      (and (job (Scrooge Eben) (accounting chief accountant)) (unique (job (Scrooge Eben) (accounting chief accountant))))
+      (and (job (Aull DeWitt) (administration secretary)) (unique (job (Aull DeWitt) (administration secretary))))
+      (and (job (Bitdiddle Ben) (computer wizard)) (unique (job (Bitdiddle Ben) (computer wizard))))
+      (and (job (Cratchet Robert) (accounting scrivener)) (unique (job (Cratchet Robert) (accounting scrivener)))))))
+
+(deftest find-people-who-supervise-one-person
+  (returns-results
+    people
+    '(and (job ?supervisor ?role)
+          (unique (supervisor ?x ?supervisor)))
+    '((and (job (Scrooge Eben) (accounting chief accountant)) (unique (supervisor (Cratchet Robert) (Scrooge Eben))))
+      (and (job (Hacker Alyssa P) (computer programmer)) (unique (supervisor (Reasoner Louis) (Hacker Alyssa P)))))))
 
