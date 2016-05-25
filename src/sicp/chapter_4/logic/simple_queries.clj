@@ -13,7 +13,7 @@
   (let [bind (binding-in-frame variable frame)]
     (if bind
       (pattern-match (binding-value bind) datum frame)
-      (exten variable datum frame))))
+      (extend-frame variable datum frame))))
 
 (defn- pattern-match
   [pattern datum frame]

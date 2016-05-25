@@ -14,7 +14,7 @@
 (defn binding-in-frame [k frame]
   (frame k))
 
-(defn exten [variable datum frame]
+(defn extend-frame [variable datum frame]
   (assoc frame variable (make-binding variable datum)))
 
 (defn create-empty-frame []

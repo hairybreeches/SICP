@@ -24,9 +24,9 @@
           (variable? value) (let [bind2 (binding-in-frame value frame)]
                               (if bind2
                                 (unify-match variable (binding-value bind2) frame)
-                                (exten variable value frame)))
+                                (extend-frame variable value frame)))
           (depends-on? value variable frame) 'failed
-          :else (exten variable value frame))))
+          :else (extend-frame variable value frame))))
 
 (defn unify-match
   [pattern1 pattern2 frame]
