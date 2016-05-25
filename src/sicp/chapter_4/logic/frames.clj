@@ -32,3 +32,6 @@
 
 (defn create-empty-frame []
   {})
+
+(defn get-all-bindings [frame]
+  (vals frame))
