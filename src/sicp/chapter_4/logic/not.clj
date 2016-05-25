@@ -1,15 +1,17 @@
 (ns sicp.chapter-4.logic.not
   (:use sicp.chapter-4.logic.evaluation)
-  (:use sicp.chapter-4.logic.query-syntax))
+  (:use sicp.chapter-4.logic.query-syntax)
+  (:use sicp.chapter-4.logic.frames))
 
 (defn- negate [operands frames rule-stack]
   (mapcat
+
     (fn [frame]
-      (if (empty? (qeval (negated-query operands)
-                         (list frame)
-                         rule-stack))
-        (list frame)
-        '()))
+      (add-filter
+        frame
+        (negated-query operands)
+        #(empty? (qeval % (create-empty-frame) rule-stack))))
+
     frames))
 
 

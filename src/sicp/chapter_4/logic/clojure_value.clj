@@ -14,15 +14,13 @@
 
 (defn- clojure-value [call frames]
   (mapcat
+
     (fn [frame]
-      (if (execute
-            (instantiate
-              call
-              frame
-              (fn [v f]
-                (error "unknown pat var: " v))))
-        (list frame)
-        '()))
+      (add-filter
+        frame
+        call
+       execute))
+
     frames))
 
 (defmethod qeval-dispatch 'clojure-value [_ query-pattern frames rule-stack]
