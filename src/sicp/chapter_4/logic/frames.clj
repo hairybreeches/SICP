@@ -19,6 +19,3 @@
 
 (defn create-empty-frame []
   {})
-
-(defn duplicate-stack-layer? [rule-stack stack-layer]
-  (some #{stack-layer} rule-stack))
