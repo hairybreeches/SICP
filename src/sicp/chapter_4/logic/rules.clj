@@ -1,5 +1,6 @@
 (ns sicp.chapter-4.logic.rules
   (:use sicp.chapter-4.logic.query-syntax)
+  (:use sicp.chapter-4.logic.frames)
   (:use sicp.chapter-4.logic.evaluation)
   (:use sicp.chapter-4.logic.database)
   (:use sicp.chapter-4.logic.unification)
