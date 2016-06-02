@@ -56,7 +56,7 @@
 (defn instantiate [exp frame unbound-var-handler]
   (:result (try-instantiate exp frame unbound-var-handler)))
 
-(defn- make-filter
+(s/defn make-filter :- Filter
   [pattern predicate]
   {:pattern pattern :predicate predicate})
 

@@ -1,11 +1,12 @@
 (ns sicp.chapter-4.logic.not
   (:use sicp.chapter-4.logic.evaluation)
   (:use sicp.chapter-4.logic.query-syntax)
-  (:use sicp.chapter-4.logic.frames))
+  (:use sicp.chapter-4.logic.frames)
+  (:require [schema.core :as s]))
 
-(defn- negate [operands frames rule-stack]
+(s/defn negate :- Frame-Stream
+  [operands frames :- Frame-Stream rule-stack]
   (mapcat
-
     (fn [frame]
       (add-filter
         frame
