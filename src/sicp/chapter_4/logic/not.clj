@@ -11,7 +11,7 @@
       (add-filter
         frame
         (negated-query operands)
-        #(empty? (qeval % (create-empty-frame) rule-stack))))
+        #(empty? (qeval % (list (create-empty-frame)) rule-stack))))
 
     frames))
 
