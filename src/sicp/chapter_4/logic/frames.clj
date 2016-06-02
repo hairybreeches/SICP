@@ -75,7 +75,7 @@
       'failed
       (assoc frame :filters (:unknown results)))))
 
-(s/defn extend-frame :- Frame
+(s/defn extend-frame
   [variable datum frame :- Frame]
   (evaluate-filters (assoc frame variable (make-binding variable datum))))
 
