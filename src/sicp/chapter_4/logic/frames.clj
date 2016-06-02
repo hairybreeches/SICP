@@ -7,9 +7,16 @@
   "schema for a variable binding"
   {:value s/Any :variable s/Any})
 
+(def Filter
+  "schema for a filter"
+  {:pattern s/Any :predicate s/Any})
+
 (def Frame
   "schema for a frame"
-  {s/Any Binding})
+  {
+    :filters [Filter]
+    s/Any Binding
+    })
 
 (def Frame-Stream
   "schema for a sequnce of frames"
