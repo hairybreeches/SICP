@@ -35,9 +35,11 @@
               "Assertion added to data base")
 
             :else
-             (map
-                  #(prettify query %)
-                  (qeval query (list (create-empty-frame)))))))
+             (->>
+               (list (create-empty-frame))
+               (qeval query)
+               (filter filters-all-valid)
+               (map #(prettify query %))))))
 
 (defn query-driver-loop []
   (s/with-fn-validation

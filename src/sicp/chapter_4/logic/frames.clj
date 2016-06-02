@@ -69,6 +69,16 @@
         :failure)
       :unknown)))
 
+(defn- force-evaluate-filter
+  [filt frame]
+  ((:predicate filt) (instantiate (:pattern filt) frame (fn [var _] var))))
+
+(s/defn filters-all-valid :- s/Bool
+        [frame :- Frame]
+        (every? #(force-evaluate-filter % frame) (:filters frame)))
+
+
+
 (defn- evaluate-filters [frame]
   (let [results (group-by #(try-evaluate-filter % frame) (:filters frame))]
     (if (contains? results :failure)
