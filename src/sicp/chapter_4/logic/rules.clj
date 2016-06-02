@@ -3,6 +3,7 @@
   (:use sicp.chapter-4.logic.frames)
   (:use sicp.chapter-4.logic.evaluation)
   (:use sicp.chapter-4.logic.database)
+  (:use sicp.chapter-4.logic.rule-stack)
   (:use sicp.chapter-4.logic.unification)
   (:use sicp.sequences)
   (:require [schema.core :as s]))
@@ -15,14 +16,6 @@
      (non-empty-seq? exp) (cons (rename-variables-in (first exp) id)
                       (rename-variables-in (rest exp) id))
      :else exp)))
-
-(s/defn make-stack-layer
-  [rule-instance rule-general frame :- Frame]
-  {:rule rule-general
-   :rule-values (instantiate (conclusion rule-instance) frame (fn [v f] '?))})
-
-(defn- duplicate-stack-layer? [rule-stack stack-layer]
-  (some #{stack-layer} rule-stack))
 
 (s/defn apply-a-rule :- Frame-Stream
   [rule pattern frame :- Frame rule-stack]
