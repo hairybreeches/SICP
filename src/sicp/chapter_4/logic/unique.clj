@@ -1,8 +1,11 @@
 (ns sicp.chapter-4.logic.unique
-  (:use sicp.chapter-4.logic.evaluation))
+  (:use sicp.chapter-4.logic.evaluation)
+  (:use sicp.chapter-4.logic.frames)
+  (:require [schema.core :as s]))
 
 
-(defn- find-unique [pattern frame rule-stack]
+(s/defn find-unique :- Frame-Stream
+        [pattern frame :- Frame rule-stack]
   (let [result (qeval pattern (list frame) rule-stack)]
     (if (= (count result) 1)
       result

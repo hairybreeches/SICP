@@ -4,7 +4,8 @@
   (:use sicp.chapter-4.logic.evaluation)
   (:use sicp.chapter-4.logic.database)
   (:use sicp.chapter-4.logic.unification)
-  (:use sicp.sequences))
+  (:use sicp.sequences)
+  (:require [schema.core :as s]))
 
 (defn- rename-variables-in
   ([rule] (rename-variables-in rule (gensym)))
@@ -15,16 +16,16 @@
                       (rename-variables-in (rest exp) id))
      :else exp)))
 
-(defn- make-stack-layer
-  [rule-instance rule-general frame]
+(s/defn make-stack-layer
+  [rule-instance rule-general frame :- Frame]
   {:rule rule-general
    :rule-values (instantiate (conclusion rule-instance) frame (fn [v f] '?))})
 
 (defn- duplicate-stack-layer? [rule-stack stack-layer]
   (some #{stack-layer} rule-stack))
 
-(defn- apply-a-rule
-  [rule pattern frame rule-stack]
+(s/defn apply-a-rule :- Frame-Stream
+  [rule pattern frame :- Frame rule-stack]
   (let [clean-rule (rename-variables-in rule)
         unify-result (unify-match pattern
                                   (conclusion clean-rule)
@@ -38,7 +39,8 @@
                  (list unify-result)
                  (cons current-stack-layer rule-stack)))))))
 
-(defn apply-rules [pattern frame rule-stack]
+(s/defn apply-rules :- Frame-Stream
+  [pattern frame :- Frame rule-stack]
   (mapcat
     (fn [rule] (apply-a-rule rule pattern frame rule-stack))
     (fetch-rules pattern frame)))

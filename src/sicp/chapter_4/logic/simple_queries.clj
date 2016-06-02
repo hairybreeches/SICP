@@ -4,7 +4,8 @@
   (:use sicp.chapter-4.logic.frames)
   (:use sicp.chapter-4.logic.query-syntax)
   (:use sicp.chapter-4.logic.database)
-  (:use sicp.sequences))
+  (:use sicp.sequences)
+  (:require [schema.core :as s]))
 
 (def pattern-match)
 
@@ -30,18 +31,21 @@
                                         frame))
     :else 'failed))
 
-(defn- check-an-assertion [assertion query-pattern query-frame]
+(s/defn check-an-assertion :- Frame-Stream
+        [assertion query-pattern query-frame :- Frame]
   (let [match-result (pattern-match query-pattern assertion query-frame)]
     (if (= match-result 'failed)
         '()
         (list match-result))))
 
-(defn- find-assertions [pattern frame]
+(s/defn find-assertions
+        [pattern frame :- Frame]
   (mapcat
     (fn [datum] (check-an-assertion datum pattern frame))
     (fetch-assertions pattern frame)))
 
-(defn- evaluate-simple-query [query-pattern frames rule-stack]
+(s/defn evaluate-simple-query
+        [query-pattern frames :- Frame-Stream rule-stack]
   (mapcat
     #(concat
        (find-assertions query-pattern %)

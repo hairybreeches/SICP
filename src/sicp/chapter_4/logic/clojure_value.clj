@@ -2,7 +2,8 @@
   (:use sicp.error)
   (:use sicp.chapter-4.logic.query-syntax)
   (:use sicp.chapter-4.logic.evaluation)
-  (:use sicp.chapter-4.logic.frames))
+  (:use sicp.chapter-4.logic.frames)
+  (:require [schema.core :as s]))
 
 (defn name-before
   [n1 n2]
@@ -12,7 +13,8 @@
   (apply (eval (predicate exp))
          (args exp)))
 
-(defn- clojure-value [call frames]
+(s/defn clojure-value
+  [call frames :- Frame-Stream]
   (mapcat
     (fn [frame]
       (if (execute

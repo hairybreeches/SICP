@@ -1,21 +1,37 @@
 (ns sicp.chapter-4.logic.frames
-  (:use sicp.chapter-4.logic.query-syntax))
+  (:use sicp.chapter-4.logic.query-syntax)
+  (:require [schema.core :as s]))
 
-(defn binding-value [bind]
+
+(def Binding
+  "schema for a variable binding"
+  {:value s/Any :variable s/Any})
+
+(def Frame
+  "schema for a frame"
+  {s/Any Binding})
+
+(def Frame-Stream
+  "schema for a sequnce of frames"
+  [Frame])
+
+(s/defn binding-value
+        [bind :- Binding]
   (:value bind))
 
-(defn binding-variable
-  [bind]
+(s/defn binding-variable
+  [bind :- Binding]
   (:variable bind))
 
-(defn make-binding
+(s/defn make-binding :- Binding
   [variable value]
   {:variable variable :value value})
 
-(defn binding-in-frame [k frame]
+(s/defn binding-in-frame
+  [k frame :- Frame]
   (frame k))
 
-(defn instantiate [exp frame unbound-var-handler]
+(s/defn instantiate [exp frame :- Frame unbound-var-handler]
   (cond (variable? exp)
         (let [result (binding-in-frame exp frame)]
           (if result
@@ -27,8 +43,10 @@
 
           :else exp))
 
-(defn extend-frame [variable datum frame]
-  (assoc frame variable (make-binding variable datum)))
+(s/defn extend-frame :- Frame
+  [variable datum frame :- Frame]
+    (assoc frame variable (make-binding variable datum)))
 
-(defn create-empty-frame []
+(s/defn create-empty-frame :- Frame
+  []
   {})

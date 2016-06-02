@@ -9,7 +9,8 @@
   (:use sicp.chapter-4.logic.query-syntax)
   (:use sicp.chapter-4.logic.database)
   (:use sicp.chapter-4.logic.unique)
-  (:use sicp.chapter-4.logic.frames))
+  (:use sicp.chapter-4.logic.frames)
+  (:require [schema.core :as s]))
 
 (def input-prompt ";;; Query input:")
 (def output-prompt ";;; Query results:")
@@ -39,14 +40,16 @@
                   (qeval query (list (create-empty-frame)))))))
 
 (defn query-driver-loop []
-  (loop []
-    (prompt-for-input)
-    (let [input (read)]
-      (announce-output (execute-expression input))
-      (recur))))
+  (s/with-fn-validation
+    (loop []
+      (prompt-for-input)
+      (let [input (read)]
+        (announce-output (execute-expression input))
+        (recur)))))
 
 (defn execute-query [data query]
-  (clear-database)
-  (load-database data)
-  (execute-expression query))
+  (s/with-fn-validation
+    (clear-database)
+    (load-database data)
+    (execute-expression query)))
 
