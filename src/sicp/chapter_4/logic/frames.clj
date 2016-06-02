@@ -3,13 +3,16 @@
   (:require [schema.core :as s]))
 
 
+(def Variable-Name
+  [s/Symbol])
+
 (def Binding
   "schema for a variable binding"
-  {:value s/Any :variable s/Any})
+  {:value s/Any :variable Variable-Name})
 
 (def Frame
   "schema for a frame"
-  {s/Any Binding})
+  {Variable-Name Binding})
 
 (def Frame-Stream
   "schema for a sequnce of frames"
@@ -19,19 +22,21 @@
         [bind :- Binding]
   (:value bind))
 
-(s/defn binding-variable
-  [bind :- Binding]
-  (:variable bind))
-
 (s/defn make-binding :- Binding
-  [variable value]
+  [variable :- Variable-Name
+   value]
   {:variable variable :value value})
 
-(s/defn binding-in-frame
-  [k frame :- Frame]
+(s/defn binding-in-frame :- (s/maybe Binding)
+  [k :- Variable-Name
+   frame :- Frame]
   (frame k))
 
-(s/defn instantiate [exp frame :- Frame unbound-var-handler]
+(s/defn instantiate
+        [exp
+         frame :- Frame
+         unbound-var-handler]
+
   (cond (variable? exp)
         (let [result (binding-in-frame exp frame)]
           (if result
@@ -44,7 +49,9 @@
           :else exp))
 
 (s/defn extend-frame :- Frame
-  [variable datum frame :- Frame]
+  [variable :- Variable-Name
+   datum
+   frame :- Frame]
     (assoc frame variable (make-binding variable datum)))
 
 (s/defn create-empty-frame :- Frame
