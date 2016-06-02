@@ -4,7 +4,8 @@
   (:use sicp.chapter-4.logic.evaluation))
 
 (s/defn always-true
-        [ignore frames :- Frame-Stream]
+        [ignore
+         frames :- Frame-Stream]
   frames)
 
 (defmethod qeval-dispatch 'always-true

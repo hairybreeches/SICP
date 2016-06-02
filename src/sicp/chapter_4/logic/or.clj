@@ -2,10 +2,13 @@
   (:use sicp.chapter-4.logic.evaluation)
   (:use sicp.sequences)
   (:use sicp.chapter-4.logic.frames)
+  (:use sicp.chapter-4.logic.rule-stack)
   (:require [schema.core :as s]))
 
 (s/defn disjoin :- Frame-Stream
-  [disjuncts frames :- Frame-Stream rule-stack]
+  [disjuncts
+   frames :- Frame-Stream
+   rule-stack :- Rule-Stack]
   (if (empty? disjuncts)
     '()
     (interleave-all

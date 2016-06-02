@@ -14,7 +14,8 @@
          (args exp)))
 
 (s/defn clojure-value
-  [call frames :- Frame-Stream]
+  [call
+   frames :- Frame-Stream]
   (mapcat
     (fn [frame]
       (if (execute

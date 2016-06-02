@@ -18,7 +18,10 @@
      :else exp)))
 
 (s/defn apply-a-rule :- Frame-Stream
-  [rule pattern frame :- Frame rule-stack]
+  [rule
+   pattern
+   frame :- Frame
+   rule-stack :- Rule-Stack]
   (let [clean-rule (rename-variables-in rule)
         unify-result (unify-match pattern
                                   (conclusion clean-rule)
@@ -33,7 +36,9 @@
                  (cons current-stack-layer rule-stack)))))))
 
 (s/defn apply-rules :- Frame-Stream
-  [pattern frame :- Frame rule-stack]
+  [pattern
+   frame :- Frame
+   rule-stack :- Rule-Stack]
   (mapcat
     (fn [rule] (apply-a-rule rule pattern frame rule-stack))
     (fetch-rules pattern frame)))

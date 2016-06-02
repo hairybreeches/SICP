@@ -3,10 +3,19 @@
   (:use sicp.chapter-4.logic.frames)
   (:require [schema.core :as s]))
 
-(s/defn make-stack-layer
+(def Rule-Stack-Layer
+  {:rule s/Any
+   :rule-values s/Any})
+
+(def Rule-Stack
+  [Rule-Stack-Layer])
+
+(s/defn make-stack-layer :- Rule-Stack-Layer
   [rule-instance rule-general frame :- Frame]
   {:rule rule-general
    :rule-values (instantiate (conclusion rule-instance) frame (fn [v f] '?))})
 
-(defn duplicate-stack-layer? [rule-stack stack-layer]
+(s/defn duplicate-stack-layer?
+  [rule-stack :- Rule-Stack
+   stack-layer :- Rule-Stack-Layer]
   (some #{stack-layer} rule-stack))

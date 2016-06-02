@@ -1,9 +1,13 @@
 (ns sicp.chapter-4.logic.and
+  (:use sicp.chapter-4.logic.rule-stack)
   (:use sicp.chapter-4.logic.frames)
   (:require [schema.core :as s])
   (:use sicp.chapter-4.logic.evaluation))
 
-(s/defn conjoin [conjuncts frames :- Frame-Stream rule-stack]
+(s/defn conjoin
+        [conjuncts
+         frames :- Frame-Stream
+         rule-stack :- Rule-Stack]
   (loop [conjuncts conjuncts
          frames frames]
     (if (empty? conjuncts)
