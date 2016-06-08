@@ -5,15 +5,16 @@
   (:use sicp.chapter-4.logic.rule-stack)
   (:require [schema.core :as s]))
 
-(s/defn disjoin :- Frame-Stream
-  [disjuncts
-   frames :- Frame-Stream
-   rule-stack :- Rule-Stack]
-  (if (empty? disjuncts)
-    '()
-    (interleave-all
-      (qeval (first disjuncts) frames rule-stack)
-      (disjoin (rest disjuncts) frames rule-stack))))
+(s/defn analyse-or
+        [or-statements]
+        (let [analysed-statements (map analyse or-statements)]
+          (s/fn :- Frame-Stream
+          [frames :- Frame-Stream
+           rule-stack :- Rule-Stack]
+          (->>
+            analysed-statements
+            (map #(% frames rule-stack))
+            (apply interleave-all)))))
 
-(defmethod qeval-dispatch 'or [_ query-pattern frames rule-stack]
-  (disjoin query-pattern frames rule-stack))
+(defmethod analyse-dispatch 'or [_ query-pattern]
+  (analyse-or query-pattern))

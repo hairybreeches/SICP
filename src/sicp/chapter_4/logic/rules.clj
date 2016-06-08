@@ -31,7 +31,7 @@
       (let [current-stack-layer (make-stack-layer clean-rule rule unify-result)]
         (if (duplicate-stack-layer? rule-stack current-stack-layer)
           '()
-          (qeval (rule-body clean-rule)
+          ((analyse (rule-body clean-rule))
                  (list unify-result)
                  (cons current-stack-layer rule-stack)))))))
 

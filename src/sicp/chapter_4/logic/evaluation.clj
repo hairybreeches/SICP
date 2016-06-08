@@ -5,22 +5,13 @@
   (:require [schema.core :as s]))
 
 
-(defmulti qeval-dispatch (fn [query-type query frames rule-stack] query-type))
+(defmulti analyse-dispatch (fn [query-type query] query-type))
 
-(s/defn qeval :- Frame-Stream
-  ([query
-    frames :- Frame-Stream]
-   (qeval query frames '()))
-
-  ([query
-    frames :- Frame-Stream
-    rule-stack :- Rule-Stack]
-
-   (qeval-dispatch
+(s/defn analyse
+  ([query]
+   (analyse-dispatch
     (query-type query)
-    (query-content query)
-    frames
-     rule-stack)))
+    (query-content query))))
 
 (s/defn prettify
   [query

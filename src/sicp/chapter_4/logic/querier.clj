@@ -37,7 +37,7 @@
             :else
              (map
                   #(prettify query %)
-                  (qeval query (list (create-empty-frame)))))))
+                  ((analyse query) (list (create-empty-frame)) '())))))
 
 (defn query-driver-loop []
   (s/with-fn-validation

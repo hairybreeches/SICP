@@ -6,14 +6,21 @@
 
 
 (s/defn find-unique :- Frame-Stream
-        [pattern
+        [fun
          frame :- Frame
          rule-stack :- Rule-Stack]
 
-  (let [result (qeval pattern (list frame) rule-stack)]
+  (let [result (fun (list frame) rule-stack)]
     (if (= (count result) 1)
       result
       '())))
 
-(defmethod qeval-dispatch 'unique [_ query-pattern frames rule-stack]
-  (mapcat #(find-unique (first query-pattern) % rule-stack) frames))
+(s/defn analyse-unique [unique-statement]
+        (let [analysed-statement (analyse unique-statement)]
+        (s/fn :- Frame-Stream
+          [frames :- Frame-Stream
+           rule-stack :- Rule-Stack]
+              (mapcat #(find-unique analysed-statement % rule-stack) frames))))
+
+(defmethod analyse-dispatch 'unique [_ query-pattern]
+  (analyse-unique (first query-pattern)))

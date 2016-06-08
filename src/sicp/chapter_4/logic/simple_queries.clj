@@ -47,16 +47,17 @@
     (fn [datum] (check-an-assertion datum pattern frame))
     (fetch-assertions pattern frame)))
 
-(s/defn evaluate-simple-query
-        [query-pattern
-         frames :- Frame-Stream
-         rule-stack :- Rule-Stack]
-  (mapcat
-    #(concat
-       (find-assertions query-pattern %)
-       (apply-rules query-pattern % rule-stack))
-    frames))
+(s/defn analyse-simple-query
+        [query-pattern]
+        (s/fn :- Frame-Stream
+              [frames :- Frame-Stream
+               rule-stack :- Rule-Stack]
+              (mapcat
+                #(concat
+                   (find-assertions query-pattern %)
+                   (apply-rules query-pattern % rule-stack))
+                frames)))
 
-(defmethod qeval-dispatch :default [query-type query-pattern frames rule-stack]
-  (evaluate-simple-query (cons query-type query-pattern) frames rule-stack))
+(defmethod analyse-dispatch :default [query-type query-pattern]
+  (analyse-simple-query (cons query-type query-pattern)))
 

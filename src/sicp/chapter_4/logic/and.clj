@@ -4,19 +4,23 @@
   (:require [schema.core :as s])
   (:use sicp.chapter-4.logic.evaluation))
 
-(s/defn conjoin
-        [conjuncts
-         frames :- Frame-Stream
-         rule-stack :- Rule-Stack]
-  (loop [conjuncts conjuncts
-         frames frames]
-    (if (empty? conjuncts)
-        frames
-      (recur (rest conjuncts)
-             (qeval (first conjuncts)
-                    frames
-                    rule-stack)))))
+(defn- analyse-and
+  [statements]
+  (let [and-functions (map analyse statements)]
+    (reduce
+      (fn [and-statement-so-far next-statement]
 
-(defmethod qeval-dispatch 'and [_ query-pattern frames rule-stack]
-  (conjoin query-pattern frames rule-stack))
+        (s/fn :- Frame-Stream
+          [frames :- Frame-Stream
+           rule-stack :- Rule-Stack]
+
+          (next-statement
+            (and-statement-so-far frames rule-stack)
+            rule-stack)))
+
+        and-functions)))
+
+
+(defmethod analyse-dispatch 'and [_ query-pattern]
+  (analyse-and query-pattern))
 

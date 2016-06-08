@@ -5,19 +5,17 @@
   (:use sicp.chapter-4.logic.rule-stack)
   (:require [schema.core :as s]))
 
-(s/defn negate :- Frame-Stream
-  [operands
-   frames :- Frame-Stream
-   rule-stack :- Rule-Stack]
-  (mapcat
-    (fn [frame]
-      (if (empty? (qeval (negated-query operands)
-                         (list frame)
-                         rule-stack))
-        (list frame)
-        '()))
-    frames))
+(s/defn analyse-not
+  [query-to-negate]
+        (let [analysed-query (analyse query-to-negate)]
+          (s/fn :- Frame-Stream
+                [frames :- Frame-Stream
+                 rule-stack :- Rule-Stack]
+                (filter
+                  (fn [frame]
+                    (empty? (analysed-query (list frame) rule-stack)))
+                  frames))))
 
 
-(defmethod qeval-dispatch 'not [_ query-pattern frames rule-stack]
-  (negate query-pattern frames rule-stack))
+(defmethod analyse-dispatch 'not [_ query-pattern]
+  (analyse-not (negated-query query-pattern)))

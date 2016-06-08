@@ -3,6 +3,7 @@
   (:use sicp.chapter-4.logic.query-syntax)
   (:use sicp.chapter-4.logic.evaluation)
   (:use sicp.chapter-4.logic.frames)
+  (:use sicp.chapter-4.logic.rule-stack)
   (:require [schema.core :as s]))
 
 (defn name-before
@@ -13,20 +14,26 @@
   (apply (eval (predicate exp))
          (args exp)))
 
-(s/defn clojure-value
+(s/defn
+  evaluate
   [call
-   frames :- Frame-Stream]
-  (mapcat
-    (fn [frame]
-      (if (execute
-            (instantiate
-              call
-              frame
-              (fn [v f]
-                (error "unknown pat var: " v))))
-        (list frame)
-        '()))
-    frames))
+   frame :- Frame]
+  (execute
+    (instantiate
+      call
+      frame
+      (fn [v f]
+        (error "unknown pat var: " v)))))
 
-(defmethod qeval-dispatch 'clojure-value [_ query-pattern frames rule-stack]
-  (clojure-value query-pattern frames))
+(s/defn
+  analyse-clojure-value
+  [exp]
+  (s/fn :- Frame-Stream
+    [frames :- Frame-Stream
+     rule-stack :- Rule-Stack]
+    (filter
+      (partial evaluate exp)
+      frames)))
+
+(defmethod analyse-dispatch 'clojure-value [_ query-pattern]
+  (analyse-clojure-value query-pattern))
