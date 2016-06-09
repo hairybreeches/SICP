@@ -14,10 +14,6 @@
   "schema for a frame"
   {Variable-Name Binding})
 
-(def Frame-Stream
-  "schema for a sequnce of frames"
-  [Frame])
-
 (s/defn binding-value
         [bind :- Binding]
   (:value bind))

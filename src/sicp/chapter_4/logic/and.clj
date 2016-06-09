@@ -4,22 +4,38 @@
   (:require [schema.core :as s])
   (:use sicp.chapter-4.logic.evaluation))
 
+
+(defn- combine-and-functions
+  [and-functions]
+  (if (empty? and-functions)
+    (s/fn
+      [frame :- Frame
+       rule-stack :- Rule-Stack
+       succeed
+       fail]
+      (succeed frame rule-stack fail))
+
+    (let [rest-function (combine-and-functions (rest and-functions))]
+      (s/fn
+        [frame :- Frame
+         rule-stack :- Rule-Stack
+         succeed
+         fail]
+
+        ((first and-functions)
+         frame
+         rule-stack
+         (s/fn [frame :- Frame
+              rule-stack :- Rule-Stack
+              fail2]
+
+           (rest-function frame rule-stack succeed fail2))
+           fail)))))
+
+
 (defn- analyse-and
   [statements]
-  (let [and-functions (map analyse statements)]
-    (reduce
-      (fn [and-statement-so-far next-statement]
-
-        (s/fn :- Frame-Stream
-          [frames :- Frame-Stream
-           rule-stack :- Rule-Stack]
-
-          (next-statement
-            (and-statement-so-far frames rule-stack)
-            rule-stack)))
-
-        and-functions)))
-
+  (combine-and-functions (map analyse statements)))
 
 (defmethod analyse-dispatch 'and [_ query-pattern]
   (analyse-and query-pattern))

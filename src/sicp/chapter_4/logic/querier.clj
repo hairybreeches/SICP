@@ -14,6 +14,9 @@
 
 (def input-prompt ";;; Query input:")
 (def output-prompt ";;; Query results:")
+(def new-problem ";;; Starting a new problem")
+(def end-problem ";;; There are no more values of:")
+(def no-problem ";;; There is no current problem")
 
 (defn- prompt-for-input
   []
@@ -26,30 +29,76 @@
   (prn)
   (prn output-prompt))
 
+(defn- announce-new-problem
+  []
+  (prn)
+  (prn new-problem))
+
+(defn- announce-end
+  [input]
+  (prn)
+  (prn end-problem)
+  (prn input))
+
+(defn- announce-no-problem
+  []
+  (prn)
+  (prn no-problem))
+
+
+
 (defn- execute-expression
-  [exp]
-  (let [query (query-syntax-process exp)]
-      (cond (assertion-to-be-added? query)
-            (do
-              (add-rule-or-assertion (add-assertion-body query))
-              "Assertion added to data base")
+  ([data query success fail]
+   (s/with-fn-validation
+     (clear-database)
+     (load-database data)
+     (execute-expression query success fail)))
 
-            :else
-             (map
-                  #(prettify query %)
-                  ((analyse query) (list (create-empty-frame)) '())))))
+  ([exp success fail]
+   (let [query (query-syntax-process exp)]
+     (cond (assertion-to-be-added? query)
+           (do
+             (add-rule-or-assertion (add-assertion-body query))
+             "Assertion added to data base")
 
-(defn query-driver-loop []
-  (s/with-fn-validation
-    (loop []
-      (prompt-for-input)
-      (let [input (read)]
-        (announce-output (execute-expression input))
-        (recur)))))
+           :else
+             ((analyse query)
+              (create-empty-frame)
+              '()
+              (fn [frame rule-stack fail2]
+                (success (prettify query frame) rule-stack fail2))
+              fail)))))
 
-(defn execute-query [data query]
-  (s/with-fn-validation
-    (clear-database)
-    (load-database data)
-    (execute-expression query)))
+(defn- iterate-over-results
+  [state]
+  ((:try-again @state))
+  (if
+    (:success @state)
+    (cons (:current-result @state) (lazy-seq (iterate-over-results state)))
+    '()))
 
+;surely there's a better way?
+(defn execute-query
+  [data query]
+  (let [state (ref false)]
+    (dosync
+      (ref-set
+        state
+        {
+          :try-again
+          (fn [] (execute-expression
+                   data
+                   query
+                   (fn [result rule-stack do-next]
+                     (dosync
+                       (ref-set state
+                                {
+                                  :current-result result
+                                  :try-again do-next
+                                  :success true
+                                  })))
+                   (fn []
+                     (dosync
+                       (ref-set state { :success false })))))}))
+
+    (iterate-over-results state)))

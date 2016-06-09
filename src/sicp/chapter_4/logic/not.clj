@@ -6,15 +6,24 @@
   (:require [schema.core :as s]))
 
 (s/defn analyse-not
-  [query-to-negate]
+        [query-to-negate]
         (let [analysed-query (analyse query-to-negate)]
-          (s/fn :- Frame-Stream
-                [frames :- Frame-Stream
-                 rule-stack :- Rule-Stack]
-                (filter
-                  (fn [frame]
-                    (empty? (analysed-query (list frame) rule-stack)))
-                  frames))))
+          (s/fn
+            [frame :- Frame
+             rule-stack :- Rule-Stack
+             success
+             fail]
+            (analysed-query
+              frame
+              rule-stack
+              (s/fn
+                [frame :- Frame
+                 rule-stack :- Rule-Stack
+                 fail2]
+                (fail))
+
+              (fn []
+                (success frame rule-stack fail))))))
 
 
 (defmethod analyse-dispatch 'not [_ query-pattern]

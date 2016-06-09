@@ -28,12 +28,14 @@
 (s/defn
   analyse-clojure-value
   [exp]
-  (s/fn :- Frame-Stream
-    [frames :- Frame-Stream
-     rule-stack :- Rule-Stack]
-    (filter
-      (partial evaluate exp)
-      frames)))
+  (s/fn
+    [frame
+     rule-stack :- Rule-Stack
+     succeed
+     fail]
+    (if (evaluate exp frame)
+      (succeed frame rule-stack fail)
+      (fail))))
 
 (defmethod analyse-dispatch 'clojure-value [_ query-pattern]
   (analyse-clojure-value query-pattern))

@@ -32,31 +32,73 @@
                                         frame))
     :else 'failed))
 
-(s/defn check-an-assertion :- Frame-Stream
-        [assertion query-pattern query-frame :- Frame]
+(s/defn check-an-assertion
+        [assertion
+         query-pattern
+         query-frame :- Frame
+         rule-stack :- Rule-Stack
+         success
+         fail]
+
   (let [match-result (pattern-match query-pattern assertion query-frame)]
     (if (= match-result 'failed)
-        '()
-        (list match-result))))
+        (fail)
+        (success match-result rule-stack fail))))
+
+
+(s/defn check-assertions
+        [assertions
+         pattern
+         frame :- Frame
+         rule-stack :- Rule-Stack
+         success
+         fail]
+        (if (empty? assertions)
+          (fail)
+          (check-an-assertion
+            (first assertions)
+            pattern
+            frame
+            rule-stack
+            success
+            (fn []
+              (check-assertions
+                (rest assertions)
+                pattern
+                frame
+                rule-stack
+                success
+                fail)))))
 
 (s/defn find-assertions
         [pattern
-         frame :- Frame]
+         frame :- Frame
+         rule-stack :- Rule-Stack
+         success
+         fail]
 
-  (mapcat
-    (fn [datum] (check-an-assertion datum pattern frame))
-    (fetch-assertions pattern frame)))
+        (let [assertions (fetch-assertions pattern frame)]
+          (check-assertions assertions pattern frame rule-stack success fail)))
 
 (s/defn analyse-simple-query
         [query-pattern]
-        (s/fn :- Frame-Stream
-              [frames :- Frame-Stream
-               rule-stack :- Rule-Stack]
-              (mapcat
-                #(concat
-                   (find-assertions query-pattern %)
-                   (apply-rules query-pattern % rule-stack))
-                frames)))
+        (s/fn
+              [frame :- Frame
+               rule-stack :- Rule-Stack
+               success
+               fail]
+          (find-assertions
+            query-pattern
+            frame
+            rule-stack
+            success
+            (fn []
+              (apply-rules
+                query-pattern
+                frame
+                rule-stack
+                success
+                fail)))))
 
 (defmethod analyse-dispatch :default [query-type query-pattern]
   (analyse-simple-query (cons query-type query-pattern)))

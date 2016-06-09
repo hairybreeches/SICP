@@ -10,4 +10,5 @@
                 ]
   :main ^:skip-aot sicp.core
   :target-path "target/%s"
-  :profiles {:uberjar {:aot :all}})
+  :profiles {:uberjar {:aot :all}}
+  :jvm-opts ["-Xss515m"])

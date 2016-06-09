@@ -4,10 +4,12 @@
   (:use sicp.chapter-4.logic.evaluation)
   (:use sicp.chapter-4.logic.rule-stack))
 
-(s/defn always-true :- Frame-Stream
-        [frames :- Frame-Stream
-         rule-stack :- Rule-Stack]
-  frames)
+(s/defn always-true
+        [frame :- Frame
+         rule-stack :- Rule-Stack
+         succeed
+         fail]
+  (succeed frame rule-stack fail))
 
 (defmethod analyse-dispatch 'always-true
   [_ query-pattern]

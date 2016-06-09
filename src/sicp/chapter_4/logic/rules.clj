@@ -17,28 +17,59 @@
                       (rename-variables-in (rest exp) id))
      :else exp)))
 
-(s/defn apply-a-rule :- Frame-Stream
+(s/defn apply-a-rule
   [rule
    pattern
    frame :- Frame
-   rule-stack :- Rule-Stack]
+   rule-stack :- Rule-Stack
+   success
+   fail]
+
   (let [clean-rule (rename-variables-in rule)
         unify-result (unify-match pattern
                                   (conclusion clean-rule)
                                   frame)]
     (if (= unify-result 'failed)
-      '()
+      (fail)
       (let [current-stack-layer (make-stack-layer clean-rule rule unify-result)]
         (if (duplicate-stack-layer? rule-stack current-stack-layer)
-          '()
+          (fail)
           ((analyse (rule-body clean-rule))
-                 (list unify-result)
-                 (cons current-stack-layer rule-stack)))))))
+           unify-result
+          (cons current-stack-layer rule-stack)
+           success
+           fail))))))
 
-(s/defn apply-rules :- Frame-Stream
+(s/defn apply-these-rules
+        [rules
+         pattern
+         frame :- Frame
+         rule-stack :- Rule-Stack
+         success
+         fail]
+
+        (if (empty? rules)
+          (fail)
+          (apply-a-rule
+            (first rules)
+            pattern
+            frame
+            rule-stack
+            success
+            (fn []
+              (apply-these-rules
+                (rest rules)
+                pattern
+                frame
+                rule-stack
+                success
+                fail)))))
+
+(s/defn apply-rules
   [pattern
    frame :- Frame
-   rule-stack :- Rule-Stack]
-  (mapcat
-    (fn [rule] (apply-a-rule rule pattern frame rule-stack))
-    (fetch-rules pattern frame)))
+   rule-stack :- Rule-Stack
+   success
+   fail]
+        (let [rules (fetch-rules pattern frame)]
+          (apply-these-rules rules pattern frame rule-stack success fail)))

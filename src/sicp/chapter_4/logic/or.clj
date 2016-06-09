@@ -5,16 +5,33 @@
   (:use sicp.chapter-4.logic.rule-stack)
   (:require [schema.core :as s]))
 
+(defn- combine-or-functions
+  [or-functions]
+  (if (empty? or-functions)
+    (s/fn
+      [frame :- Frame
+       rule-stack :- Rule-Stack
+       success
+       fail]
+      (fail))
+
+    (let [rest-function (combine-or-functions (rest or-functions))]
+          (s/fn
+      [frame :- Frame
+       rule-stack :- Rule-Stack
+       success
+       fail]
+
+      ((first or-functions)
+       frame
+       rule-stack
+       success
+       (fn [] (rest-function frame rule-stack success fail)))))))
+
+
 (s/defn analyse-or
         [or-statements]
-        (let [analysed-statements (map analyse or-statements)]
-          (s/fn :- Frame-Stream
-          [frames :- Frame-Stream
-           rule-stack :- Rule-Stack]
-          (->>
-            analysed-statements
-            (map #(% frames rule-stack))
-            (apply interleave-all)))))
+        (combine-or-functions (map analyse or-statements)))
 
 (defmethod analyse-dispatch 'or [_ query-pattern]
   (analyse-or query-pattern))
