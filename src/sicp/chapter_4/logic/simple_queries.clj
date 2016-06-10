@@ -36,21 +36,19 @@
         [assertion
          query-pattern
          query-frame :- Frame
-         rule-stack :- Rule-Stack
          success
          fail]
 
   (let [match-result (pattern-match query-pattern assertion query-frame)]
     (if (= match-result 'failed)
         (fail)
-        (success match-result rule-stack fail))))
+        (success match-result fail))))
 
 
 (s/defn check-assertions
         [assertions
          pattern
          frame :- Frame
-         rule-stack :- Rule-Stack
          success
          fail]
         (if (empty? assertions)
@@ -59,26 +57,23 @@
             (first assertions)
             pattern
             frame
-            rule-stack
             success
             (fn []
               (check-assertions
                 (rest assertions)
                 pattern
                 frame
-                rule-stack
                 success
                 fail)))))
 
 (s/defn find-assertions
         [pattern
          frame :- Frame
-         rule-stack :- Rule-Stack
          success
          fail]
 
         (let [assertions (fetch-assertions pattern frame)]
-          (check-assertions assertions pattern frame rule-stack success fail)))
+          (check-assertions assertions pattern frame success fail)))
 
 (s/defn analyse-simple-query
         [query-pattern]
@@ -90,7 +85,6 @@
           (find-assertions
             query-pattern
             frame
-            rule-stack
             success
             (fn []
               (apply-rules

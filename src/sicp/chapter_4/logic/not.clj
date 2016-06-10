@@ -18,12 +18,11 @@
               rule-stack
               (s/fn
                 [frame :- Frame
-                 rule-stack :- Rule-Stack
                  fail2]
                 (fail))
 
               (fn []
-                (success frame rule-stack fail))))))
+                (success frame fail))))))
 
 
 (defmethod analyse-dispatch 'not [_ query-pattern]

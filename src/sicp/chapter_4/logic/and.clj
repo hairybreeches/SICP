@@ -13,7 +13,7 @@
        rule-stack :- Rule-Stack
        succeed
        fail]
-      (succeed frame rule-stack fail))
+      (succeed frame fail))
 
     (let [rest-function (combine-and-functions (rest and-functions))]
       (s/fn
@@ -26,8 +26,7 @@
          frame
          rule-stack
          (s/fn [frame :- Frame
-              rule-stack2 :- Rule-Stack
-              fail2]
+                fail2]
 
            (rest-function frame rule-stack succeed fail2))
            fail)))))

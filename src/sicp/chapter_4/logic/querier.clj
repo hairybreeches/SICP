@@ -65,8 +65,8 @@
              ((analyse query)
               (create-empty-frame)
               '()
-              (fn [frame rule-stack fail2]
-                (success (prettify query frame) rule-stack fail2))
+              (fn [frame fail2]
+                (success (prettify query frame) fail2))
               fail)))))
 
 (defn- iterate-over-results
@@ -89,7 +89,7 @@
           (fn [] (execute-expression
                    data
                    query
-                   (fn [result rule-stack do-next]
+                   (fn [result do-next]
                      (dosync
                        (ref-set state
                                 {

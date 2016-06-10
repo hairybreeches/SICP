@@ -34,7 +34,7 @@
      succeed
      fail]
     (if (evaluate exp frame)
-      (succeed frame rule-stack fail)
+      (succeed frame fail)
       (fail))))
 
 (defmethod analyse-dispatch 'clojure-value [_ query-pattern]

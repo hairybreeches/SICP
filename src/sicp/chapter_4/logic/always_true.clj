@@ -9,7 +9,7 @@
          rule-stack :- Rule-Stack
          succeed
          fail]
-  (succeed frame rule-stack fail))
+  (succeed frame fail))
 
 (defmethod analyse-dispatch 'always-true
   [_ query-pattern]
