@@ -59,7 +59,7 @@
      (cond (assertion-to-be-added? query)
            (do
              (add-rule-or-assertion (add-assertion-body query))
-             "Assertion added to data base")
+             (success "Assertion added to data base" fail))
 
            :else
              ((analyse query)
@@ -102,3 +102,27 @@
                        (ref-set state { :success false })))))}))
 
     (iterate-over-results state)))
+
+(defn driver-loop
+
+  ([]
+   (driver-loop
+     (fn [] (announce-no-problem) (driver-loop))))
+
+  ([try-again]
+      (prompt-for-input)
+      (let [input (read)]
+        (if
+          (= input 'try-again)
+          (try-again)
+          (do
+            (announce-new-problem)
+            (execute-expression
+              input
+              (fn [value next-alternative]
+                (announce-output)
+                (prn value)
+                (driver-loop next-alternative))
+              (fn []
+                (announce-end input)
+                (driver-loop))))))))

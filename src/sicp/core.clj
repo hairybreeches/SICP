@@ -1,5 +1,5 @@
 (ns sicp.core
-  (:use sicp.chapter-4.interpreter.repl))
+  (:use sicp.chapter-4.logic.querier))
 
 
 (defn -main
