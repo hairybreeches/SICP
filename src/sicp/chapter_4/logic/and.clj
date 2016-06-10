@@ -26,7 +26,7 @@
          frame
          rule-stack
          (s/fn [frame :- Frame
-              rule-stack :- Rule-Stack
+              rule-stack2 :- Rule-Stack
               fail2]
 
            (rest-function frame rule-stack succeed fail2))
