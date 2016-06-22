@@ -1,5 +1,5 @@
 (ns sicp.chapter-4.logic.repl
-  (:use sicp.chapter-4.logic.assertions)
+  (:use sicp.chapter-4.logic.simple-query)
   (:use sicp.chapter-4.logic.clojure-value)
   (:use sicp.chapter-4.logic.and)
   (:use sicp.chapter-4.logic.or)
