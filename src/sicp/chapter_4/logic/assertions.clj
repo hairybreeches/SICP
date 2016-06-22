@@ -1,4 +1,4 @@
-(ns sicp.chapter-4.logic.simple-queries
+(ns sicp.chapter-4.logic.assertions
   (:use sicp.chapter-4.logic.evaluation)
   (:use sicp.chapter-4.logic.rules)
   (:use sicp.chapter-4.logic.frames)
