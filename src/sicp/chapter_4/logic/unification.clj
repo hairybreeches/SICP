@@ -1,7 +1,8 @@
 (ns sicp.chapter-4.logic.unification
   (:use sicp.chapter-4.logic.query-syntax)
   (:use sicp.chapter-4.logic.frames)
-  (:use sicp.sequences))
+  (:use sicp.sequences)
+  (:require [schema.core :as s]))
 
 (defn- depends-on?
   [exp variable frame]
@@ -17,8 +18,8 @@
 
 (def unify-match)
 
-(defn- extend-if-possible
-  [variable value frame]
+(s/defn extend-if-possible
+  [variable value frame :- Frame]
   (let [bind (binding-in-frame variable frame)]
     (cond bind (unify-match (binding-value bind) value frame)
           (variable? value) (let [bind2 (binding-in-frame value frame)]
