@@ -1,6 +1,6 @@
 (ns sicp.test.chapter-4.logic
   (:use sicp.chapter-4.logic.sample-database)
-  (:use sicp.chapter-4.logic.querier)
+  (:use sicp.chapter-4.logic.repl)
   (:use sicp.test.assertions)
   (:use clojure.test))
 

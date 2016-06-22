@@ -1,4 +1,4 @@
-(ns sicp.chapter-4.logic.querier
+(ns sicp.chapter-4.logic.repl
   (:use sicp.chapter-4.logic.assertions)
   (:use sicp.chapter-4.logic.clojure-value)
   (:use sicp.chapter-4.logic.and)
